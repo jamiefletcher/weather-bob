@@ -30,8 +30,12 @@ jobs:
             python -m pip install --upgrade pip
             if [ -f src/requirements.txt ]; then pip install -r src/requirements.txt; fi
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Download updated METARS data
+        run: python src/metars.py
+
+      - name: Commit updated METARS data
         run: |
-          echo Hello, world!
-          ls
+            git config --global user.name 'Weather Bob'
+            git config --global user.email 'weather-bob@users.noreply.github.com'
+            git commit -am "Update METARS data"
+            git push
