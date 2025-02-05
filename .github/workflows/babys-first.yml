@@ -2,6 +2,9 @@ name: Babys First Workflow
 
 # Controls when the workflow will run
 on:
+  # Schedule workflow to run daily
+  schedule:
+    - cron: '20 4 * * *'
   # Run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -35,7 +38,11 @@ jobs:
 
       - name: Commit updated METARS data
         run: |
-            git config --global user.name 'Weather Bob'
-            git config --global user.email 'weather-bob@users.noreply.github.com'
-            git commit -am "Update METARS data"
+            git config --global user.name $GIT_USER
+            git config --global user.email $GIT_EMAIL
+            git commit -am $GIT_COMMIT_MSG
             git push
+        env:
+            GIT_USER: 'Weather Bob'
+            GIT_EMAIL: 'weather-bob@users.noreply.github.com'
+            GIT_COMMIT_MSG: 'Update METARS data'
