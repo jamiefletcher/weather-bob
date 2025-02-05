@@ -40,9 +40,8 @@ jobs:
         run: |
             git config --global user.name $GIT_USER
             git config --global user.email $GIT_EMAIL
-            git commit -am $GIT_COMMIT_MSG
+            git commit -am "Update METARS data"
             git push
         env:
-            GIT_USER: 'Weather Bob'
-            GIT_EMAIL: 'weather-bob@users.noreply.github.com'
-            GIT_COMMIT_MSG: 'Update METARS data'
+            GIT_USER: Weather Bob
+            GIT_EMAIL: weather-bob@users.noreply.github.com
