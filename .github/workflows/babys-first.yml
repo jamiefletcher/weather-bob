@@ -43,5 +43,5 @@ jobs:
             git commit -am "Update METARS data"
             git push
         env:
-            GIT_USER: Weather Bob
+            GIT_USER: 'Weather Bob'
             GIT_EMAIL: weather-bob@users.noreply.github.com
