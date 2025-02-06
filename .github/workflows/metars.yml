@@ -1,6 +1,5 @@
-name: Babys First Workflow
+name: Daily METAR Updates
 
-# Controls when the workflow will run
 on:
   # Schedule workflow to run daily
   schedule:
@@ -12,15 +11,14 @@ permissions:
     contents: write
 
 # Workflow jobs can run sequentially or in parallel
+# This workflow contains a single job called "metar-download"
+# The job itself contains 5 steps
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  metar-download:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v4
 
       # Installs latest stable version of python
@@ -38,10 +36,10 @@ jobs:
 
       - name: Commit updated METARS data
         run: |
-            git config --global user.name $GIT_USER
+            git config --global user.name "$GIT_USER"
             git config --global user.email $GIT_EMAIL
             git commit -am "Update METARS data"
             git push
         env:
-            GIT_USER: 'Weather Bob'
-            GIT_EMAIL: weather-bob@users.noreply.github.com
+            GIT_USER: ${{ vars.GitUser }}
+            GIT_EMAIL: ${{ vars.GitEmail }}
