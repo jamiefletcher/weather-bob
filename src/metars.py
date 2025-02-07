@@ -1,18 +1,8 @@
-import os
 import json
 import urllib.parse
 import openai
 import requests
 
-# def download_metars(save_folder, url="https://aviationweather.gov/data/cache/metars.cache.xml"):
-#     print("Downloading new METARS data from", url)
-#     resp = requests.get(url)
-#     if resp.status_code == 200:
-#         filename = os.path.basename(url)
-#         with open(f"{save_folder}/{filename}", "w") as metars_file:
-#             metars_file.write(resp.text)
-#     else:
-#         print("Error downloading METARS", resp.status_code)
 
 STATION_IDS = ["CYYZ", "OMDB", "LTFM", "KLAX", "WIII"]
 WEATHER_PARAMS = {
@@ -69,11 +59,51 @@ def download_metars(args, properties, base_url="https://aviationweather.gov/api/
     return metars
 
 
+def gpt_list_models(client):
+    for m in client.models.list():
+        print(m.id)
+
+
+def gpt_chat(client: openai.OpenAI, model: str, messages: list, max_tokens: int):
+    response = client.chat.completions.create(
+        model=model,
+        messages=messages,
+        response_format={"type": "json_object"},
+        max_tokens=max_tokens,
+    )
+    weather_report = ""
+    if response.choices[0].finish_reason == "stop":
+        weather_report = response.choices[0].message.content
+    return weather_report
+
+
+def gpt_weather_report(metars: dict, client: openai.OpenAI, model: str, max_tokens: int):
+    for station_id, weather in metars.items():
+        print(f"Generating weather report for {station_id}")
+        msgs = [{"role": "system", "content": INSTRUCTIONS}]
+        content = [
+            {
+                "type": "text",
+                "text": f"{PROMPT} \n\nWEATHER DATA: {json.dumps(weather)}",
+            }
+        ]
+        msgs.append({"role": "user", "content": content})
+        response = gpt_chat(
+            client=client, model=model, messages=msgs, max_tokens=max_tokens
+        )
+        weather.update(json.loads(response))
+
+
 def main():
     args = {"ids": ",".join(STATION_IDS), "format": "geojson", "taf": False, "hours": 1}
     metars = download_metars(args, WEATHER_PARAMS)
+    openai_client = openai.OpenAI()
+    gpt_weather_report(
+        metars=metars, client=openai_client, model="gpt-4o-mini", max_tokens=1000
+    )
     with open("data/metars/current-weather.json", "w") as f:
         json.dump(metars, f, indent=4)
+
 
 if __name__ == "__main__":
     main()

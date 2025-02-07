@@ -1,13 +1,13 @@
 {
     "CYYZ": {
         "station_name": "Toronto/Pearson Intl, ON, CA",
-        "time_utc": "2025-02-07T18:00:00Z",
-        "temperature_c": -4,
+        "time_utc": "2025-02-07T19:00:00Z",
+        "temperature_c": -3,
         "dew_point_c": -11,
-        "wind_speed_kt": 19,
+        "wind_speed_kt": 20,
         "wind_direction": 270,
-        "wind_gust_kt": null,
-        "cloud_cover": "SCT",
+        "wind_gust_kt": 26,
+        "cloud_cover": "BKN",
         "wx_code": null,
         "geometry": {
             "type": "Point",
@@ -16,12 +16,12 @@
                 43.679
             ]
         },
-        "weather_description": "Good evening, Toronto! As we take a look at the weather at Pearson International Airport, we see it's a chilly -4 degrees Celsius. With a dew point of -11, it feels even colder out there. Wind is coming from the west at 19 knots, adding a brisk chill to the air. We've got some scattered clouds dotting the sky, so it might not be completely clear tonight. Bundle up if you're heading outside!"
+        "weather_description": "Good evening, Toronto! As we take a look at the weather at Pearson International Airport, we're facing some chilly conditions this evening. The temperature is currently sitting at a brisk -3 degrees Celsius. With a dew point of -11, it feels quite cold out there. We have a steady westward wind blowing at 20 knots, with gusts reaching up to 26 knots, so you'll definitely want to bundle up if you're heading outside. The sky is partly cloudy, giving us a bit of a blanket cover but not entirely overcast. Overall, it's a wintry evening in the Greater Toronto Area, so stay warm!"
     },
     "OMDB": {
         "station_name": "Dubai Intl, DU, AE",
-        "time_utc": "2025-02-07T17:30:00Z",
-        "temperature_c": 24,
+        "time_utc": "2025-02-07T19:00:00Z",
+        "temperature_c": 23,
         "dew_point_c": 16,
         "wind_speed_kt": 8,
         "wind_direction": 100,
@@ -35,15 +35,15 @@
                 25.254
             ]
         },
-        "weather_description": "Good evening! Reporting live from Dubai International Airport, where the weather is looking quite pleasant this afternoon. We have a comfortable temperature sitting at a lovely 24 degrees Celsius. With a dew point of 16 degrees, it's a bit humid but nothing too uncomfortable. The winds are coming in from the east at 8 knots, providing a gentle breeze. And here's the good news: the skies are clear with no significant cloud cover, promising a beautiful view. Perfect conditions for any outdoor activity. That's the weather update for Dubai, back to you!"
+        "weather_description": "Good evening, Dubai! As we take a glance at the current weather at Dubai International Airport, we find a pleasant temperature sitting at 23 degrees Celsius. The dew point is at a comfortable 16 degrees, indicating a slight humidity in the air. Winds are blowing from the east at 8 knots, creating just a gentle breeze. And it\u2019s clear skies above with the cloud cover reported as CAVOK, meaning 'Ceiling and Visibility okay.' So, overall, it\u2019s a lovely evening to be outdoors. Enjoy your night!"
     },
     "LTFM": {
         "station_name": "Istanbul Arpt, IS, TR",
-        "time_utc": "2025-02-07T17:20:00Z",
+        "time_utc": "2025-02-07T18:50:00Z",
         "temperature_c": 3,
         "dew_point_c": 1,
-        "wind_speed_kt": 22,
-        "wind_direction": 360,
+        "wind_speed_kt": 25,
+        "wind_direction": 20,
         "wind_gust_kt": null,
         "cloud_cover": "BKN",
         "wx_code": "-SHRA",
@@ -54,14 +54,14 @@
                 41.262
             ]
         },
-        "weather_description": "Good evening, Istanbul! We're currently looking at chilly weather with temperatures hovering around 3 degrees Celsius. The winds are brisk, coming in from the north at 22 knots, adding a bit of a bite to the air. We're experiencing broken clouds overhead, with light showers in the area, so you might want to grab an umbrella if you're heading out. Stay warm and safe out there!"
+        "weather_description": "Good evening, Istanbul! As we take a look at the weather at the airport, we find it quite chilly with a temperature of 3 degrees Celsius. The dew point is hovering at 1 degree, indicating some moisture in the air. We have a brisk wind blowing from the northeast at 25 knots, which might make it feel even cooler, so make sure to bundle up if you're heading out. The sky is mostly cloudy with broken clouds overhead, and there's light rain expected, so don't forget your umbrella! That's the latest from Istanbul; stay warm and safe out there!"
     },
     "KLAX": {
         "station_name": "Los Angeles Intl, CA, US",
-        "time_utc": "2025-02-07T17:53:00Z",
-        "temperature_c": 15.6,
-        "dew_point_c": 13.3,
-        "wind_speed_kt": 10,
+        "time_utc": "2025-02-07T18:38:00Z",
+        "temperature_c": 15,
+        "dew_point_c": 12.2,
+        "wind_speed_kt": 12,
         "wind_direction": 260,
         "wind_gust_kt": null,
         "cloud_cover": "BKN",
@@ -73,18 +73,18 @@
                 33.9382
             ]
         },
-        "weather_description": "Good afternoon, Los Angeles! As we check out the current weather at LAX, we see that it's a mild 15.6 degrees Celsius with some clouds hanging around. The dew point is comfortable at 13.3 degrees, giving us a bit of humidity in the air. There's a gentle breeze coming in from the west at 10 knots, adding a nice touch to the otherwise overcast sky. Overall, it's a typical cloudy day in our beautiful city. Stay tuned for more updates!"
+        "weather_description": "Good evening, Los Angeles! As we take a look at our current conditions at LAX, we're seeing a temperature of 15 degrees Celsius, which makes for a mild afternoon. The dew point sits at a cozy 12.2 degrees, indicating some humidity in the air. Winds are coming in from the west at 12 knots, providing a gentle breeze. We have broken clouds hanging around, so expect a partly cloudy sky as we transition into the evening. Overall, it's a lovely day in the City of Angels!"
     },
     "WIII": {
         "station_name": "Jakarta/Hatta Intl, JB, ID",
-        "time_utc": "2025-02-07T17:30:00Z",
-        "temperature_c": 25,
-        "dew_point_c": 24,
-        "wind_speed_kt": 10,
-        "wind_direction": 250,
-        "wind_gust_kt": 22,
-        "cloud_cover": "BKN",
-        "wx_code": "+TSRA",
+        "time_utc": "2025-02-07T19:00:00Z",
+        "temperature_c": 23,
+        "dew_point_c": 22,
+        "wind_speed_kt": 3,
+        "wind_direction": 290,
+        "wind_gust_kt": null,
+        "cloud_cover": "OVC",
+        "wx_code": "-TSRA",
         "geometry": {
             "type": "Point",
             "coordinates": [
@@ -92,6 +92,6 @@
                 -6.125
             ]
         },
-        "weather_description": "Good evening, Jakarta! We've got a warm evening ahead with temperatures sitting at a comfortable 25 degrees Celsius. Expect a bit of humidity with a dew point close behind at 24 degrees. Winds are picking up from the west-southwest at about 10 knots, with gusts reaching up to 22 knots. There\u2019s also a broken cloud cover, so don\u2019t be surprised if you see occasional breaks in the clouds. And it looks like we\u2019re in for some thunderstorms and rain as well, so keep that umbrella handy if you're heading out. Stay safe and enjoy your evening!"
+        "weather_description": "Good evening, Jakarta! As we look at the weather at Hatta International, it's currently a warm 23 degrees Celsius with a dew point close behind at 22 degrees, keeping things quite humid. We're experiencing overcast skies, and there\u2019s a chance of thunderstorms and rain in the area. The wind is gentle, coming from the northwest at 3 knots. So, if you're out and about tonight, don\u2019t forget your umbrella just in case those storms roll in!"
     }
 }
