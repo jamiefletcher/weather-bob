@@ -31,8 +31,10 @@ jobs:
             python -m pip install --upgrade pip
             if [ -f src/requirements.txt ]; then pip install -r src/requirements.txt; fi
 
-      - name: Download updated METARS data
+      - name: Update METARS and generate weather report
         run: python src/metars.py
+        env:
+            OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       - name: Commit updated METARS data
         run: |
