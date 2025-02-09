@@ -10,9 +10,9 @@
     <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.css' />
     <script src='https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.js'></script>
     <style>
-        body { margin: 0; padding: 0; }  
+        body { margin: 0; padding: 0; background-color: hsl(0, 0%, 90%); }  
         html, body { height: 100%; width: 100%; }  
-        .container { background-color: hsl(0, 0%, 90%); height: 100%; width: 100%; margin: 0; padding: 0; }  
+        .container { height: 100%; width: 100%; margin: 0; padding: 0; }  
         .map-container { position: relative; height: 100%; width: 100%; padding: 5px 0 0 0; margin: 0; border-radius: 5px; }  
         .map-overlay { position: absolute; left: 50%; bottom: 5%; transform: translate(-50%, 0%); width: 100%; z-index: 100000; text-align: center; margin: 0; padding: 0; }
         .maplibregl-ctrl-bottom-right { display: none; }  
@@ -39,7 +39,7 @@
             container: 'map',
             style: 'weather-bob.json',
             center: [137.9150899566626, 36.25956997955441],
-            zoom: 0.5,
+            zoom: 0,
             minzoom: 0
         });
 
@@ -61,7 +61,7 @@
                     animate: true,
                     offset: [0, 0],
                     bearing: 0,
-                    zoom: map.getZoom()
+                    zoom: 0
                 });
 
                 map.on('moveend', () => {
@@ -85,7 +85,7 @@
                         animate: true,
                         offset: [0, 0],
                         bearing: 0,
-                        zoom: map.getZoom()
+                        zoom: 0
                     });
 
                     map.on('moveend', () => {
