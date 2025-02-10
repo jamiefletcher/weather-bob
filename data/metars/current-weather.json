@@ -28,23 +28,23 @@
         "wspd_kmph": 22.2,
         "wgst_kmph": 33.3,
         "rh": 53.8,
-        "weather_description": "Good evening, Toronto! We're looking at a chilly night as temperatures sit at around <b>-4 °C</b>. With a relative humidity of <b>53.8%</b>, it feels a bit sharper out there. Winds are picking up speed, blowing in from the northwest at approximately <b>22.2 km/h</b>, with gusts reaching up to <b>33.3 km/h</b>. So, if you're heading out, make sure to bundle up and brace for those wind gusts. Overall, it's a cold night, so stay warm!"
+        "weather_description": "Good evening! Here’s the weather update for Toronto/Pearson Intl. We're currently seeing a chilly temperature of <b>-4 °C</b> with a relative humidity of <b>53.8%</b>, which makes it feel even colder out there. The winds are fairly breezy, blowing at <b>22.2 km/h</b> and gusting up to <b>33.3 km/h</b>. So, if you’re heading out, make sure to bundle up and be prepared for those gusty winds. Stay warm!"
     },
     "OMDB": {
         "id": "OMDB",
         "site": "Dubai Intl, DU, AE",
         "prior": 3,
-        "obsTime": "2025-02-10T19:00:00Z",
+        "obsTime": "2025-02-10T19:30:00Z",
         "temp": 20,
         "dewp": 11,
         "wdir": "VRB",
-        "wspd": 2,
+        "wspd": 3,
         "cldCvg1": "CAVOK",
         "cover": "CAVOK",
         "fltcat": "VFR",
         "visib": "6+",
         "altim": 1018,
-        "rawOb": "OMDB 101900Z VRB02KT CAVOK 20/11 Q1018 NOSIG",
+        "rawOb": "OMDB 101930Z VRB03KT CAVOK 20/11 Q1018 NOSIG",
         "geometry": {
             "type": "Point",
             "coordinates": [
@@ -52,19 +52,19 @@
                 25.254
             ]
         },
-        "wspd_kmph": 3.7,
+        "wspd_kmph": 5.6,
         "rh": 56.2,
-        "weather_description": "Good evening! Here at Dubai International, the weather is quite pleasant. We're currently seeing a temperature of <b>20 °C</b>, with humidity levels sitting at a comfortable <b>56.2%</b>. The breeze is light, coming in at <b>3.7 km/h</b>, making it a lovely evening to be outdoors. Enjoy the mild conditions!"
+        "weather_description": "Good evening, Dubai! Currently at Dubai International, we're enjoying a pleasant temperature of <b>20 °C</b> with a relative humidity of <b>56.2%</b>. The air feels comfortable, perfect for an evening out. Winds are gentle, blowing at <b>5.6 km/h</b>, adding to the pleasant conditions. Overall, it’s a lovely night in the city, ideal for a stroll or outdoor activities. Stay tuned for more updates!"
     },
     "LTFM": {
         "id": "LTFM",
         "site": "Istanbul Arpt, IS, TR",
         "prior": 0,
-        "obsTime": "2025-02-10T18:50:00Z",
+        "obsTime": "2025-02-10T19:20:00Z",
         "temp": 2,
         "dewp": -3,
-        "wdir": 360,
-        "wspd": 13,
+        "wdir": 10,
+        "wspd": 11,
         "cldCvg1": "BKN",
         "cldBas1": 25,
         "ceil": 25,
@@ -72,7 +72,7 @@
         "fltcat": "MVFR",
         "visib": "6+",
         "altim": 1029,
-        "rawOb": "LTFM 101850Z 36013KT 9999 BKN025 02/M03 Q1029 NOSIG RMK RWY17L 36013KT RWY34L 35013KT RWY16R 36011KT RWY36 36012KT RWY18 01013KT",
+        "rawOb": "LTFM 101920Z 01011KT 9999 BKN025 02/M03 Q1029 NOSIG RMK RWY17L 36012KT RWY34L 35012KT RWY16R 35011KT RWY36 36012KT RWY18 01012KT",
         "geometry": {
             "type": "Point",
             "coordinates": [
@@ -80,9 +80,9 @@
                 41.262
             ]
         },
-        "wspd_kmph": 24.1,
+        "wspd_kmph": 20.4,
         "rh": 69.5,
-        "weather_description": "Good evening! Right now at Istanbul Airport, the temperature is a chilly <b>2 °C</b>. We have a relative humidity of <b>69.5%</b>, which can make it feel a bit cooler out there, so don't forget your jacket! The winds are blowing in at a brisk pace, with speeds reaching <b>24.1 km/h</b>. It's a typical winter evening in Istanbul, so bundle up and stay warm!"
+        "weather_description": "Good evening! Here's the latest weather update for Istanbul Airport. Currently, we're experiencing a chilly temperature of <b>2 °C</b> with a relative humidity of <b>69.5%</b>, making it feel quite crisp out there. It's advisable to bundle up if you're heading outside. The wind is whipping through at a speed of <b>20.4 km/h</b>, so expect a bit of a breeze that might make it feel even colder. Overall, it’s a brisk, refreshing evening in Istanbul, perfect for a warm drink!"
     },
     "KLAX": {
         "id": "KLAX",
@@ -113,17 +113,17 @@
         },
         "wspd_kmph": 13.0,
         "rh": 61.8,
-        "weather_description": "Good evening! Today in Los Angeles Intl, CA, we have a pleasant evening ahead with a temperature sitting at <b>15.6 °C</b>. The air feels a bit humid, with relative humidity at <b>61.8%</b>, which might make it feel slightly warmer than it actually is. The wind is coming in at a gentle breeze, with speeds of <b>13.0 km/h</b>. So whether you're out for a stroll or heading to dinner, it’s a nice time to be outside!"
+        "weather_description": "Good evening! Here's your weather update for Los Angeles International. Currently, the temperature is a cool <b>15.6 °C</b>, with a relative humidity of <b>61.8%</b>, making it feel quite pleasant outside. We've got a gentle breeze blowing in from the west at about <b>13.0 km/h</b>. Overall, it's a lovely day to be outdoors, so if you have any plans, you should enjoy the nice weather!"
     },
     "WIII": {
         "id": "WIII",
         "site": "Jakarta/Hatta Intl, JB, ID",
         "prior": 1,
-        "obsTime": "2025-02-10T19:00:00Z",
+        "obsTime": "2025-02-10T19:30:00Z",
         "temp": 25,
         "dewp": 23,
-        "wdir": "VRB",
-        "wspd": 2,
+        "wdir": 300,
+        "wspd": 6,
         "cldCvg1": "FEW",
         "cldBas1": 17,
         "cldCvg2": "BKN",
@@ -133,7 +133,8 @@
         "fltcat": "MVFR",
         "visib": 4.35,
         "altim": 1010,
-        "rawOb": "WIII 101900Z VRB02KT 7000 FEW017CB BKN018 25/23 Q1010 NOSIG RMK CB TO N",
+        "wx": "VCTS",
+        "rawOb": "WIII 101930Z 30006KT 7000 VCTS FEW017CB BKN018 25/23 Q1010 NOSIG RMK CB TO NE",
         "geometry": {
             "type": "Point",
             "coordinates": [
@@ -141,8 +142,9 @@
                 -6.125
             ]
         },
-        "wspd_kmph": 3.7,
+        "wx_descrip": "thunderstorm in the vicinity",
+        "wspd_kmph": 11.1,
         "rh": 88.7,
-        "weather_description": "Good evening! Here's the latest weather update for Jakarta at Hatta International Airport. Currently, the temperature is a comfortable <b>25 °C</b>, perfect for a casual evening out. The air is feeling quite humid today with a relative humidity of <b>88.7%</b>, so if you're stepping outside, you might want to grab a light drink to stay refreshed. Wind speeds are gentle, coming in at only <b>3.7 km/h</b>, providing a slight breeze that should offer some relief from the humidity. Overall, it’s a warm and humid evening in Jakarta, so enjoy your night!"
+        "weather_description": "Good evening! Today in Jakarta at Hatta International Airport, we are experiencing some stormy weather. The temperature is currently a warm <b>25 °C</b>, and the air is quite humid, with a relative humidity of <b>88.7%</b>. There’s a thunderstorm in the vicinity, so be cautious if you're heading out. Winds are picking up, blowing at speeds of <b>11.1 km/h</b>. Be sure to keep an eye on your umbrellas, folks! Stay safe and dry!"
     }
 }
