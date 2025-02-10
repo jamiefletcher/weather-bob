@@ -8,9 +8,11 @@ import requests
 STATION_IDS = ["CYYZ", "OMDB", "LTFM", "KLAX", "WIII"]
 
 INSTRUCTIONS = (
-    "You are an AI assistant specialized in interpreting and describing weather data stored in JSON format. "
-    "You are expert at reading weather data for a given location and providing an English description of the weather at that location. "
-    "The English weather description should be no more than 280 words and in the style of TV weatherman."
+    "You are a weather expert specialized in interpreting and describing weather data stored in JSON format. "
+    "You read weather data for a given location and providing an English description of the weather at that location. "
+    "The English weather description should be no more than 200 words and in the style of TV weatherman. "
+    "Use common short forms for units. For example, '°C' for degrees Celcius and 'km/h' for kilometers per hour. "
+    "Emphasize each number in the description by enclosing the number and its unit within HTML bold tags. For example, <b>23.1 km/h</b> "
 )
 PROMPT = (
     "Briefly describe the weather for the location identified in the following JSON data. "
@@ -95,11 +97,11 @@ class Metars:
     def download(self):
         params = urllib.parse.urlencode(self.request_args)
         url = f"{Metars.base_url}?{params}"
-        print("Downloading new METARS data from", url)
+        print("  Downloading new METARS data from", url)
 
         resp = requests.get(url)
         if resp.status_code != 200:
-            print("Error downloading METARS", resp.status_code)
+            print("  Error downloading METARS", resp.status_code)
             return
         metars_json = json.loads(resp.text)["features"][0]
         self.weather = metars_json["properties"]
@@ -109,7 +111,7 @@ class Metars:
     def weather_report(
         self, client: openai.OpenAI, model: str, sys_prompt: str, prompt: str
     ):
-        print(f"Generating weather report for {self.station_id}")
+        print(f"  Generating weather report for {self.station_id}")
         weather = self._weather_summary_for_llm()
         msgs = [{"role": "system", "content": sys_prompt}]
         content = [
@@ -190,8 +192,8 @@ def main():
         )
         output_data[m.station_id] = m.weather
 
-    with open("data/metars/current-weather.json", "w") as f:
-        json.dump(output_data, f, indent=4)
+    with open("data/metars/current-weather.json", "w", encoding="utf-8") as f:
+        json.dump(output_data, f, indent=4, ensure_ascii=False)
 
 
 if __name__ == "__main__":
