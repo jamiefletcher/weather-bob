@@ -1,25 +1,16 @@
 import json
+import math
 import urllib.parse
 import openai
 import requests
 
 
 STATION_IDS = ["CYYZ", "OMDB", "LTFM", "KLAX", "WIII"]
-WEATHER_PARAMS = {
-    "site": "station_name",
-    "obsTime": "time_utc",
-    "temp": "temperature_c",
-    "dewp": "dew_point_c",
-    "wspd": "wind_speed_kt",
-    "wdir": "wind_direction",
-    "wgst": "wind_gust_kt",
-    "cover": "cloud_cover",
-    "wx": "wx_code",
-}
+
 INSTRUCTIONS = (
     "You are an AI assistant specialized in interpreting and describing weather data stored in JSON format. "
     "You are expert at reading weather data for a given location and providing an English description of the weather at that location. "
-    "The English weather description should be in the style of TV weatherman."
+    "The English weather description should be no more than 3 sentences and in the style of TV weatherman."
 )
 PROMPT = (
     "Briefly describe the weather for the location identified in the following JSON data. "
@@ -27,36 +18,88 @@ PROMPT = (
 )
 
 
-def process_metars(raw_metars, properties):
-    stations = {}
-    for weather_report in raw_metars:
-        station = {}
+class Metars:
+    base_url = "https://aviationweather.gov/api/data/metar"
 
-        station_id = weather_report["properties"].get("id")
-        if station_id not in stations:
-            stations[station_id] = station
+    def _rh(t, dt):
+        # https://en.wikipedia.org/wiki/Clausius%E2%80%93Clapeyron_relation#Meteorology_and_climatology
+        pp = math.exp((17.625 * dt) / (243.04 + dt))
+        svp = math.exp((17.625 * t) / (243.04 + t))
+        return 100 * pp / svp
 
-        for property, feat_name in properties.items():
-            station[feat_name] = weather_report["properties"].get(property, None)
+    def __init__(self, station_id: str):
+        self.station_id = station_id
+        self.request_args = {
+            "ids": station_id,
+            "format": "geojson",
+            "taf": False,
+            "hours": 1,
+        }
 
-        station["geometry"] = weather_report.get("geometry", None)
+    def download(self):
+        params = urllib.parse.urlencode(self.request_args)
+        url = f"{Metars.base_url}?{params}"
+        print("Downloading new METARS data from", url)
 
-        stations[station_id].update(station)
-    return stations
+        resp = requests.get(url)
+        if resp.status_code != 200:
+            print("Error downloading METARS", resp.status_code)
+            return
+        self.metars_json = json.loads(resp.text)["features"][0]
+        self._process_metars()
 
+    def weather_report(
+        self, client: openai.OpenAI, model: str, sys_prompt: str, prompt: str
+    ):
+        print(f"Generating weather report for {self.station_id}")
+        weather = self._weather_summary()
+        msgs = [{"role": "system", "content": sys_prompt}]
+        content = [
+            {
+                "type": "text",
+                "text": f"{prompt} \n\nWEATHER DATA: {json.dumps(weather)}",
+            }
+        ]
+        msgs.append({"role": "user", "content": content})
+        response = gpt_chat(client=client, model=model, messages=msgs)
+        self.weather_description = json.loads(response)
 
-def download_metars(args, properties, base_url="https://aviationweather.gov/api/data/metar"):
-    params = urllib.parse.urlencode(args)
-    url = f"{base_url}?{params}"
-    print("Downloading new METARS data from", url)
+    def _weather_summary(self):
+        summary = {"station_name": self.station_name}
+        if self.temperature_c:
+            summary.update({"temperature_c": self.temperature_c})
+        if self.relative_humidity:
+            summary.update({"relative_humidity": self.relative_humidity})
+        if self.wind_speed_kmph:
+            summary.update({"wind_speed_kmph": self.wind_speed_kmph})
+        if self.wind_gust_kmph:
+            summary.update({"wind_gust_kmph": self.wind_gust_kmph})
+        return summary
 
-    resp = requests.get(url)
-    if resp.status_code != 200:
-        print("Error downloading METARS", resp.status_code)
-        return None
-    metars_json = json.loads(resp.text)
-    metars = process_metars(metars_json["features"], properties)
-    return metars
+    def _process_metars(self):
+        geometry = self.metars_json["geometry"]
+        weather_report = self.metars_json["properties"]
+
+        # Simple Features
+        self.station_latlon = geometry
+        self.station_name = weather_report.get("site")
+        self.temperature_c = weather_report.get("temp", None)
+        self.dewpoint_c = weather_report.get("dewp", None)
+        self.wind_direction = weather_report.get("wdir", None)
+
+        # Unit Converstions
+        self.time_utc = weather_report.get("obsTime")  # TODO: Convert to local
+
+        self.wind_speed_kmph = weather_report.get("wspd", None)
+        if self.wind_speed_kmph:
+            self.wind_speed_kmph *= 1.852
+
+        self.wind_gust_kmph = weather_report.get("wgst", None)
+        if self.wind_gust_kmph:
+            self.wind_gust_kmph *= 1.852
+
+        if self.temperature_c and self.dewpoint_c:
+            self.relative_humidity = Metars._rh(self.temperature_c, self.dewpoint_c)
 
 
 def gpt_list_models(client):
@@ -64,7 +107,7 @@ def gpt_list_models(client):
         print(m.id)
 
 
-def gpt_chat(client: openai.OpenAI, model: str, messages: list, max_tokens: int):
+def gpt_chat(client: openai.OpenAI, model: str, messages: list, max_tokens=1024):
     response = client.chat.completions.create(
         model=model,
         messages=messages,
@@ -77,32 +120,23 @@ def gpt_chat(client: openai.OpenAI, model: str, messages: list, max_tokens: int)
     return weather_report
 
 
-def gpt_weather_report(metars: dict, client: openai.OpenAI, model: str, max_tokens: int):
-    for station_id, weather in metars.items():
-        print(f"Generating weather report for {station_id}")
-        msgs = [{"role": "system", "content": INSTRUCTIONS}]
-        content = [
-            {
-                "type": "text",
-                "text": f"{PROMPT} \n\nWEATHER DATA: {json.dumps(weather)}",
-            }
-        ]
-        msgs.append({"role": "user", "content": content})
-        response = gpt_chat(
-            client=client, model=model, messages=msgs, max_tokens=max_tokens
-        )
-        weather.update(json.loads(response))
-
-
 def main():
-    args = {"ids": ",".join(STATION_IDS), "format": "geojson", "taf": False, "hours": 1}
-    metars = download_metars(args, WEATHER_PARAMS)
+    metars = [Metars(s_id) for s_id in STATION_IDS]
     openai_client = openai.OpenAI()
-    gpt_weather_report(
-        metars=metars, client=openai_client, model="gpt-4o-mini", max_tokens=1000
-    )
-    with open("data/metars/current-weather.json", "w") as f:
-        json.dump(metars, f, indent=4)
+
+    for m in metars:
+        print(m.station_id)
+        m.download()
+        m.weather_report(
+            openai_client, model="gpt-4o-mini", sys_prompt=INSTRUCTIONS, prompt=PROMPT
+        )
+        print(m.weather_description)
+
+    # gpt_weather_report(
+    #     metars=metars, client=openai_client, model="gpt-4o-mini", max_tokens=1000
+    # )
+    # with open("data/metars/current-weather.json", "w") as f:
+    #     json.dump(metars, f, indent=4)
 
 
 if __name__ == "__main__":
