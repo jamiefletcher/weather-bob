@@ -21,11 +21,14 @@ PROMPT = (
 class Metars:
     base_url = "https://aviationweather.gov/api/data/metar"
 
-    def _relative_humidity(temperature, dewpoint):
+    def _relative_humidity(temperature, dewpoint, decimals = 1):
         # https://en.wikipedia.org/wiki/Clausius%E2%80%93Clapeyron_relation#Meteorology_and_climatology
         pp = math.exp((17.625 * dewpoint) / (243.04 + dewpoint))
         svp = math.exp((17.625 * temperature) / (243.04 + temperature))
-        return round(100 * pp / svp, 1)
+        return round(100 * pp / svp, decimals)
+
+    def _kts_to_kmph(speed, decimals = 1):
+        return round(speed * 1.852, decimals)
 
     def _decode_wx(wx, precip = {
             "VC" : "In the vicinity",
@@ -138,11 +141,11 @@ class Metars:
 
         wspd = self.weather.get("wspd", None)
         if wspd:
-            self.weather["wspd_kmph"] = round(wspd * 1.852, 1)
+            self.weather["wspd_kmph"] = Metars._kts_to_kmph(wspd)
 
         wgst = self.weather.get("wgst", None)
         if wgst:
-            self.weather["wgst_kmph"] = round(wgst * 1.852, 1)
+            self.weather["wgst_kmph"] = Metars._kts_to_kmph(wgst)
 
         t = self.weather.get("temp", None)
         dt = self.weather.get("dewp", None)
