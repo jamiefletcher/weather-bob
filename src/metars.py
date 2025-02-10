@@ -21,48 +21,51 @@ PROMPT = (
 class Metars:
     base_url = "https://aviationweather.gov/api/data/metar"
 
-    def _relative_humidity(temperature, dewpoint, decimals = 1):
+    def _relative_humidity(temperature, dewpoint, decimals=1):
         # https://en.wikipedia.org/wiki/Clausius%E2%80%93Clapeyron_relation#Meteorology_and_climatology
         pp = math.exp((17.625 * dewpoint) / (243.04 + dewpoint))
         svp = math.exp((17.625 * temperature) / (243.04 + temperature))
         return round(100 * pp / svp, decimals)
 
-    def _kts_to_kmph(speed, decimals = 1):
+    def _kts_to_kmph(speed, decimals=1):
         return round(speed * 1.852, decimals)
 
-    def _decode_wx(wx, precip = {
-            "VC" : "In the vicinity",
-            "MI" : "Shallow",
-            "PR" : "Partial",
-            "BC" : "Patches",
-            "DR" : "Low drifting",
-            "BL" : "Blowing",
-            "SH" : "Showers",
-            "TS" : "Thunderstorm",
-            "FZ" : "Freezing",
-            "RA" : "Rain",
-            "DZ" : "Drizzle",
-            "SN" : "Snow",
-            "SG" : "Snow Grains",
-            "IC" : "Ice Crystals",
-            "PL" : "Ice Pellets",
-            "GR" : "Hail",
-            "GS" : "Graupel",
-            "UP" : "Precipitation",
-            "FG" : "Fog",
-            "VA" : "Volcanic Ash",
-            "BR" : "Mist",
-            "HZ" : "Haze",
-            "DU" : "Widespread Dust",
-            "FU" : "Smoke",
-            "SA" : "Sand",
-            "PY" : "Spray",
-            "SQ" : "Squall",
-            "PO" : "Dust",
-            "DS" : "Duststorm",
-            "SS" : "Sandstorm",
-            "FC" : "Funnel Cloud",
-        }):
+    def _decode_wx(
+        wx,
+        precip={
+            "VC": "In the vicinity",
+            "MI": "Shallow",
+            "PR": "Partial",
+            "BC": "Patches",
+            "DR": "Low drifting",
+            "BL": "Blowing",
+            "SH": "Showers",
+            "TS": "Thunderstorm",
+            "FZ": "Freezing",
+            "RA": "Rain",
+            "DZ": "Drizzle",
+            "SN": "Snow",
+            "SG": "Snow Grains",
+            "IC": "Ice Crystals",
+            "PL": "Ice Pellets",
+            "GR": "Hail",
+            "GS": "Graupel",
+            "UP": "Precipitation",
+            "FG": "Fog",
+            "VA": "Volcanic Ash",
+            "BR": "Mist",
+            "HZ": "Haze",
+            "DU": "Widespread Dust",
+            "FU": "Smoke",
+            "SA": "Sand",
+            "PY": "Spray",
+            "SQ": "Squall",
+            "PO": "Dust",
+            "DS": "Duststorm",
+            "SS": "Sandstorm",
+            "FC": "Funnel Cloud",
+        },
+    ):
         description = ""
         if wx[0] == "-":
             description += "Light "
@@ -77,9 +80,8 @@ class Metars:
         while len(wx) > 1:
             code = wx[:2]
             wx = wx[2:]
-            description += " ".join(description, precip[code])
-        return description.lower()
-
+            description += f"{precip[code]} "
+        return description.lower().strip()
 
     def __init__(self, station_id: str):
         self.station_id = station_id
@@ -108,7 +110,7 @@ class Metars:
         self, client: openai.OpenAI, model: str, sys_prompt: str, prompt: str
     ):
         print(f"Generating weather report for {self.station_id}")
-        weather = self._weather_summary()
+        weather = self._weather_summary_for_llm()
         msgs = [{"role": "system", "content": sys_prompt}]
         content = [
             {
@@ -118,21 +120,25 @@ class Metars:
         ]
         msgs.append({"role": "user", "content": content})
         response = gpt_chat(client=client, model=model, messages=msgs)
-        self.weather["weather_description"] = json.loads(response)
+        self.weather.update(json.loads(response))
 
-    def _weather_summary(self, summary_params = {
+    def _weather_summary_for_llm(
+        self,
+        summary_params={
             "temperature_c": "temp",
             "relative_humidity": "rh",
             "wind_speed_kmph": "wspd_kmph",
-            "wind_gust_kmph": "wgst_kmph"
-        }):
+            "wind_gust_kmph": "wgst_kmph",
+            "observed_weather": "wx_descrip",
+        },
+    ):
         summary = {"station_name": self.weather["site"]}
         for long_name, short_name in summary_params.items():
             if short_name in self.weather:
                 summary.update({long_name: self.weather[short_name]})
         return summary
 
-    def _add_weather_fields(self):      
+    def _add_weather_fields(self):
         # time_utc = self.weather.get("obsTime")  # TODO: Convert to local
 
         wx = self.weather.get("wx", None)
@@ -172,8 +178,9 @@ def gpt_chat(client: openai.OpenAI, model: str, messages: list, max_tokens=1024)
 
 
 def main():
-    metars = [Metars(s_id) for s_id in STATION_IDS]
     openai_client = openai.OpenAI()
+    metars = [Metars(s_id) for s_id in STATION_IDS]
+    output_data = {}
 
     for m in metars:
         print(m.station_id)
@@ -181,13 +188,10 @@ def main():
         m.weather_report(
             openai_client, model="gpt-4o-mini", sys_prompt=INSTRUCTIONS, prompt=PROMPT
         )
-        print(m.weather)
+        output_data[m.station_id] = m.weather
 
-    # gpt_weather_report(
-    #     metars=metars, client=openai_client, model="gpt-4o-mini", max_tokens=1000
-    # )
-    # with open("data/metars/current-weather.json", "w") as f:
-    #     json.dump(metars, f, indent=4)
+    with open("data/metars/current-weather.json", "w") as f:
+        json.dump(output_data, f, indent=4)
 
 
 if __name__ == "__main__":
