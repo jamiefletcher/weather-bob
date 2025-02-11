@@ -34,7 +34,7 @@
         "obsTime_local": "2025-02-11 14:00:00-05:00",
         "wspd_kmph": 14.8,
         "rh": 63.5,
-        "weather_description": "Good afternoon, Toronto! Right now, it's a chilly <b>-2 °C</b>, with a relative humidity of <b>63.5%</b>, making it feel even colder. Stepping outside, you'll notice a brisk wind blowing at <b>14.8 km/h</b>, so be sure to bundle up! If you're headed out, keep in mind the cold does come with a bit of a bite today. Stay warm and enjoy your afternoon!"
+        "weather_description": "Good afternoon, Toronto! At this hour, we're experiencing a chilly temperature sitting at <b>-2 °C</b>. The air feels quite damp, with a relative humidity of <b>63.5%</b>. If you're heading outside, be prepared for a moderate breeze with winds blowing at <b>14.8 km/h</b>. So, bundle up and stay warm!"
     },
     "EDDF": {
         "id": "EDDF",
@@ -54,7 +54,7 @@
         "fltcat": "MVFR",
         "visib": "6+",
         "altim": 1019,
-        "rawOb": "EDDF 111920Z AUTO 05006KT 9999 BKN016 BKN027 06/04 Q1019",
+        "rawOb": "EDDF 111920Z AUTO 05006KT 9999 BKN016 BKN027 06/04 Q1019 BECMG BKN014",
         "place_name": "Frankfurt",
         "geometry": {
             "type": "Point",
@@ -66,7 +66,7 @@
         "obsTime_local": "2025-02-11 20:20:00+01:00",
         "wspd_kmph": 11.1,
         "rh": 87.0,
-        "weather_description": "Good evening, Frankfurt! Right now, the temperature is a cool <b>6 °C</b>. We've got some high humidity in the air at <b>87%</b>, which is making it feel a bit chillier. Winds are picking up just a touch, blowing in at <b>11.1 km/h</b>. It's a rather damp evening, so if you're heading out, be sure to grab a jacket! Stay warm and enjoy your night!"
+        "weather_description": "Good evening, Frankfurt! Right now, the temperature is a cool <b>6 °C</b> with a high level of moisture in the air, showcasing a relative humidity of <b>87%</b>. Wind is gently blowing in at <b>11.1 km/h</b>, adding a slight chill to the evening. So, if you're heading out, make sure to dress warmly! Enjoy your night!"
     },
     "EFHK": {
         "id": "EFHK",
@@ -96,7 +96,7 @@
         "obsTime_local": "2025-02-11 21:20:00+02:00",
         "wspd_kmph": 13.0,
         "rh": 100.0,
-        "weather_description": "Good evening from Helsinki! Right now, we’re experiencing chilly conditions with a temperature sitting at <b>-2 °C</b>. The atmosphere is quite humid, with relative humidity levels hitting an impressive <b>100%</b>. This means we have a thick, damp feel in the air, and you might notice some fog developing. Additionally, we have a moderate breeze coming in at <b>13.0 km/h</b>, which adds a bit of a chill factor to the air. So, if you're heading out tonight, bundle up to stay warm!"
+        "weather_description": "Good evening from Helsinki! Right now, the temperature is a chilly <b>-2 °C</b>. It feels quite cold out there as we have a relative humidity of <b>100%</b>, making the air feel really damp. There's also a moderate wind blowing at a speed of <b>13.0 km/h</b>. Make sure to bundle up if you're heading outside, as these conditions can make it feel even colder! Stay warm!"
     },
     "EGLL": {
         "id": "EGLL",
@@ -126,7 +126,7 @@
         "obsTime_local": "2025-02-11 19:20:00+00:00",
         "wspd_kmph": 5.6,
         "rh": 86.8,
-        "weather_description": "Good evening, London! Right now, the temperature is a chilly <b>4 °C</b> with a high relative humidity of <b>86.8%</b>, making it feel a bit colder. There's a gentle breeze blowing in at <b>5.6 km/h</b>, which should help cut through that dampness a little. Don't forget to bundle up if you're heading out tonight!"
+        "weather_description": "Good evening, London! As we check in on the weather at this hour, we're seeing a chilly temperature of just <b>4 °C</b>. The air is quite moist with a relative humidity at a high <b>86.8%</b>, so it might feel a bit cooler than it actually is. There's a gentle breeze blowing through, with wind speeds around <b>5.6 km/h</b>. Overall, it’s a crisp evening, so if you're heading out, make sure to bundle up to stay warm!"
     },
     "EHAM": {
         "id": "EHAM",
@@ -160,7 +160,7 @@
         "wx_descrip": "light rain light drizzle",
         "wspd_kmph": 9.3,
         "rh": 100.0,
-        "weather_description": "Good evening, Amsterdam! Right now, it’s a chilly <b>3 °C</b> with a high relative humidity of <b>100%</b>, making it feel quite damp out there. We’re experiencing some light rain and a bit of drizzle, so do take your umbrella if you're heading out. The winds are gentle, blowing at a speed of <b>9.3 km/h</b>. Overall, it's a typical winter evening here, so stay warm and be careful on those slick sidewalks!"
+        "weather_description": "Good evening, Amsterdam! Currently, we're facing a chilly evening with a temperature of <b>3 °C</b>. Humidity levels are quite high at <b>100%</b>, so it certainly feels damp out there. We're also experiencing light rain and drizzle, adding to that wet feeling. The winds are fluttering in at a gentle <b>9.3 km/h</b>. So, if you're heading out tonight, make sure to grab your umbrella! Stay warm and dry, everyone!"
     },
     "ENGM": {
         "id": "ENGM",
@@ -188,7 +188,7 @@
         "obsTime_local": "2025-02-11 20:20:00+01:00",
         "wspd_kmph": 9.3,
         "rh": 92.4,
-        "weather_description": "Good evening, Bærum! As we check in on the weather, it's currently a chilly <b>-9 °C</b> with a high relative humidity of <b>92.4%</b>. The air feels quite damp, which can make the cold even more biting. If you're heading out, be prepared for some brisk conditions, as we have a moderate wind blowing in at <b>9.3 km/h</b>. It's definitely a night to bundle up if you're planning to spend any time outside. Stay warm and enjoy your evening!"
+        "weather_description": "Good evening! In Bærum, we're currently experiencing some chilly weather on this February evening. The temperature has dropped to a brisk <b>-9 °C</b>, so make sure to bundle up if you're heading out. With a high relative humidity of <b>92.4%</b>, it feels quite damp in the air, adding to that winter chill. The winds are picking up slightly, blowing at <b>9.3 km/h</b>, which might make it feel even colder. Stay warm, Bærum!"
     },
     "ESSA": {
         "id": "ESSA",
@@ -220,7 +220,7 @@
         "wx_descrip": "moderate freezing fog",
         "wspd_kmph": 5.6,
         "rh": 92.7,
-        "weather_description": "Good evening from Uppsala! Right now, it's quite chilly with a temperature of <b>-4 °C</b>. We're experiencing moderate freezing fog, and visibility may be affected. The relative humidity is quite high at <b>92.7%</b>, making it feel even colder than it is. As for the winds, they're light, coming in at <b>5.6 km/h</b>. So, if you're heading out, make sure to bundle up and drive carefully!"
+        "weather_description": "Good evening, Uppsala! Right now, it's a chilly night with a temperature sitting at a brisk <b>-4 °C</b>. The air is quite moist with a relative humidity of <b>92.7%</b>, which is contributing to the moderate freezing fog we are experiencing. Visibility may be reduced, so take care if you're out and about. On top of that, we're seeing light winds blowing at <b>5.6 km/h</b>, which might add a bit to the chill in the air. So, bundle up if you're stepping outside and drive safely! That's your weather update for Uppsala!"
     },
     "GMMC": {
         "id": "GMMC",
@@ -248,7 +248,7 @@
         "obsTime_local": "2025-02-11 19:00:00+00:00",
         "wspd_kmph": 11.1,
         "rh": 77.3,
-        "weather_description": "Good evening, Casablanca! As we take a look at your weather this evening, it's currently a pleasant <b>17 °C</b> with a relative humidity of <b>77.3%</b>, making it feel quite comfortable, albeit a little moist. We have a gentle breeze blowing in at <b>11.1 km/h</b>, adding a nice chill to the air. So, if you're heading out, you might want to grab a light jacket. All in all, a lovely evening in store for you!"
+        "weather_description": "Good evening, Casablanca! Right now, the temperature is a comfortable <b>17 °C</b>. However, with a relative humidity of <b>77.3%</b>, it feels a bit muggy out there. As for the winds, they are blowing in at a gentle pace of <b>11.1 km/h</b>. So, if you’re heading out this evening, you might want to grab a light jacket. Overall, it’s a pleasant night to enjoy the evening air!"
     },
     "HECA": {
         "id": "HECA",
@@ -277,7 +277,7 @@
         "obsTime_local": "2025-02-11 21:30:00+02:00",
         "wspd_kmph": 7.4,
         "rh": 62.7,
-        "weather_description": "Good evening, Cairo! As we check in on the weather this evening, we see a pleasant temperature around <b>14°C</b>. The humidity level sits at a moderate <b>62.7%</b>, which should feel fairly comfortable. There's a gentle breeze blowing in at <b>7.4 km/h</b>, adding a nice touch to the cool night air. Overall, it's a lovely evening to be out and about. Enjoy your night!"
+        "weather_description": "Good evening, Cairo! Right now, the temperature is a pleasant <b>14 °C</b> with a relative humidity of <b>62.7%</b>, making it feel quite comfortable. The winds are gentle, blowing in at a speed of <b>7.4 km/h</b>. Overall, it's a beautiful night to be out and about. Don't forget to enjoy the mild weather!"
     },
     "KATL": {
         "id": "KATL",
@@ -310,7 +310,7 @@
         "wx_descrip": "light drizzle moderate mist",
         "wspd_kmph": 20.4,
         "rh": 92.7,
-        "weather_description": "Good afternoon, Atlanta! Right now, at <b>6.7 °C</b>, we're experiencing some chilly weather with a relative humidity of <b>92.7%</b>, making it feel quite damp out there. Don't forget your umbrellas, as we're observing light drizzle along with moderate mist, creating a rather gloomy atmosphere. The wind isn't letting up either, blowing at a brisk <b>20.4 km/h</b>. Make sure to bundle up if you're heading out – it’s a good day for some cozy indoor activities!"
+        "weather_description": "Good afternoon, Atlanta! Right now, we are seeing a chilly temperature of <b>6.7 °C</b>. The air is quite humid, with a relative humidity level at <b>92.7%</b>, making it feel even cooler. We're dealing with some light drizzle alongside moderate mist, so be careful out there. Winds are picking up slightly, blowing at <b>20.4 km/h</b>. Make sure to grab your umbrella if you head out, and stay safe in the misty weather!"
     },
     "KBOS": {
         "id": "KBOS",
@@ -343,30 +343,30 @@
         "obsTime_local": "2025-02-11 13:54:00-05:00",
         "wspd_kmph": 16.7,
         "rh": 44.9,
-        "weather_description": "Good afternoon, Boston! Right now, it's a chilly <b>-0.6 °C</b> with a relative humidity at <b>44.9%</b>, making it feel quite brisk out there. The winds are picking up too, blowing in from the northwest at about <b>16.7 km/h</b>. So, if you're heading out, make sure to bundle up and hold onto your hats! Enjoy your day!"
+        "weather_description": "Good afternoon Boston! It's currently a chilly day with the temperature sitting at around <b>-0.6 °C</b>. You'll want to bundle up as the relative humidity is at <b>44.9%</b>, making it feel even cooler. We have a steady wind blowing in at <b>16.7 km/h</b>, so keep those jackets zipped up tight! Overall, it's a brisk winter day, typical of February in the city. Stay warm out there!"
     },
     "KBWI": {
         "id": "KBWI",
         "site": "Baltimore-Washington Intl, MD, US",
         "prior": 3,
-        "obsTime": "2025-02-11T18:54:00Z",
-        "temp": 1.7,
+        "obsTime": "2025-02-11T19:42:00Z",
+        "temp": 2.2,
         "dewp": -10,
-        "wdir": 190,
+        "wdir": "VRB",
         "wspd": 3,
         "cldCvg1": "SCT",
-        "cldBas1": 55,
+        "cldBas1": 37,
         "cldCvg2": "BKN",
-        "cldBas2": 70,
+        "cldBas2": 50,
         "cldCvg3": "OVC",
         "cldBas3": 100,
-        "ceil": 70,
+        "ceil": 50,
         "cover": "OVC",
         "fltcat": "VFR",
         "visib": "10+",
-        "altim": 1026.5,
-        "slp": 1026.4,
-        "rawOb": "KBWI 111854Z 19003KT 10SM SCT055 BKN070 OVC100 02/M10 A3031 RMK AO2 SLP264 T00171100",
+        "altim": 1026.2,
+        "wx": "-SN",
+        "rawOb": "KBWI 111942Z VRB03KT 10SM -SN SCT037 BKN050 OVC100 02/M10 A3030 RMK AO2 SNB41 P0000 T00221100",
         "place_name": "Baltimore",
         "geometry": {
             "type": "Point",
@@ -375,32 +375,32 @@
                 39.28151578641361
             ]
         },
-        "obsTime_local": "2025-02-11 13:54:00-05:00",
+        "obsTime_local": "2025-02-11 14:42:00-05:00",
+        "wx_descrip": "light snow",
         "wspd_kmph": 5.6,
-        "rh": 41.5,
-        "weather_description": "Good afternoon, Baltimore! Currently, the temperature is a chilly <b>1.7 °C</b>. With a relative humidity of <b>41.5%</b>, the air feels crisp and refreshing. A light breeze is blowing in, coming at a speed of <b>5.6 km/h</b>, adding to that cold feel. So, if you're heading out, make sure to bundle up and stay warm!"
+        "rh": 40.1,
+        "weather_description": "Good afternoon, Baltimore! Right now, we're experiencing a chilly temperature of just <b>2.2 °C</b>. The air is fairly dry, with a relative humidity reading of <b>40.1%</b>. There's a bit of light snow falling, making for a pretty winter scene. The wind is gentle, blowing at <b>5.6 km/h</b>. So, bundle up if you're heading out and enjoy the beautiful, albeit cold, weather out there!"
     },
     "KDEN": {
         "id": "KDEN",
         "site": "Denver Intl, CO, US",
         "prior": 0,
-        "obsTime": "2025-02-11T18:53:00Z",
-        "temp": -11.1,
+        "obsTime": "2025-02-11T19:45:00Z",
+        "temp": -10.6,
         "dewp": -14.4,
-        "wdir": 80,
-        "wspd": 6,
-        "cldCvg1": "SCT",
+        "wdir": 50,
+        "wspd": 9,
+        "cldCvg1": "BKN",
         "cldBas1": 12,
         "cldCvg2": "OVC",
         "cldBas2": 24,
-        "ceil": 24,
+        "ceil": 12,
         "cover": "OVC",
-        "fltcat": "MVFR",
-        "visib": 3,
-        "altim": 1008.9,
-        "slp": 1015.1,
+        "fltcat": "IFR",
+        "visib": 2,
+        "altim": 1006.9,
         "wx": "-SN BR",
-        "rawOb": "KDEN 111853Z 08006KT 3SM -SN BR SCT012 OVC024 M11/M14 A2979 RMK AO2 SFC VIS 4 SLP151 P0000 T11111144",
+        "rawOb": "KDEN 111945Z 05009KT 2SM -SN BR BKN012 OVC024 M11/M14 A2973 RMK AO2 TWR VIS 3 P0000 T11061144",
         "place_name": "Aurora",
         "geometry": {
             "type": "Point",
@@ -409,11 +409,11 @@
                 39.6958574
             ]
         },
-        "obsTime_local": "2025-02-11 11:53:00-07:00",
+        "obsTime_local": "2025-02-11 12:45:00-07:00",
         "wx_descrip": "light snow moderate mist",
-        "wspd_kmph": 11.1,
-        "rh": 76.6,
-        "weather_description": "Good morning, Aurora! As we check the current conditions at around <b>11:53 AM</b>, we're seeing a chilly temperature of <b>-11.1 °C</b>. With a relative humidity of <b>76.6%</b>, it certainly feels quite frosty out there. Adding to the wintry mix, we have light snow accompanied by moderate mist, which is reducing visibility. Winds are blowing at a gentle pace of <b>11.1 km/h</b>, making it feel even cooler. So, if you're heading out, make sure to bundle up and drive cautiously. Stay warm and safe out there!"
+        "wspd_kmph": 16.7,
+        "rh": 73.6,
+        "weather_description": "Good afternoon, Aurora! As of <b>12:45 PM</b>, the temperature is sitting at a chilly <b>-10.6 °C</b>. With a relative humidity of <b>73.6%</b>, it feels quite damp outside. We're currently experiencing light snow along with moderate mist, which can make visibility a bit tricky. The wind is coming in at a brisk <b>16.7 km/h</b>, adding to that winter bite in the air. So, if you're heading out, bundle up and drive safely! Stay warm, Aurora!"
     },
     "KDFW": {
         "id": "KDFW",
@@ -444,7 +444,7 @@
         "obsTime_local": "2025-02-11 12:53:00-06:00",
         "wspd_kmph": 22.2,
         "rh": 76.2,
-        "weather_description": "Good afternoon, Arlington! Right now, the temperature is a cool <b>6.7 °C</b>, with a relatively high humidity level of <b>76.2%</b>. You can expect a bit of a breeze out there, with winds blowing at about <b>22.2 km/h</b>. Make sure to grab a light jacket if you're heading out, as it feels a bit brisk but still manageable. Stay warm!"
+        "weather_description": "Good afternoon, Arlington! Currently, you're experiencing a cool day with a temperature sitting at <b>6.7 °C</b>. The relative humidity is quite high at <b>76.2%</b>, making it feel a bit chillier outside. And, we have a steady breeze blowing at <b>22.2 km/h</b>. So, if you're heading out, make sure to dress warmly to stay comfortable in these conditions. That's your weather update for Arlington!"
     },
     "KEWR": {
         "id": "KEWR",
@@ -479,7 +479,7 @@
         "obsTime_local": "2025-02-11 13:51:00-05:00",
         "wspd_kmph": 9.3,
         "rh": 39.6,
-        "weather_description": "Good afternoon, Newark! Currently, we're looking at a chilly temperature of <b>1.7 °C</b>, so make sure to bundle up if you're heading outside. The relative humidity is at a comfortable <b>39.6%</b>, which means the air isn't too damp. Wind speeds are gentle today, coming in at <b>9.3 km/h</b>, adding a slight chill to the air. Stay warm and enjoy your day!"
+        "weather_description": "Good afternoon, Newark! Right now, we're looking at a chilly temperature of <b>1.7 °C</b>. The air is quite dry, with a relative humidity of <b>39.6%</b>, which makes it feel even cooler out there. If you're stepping outside, be prepared for a light breeze, with winds coming in at a speed of <b>9.3 km/h</b>. So, bundle up if you're heading out, and stay warm!"
     },
     "KFLL": {
         "id": "KFLL",
@@ -511,7 +511,7 @@
         "wspd_kmph": 25.9,
         "wgst_kmph": 40.7,
         "rh": 62.2,
-        "weather_description": "Good afternoon, Fort Lauderdale! We're enjoying a lovely day with a temperature sitting at a comfortable <b>26.1 °C</b>. The humidity is at <b>62.2%</b>, making it feel quite pleasant. However, do watch out for the wind, as we're experiencing speeds of <b>25.9 km/h</b>, with gusts reaching up to <b>40.7 km/h</b>. Overall, it's a nice day to be outdoors, just make sure to secure any loose items!"
+        "weather_description": "Good afternoon, Fort Lauderdale! We are enjoying a lovely day with a temperature of <b>26.1 °C</b>. The relative humidity is currently at <b>62.2%</b>, giving us a comfortable feel. We have a steady breeze blowing in at <b>25.9 km/h</b>, with gusts reaching up to <b>40.7 km/h</b>. It's a great day to be outside, just a little breezy, so hold onto your hats!"
     },
     "KIAH": {
         "id": "KIAH",
@@ -545,7 +545,7 @@
         "wx_descrip": "heavy rain moderate mist",
         "wspd_kmph": 13.0,
         "rh": 93.2,
-        "weather_description": "Good afternoon, Houston! Right now, we’re seeing a temperature of <b>16.1 °C</b>, which is quite comfortable. However, be prepared for some challenging weather conditions today, as we're experiencing heavy rain accompanied by moderate mist. The humidity is high at <b>93.2%</b>, making it feel a bit damp out there. Also, there's a steady wind blowing at <b>13.0 km/h</b> that might help to keep things a little cooler. If you're heading out, don't forget your rain gear—stay dry and safe out there!"
+        "weather_description": "Good afternoon, Houston! Right now, the temperature is a pleasant <b>16.1 °C</b>. However, it's quite humid with a relative humidity level of <b>93.2%</b>, making it feel a bit sticky out there. As for the weather conditions, we're experiencing heavy rain along with moderate mist, so be sure to grab your umbrella if you're heading outside. The wind is calm but present, blowing at <b>13.0 km/h</b>. Stay safe and dry!"
     },
     "KLAX": {
         "id": "KLAX",
@@ -576,7 +576,7 @@
         },
         "obsTime_local": "2025-02-11 10:53:00-08:00",
         "rh": 59.6,
-        "weather_description": "Good morning, Los Angeles! Right now, we're looking at a pleasant temperature of <b>15 °C</b> with a relative humidity sitting at <b>59.6%</b>. It's a nice day to step outside, so grab your sunglasses and enjoy the mild weather. Expect it to feel comfortable throughout the day with ample sunshine! Don't forget to stay hydrated, and make the most of this lovely weather!"
+        "weather_description": "Good morning, Los Angeles! Currently, the temperature is a pleasant <b>15 °C</b> with a relative humidity of <b>59.6%</b>. It looks like a comfortable day ahead, so get outside and enjoy the beautiful weather!"
     },
     "KORD": {
         "id": "KORD",
@@ -609,7 +609,7 @@
         "wx_descrip": "light snow",
         "wspd_kmph": 24.1,
         "rh": 70.8,
-        "weather_description": "Good afternoon, Evanston! Right now, we're feeling a chilly temperature of <b>-4.4 °C</b> with a relative humidity of <b>70.8%</b>, so make sure to bundle up out there! We're experiencing light snow today, which is adding to that wintry atmosphere. The wind is picking up, blowing in from the north at a brisk <b>24.1 km/h</b>. With the snow and wind, be cautious while driving and walking, as conditions may be slippery. Stay warm and safe!"
+        "weather_description": "Good afternoon, Evanston! Currently, we're experiencing a chilly day with a temperature sitting at <b>-4.4 °C</b>. The relative humidity is up at <b>70.8%</b>, making it feel a bit colder. We're also seeing some light snow in the area, which adds to that wintry feel. As for the winds, they're blowing in from the northwest at a brisk <b>24.1 km/h</b>. So, if you're heading out, make sure to bundle up and watch out for those slippery spots!"
     },
     "KSEA": {
         "id": "KSEA",
@@ -637,7 +637,7 @@
         },
         "obsTime_local": "2025-02-11 10:53:00-08:00",
         "wspd_kmph": 14.8,
-        "weather_description": "Good morning, Seattle! Right now, it's a chilly <b>0 °C</b> outside, so make sure to bundle up if you're heading out. We’re seeing wind gusts at about <b>14.8 km/h</b>, which might make it feel even colder. If you're planning on enjoying the great outdoors today, keep in mind the cold temperatures and windy conditions. Stay warm, Seattle!"
+        "weather_description": "Good morning, Seattle! It's a chilly start to the day with a temperature sitting at <b>0 °C</b>. Make sure to bundle up before heading out! We've got a moderate breeze blowing in from the west at <b>14.8 km/h</b>, which may give that cold air a bit more bite. So, while the sun may peek through later, don't underestimate that wind chill. Stay warm, everyone!"
     },
     "KSFO": {
         "id": "KSFO",
@@ -670,7 +670,7 @@
         "obsTime_local": "2025-02-11 10:56:00-08:00",
         "wspd_kmph": 20.4,
         "rh": 71.4,
-        "weather_description": "Good morning, San Mateo! As we take a look at the current weather, we're seeing a cool temperature of <b>11.7 °C</b>. The relative humidity is at a comfortable <b>71.4%</b>, which means you might feel a bit of dampness in the air. There's a steady breeze blowing in at <b>20.4 km/h</b>, so a light jacket would be a good idea if you're heading out. Overall, it's shaping up to be a mild day, perfect for a stroll or maybe some outdoor activities. Stay tuned for more updates!"
+        "weather_description": "Good morning, San Mateo! It's currently a cool <b>11.7 °C</b> out there, with a pleasant relative humidity at <b>71.4%</b>, making it feel quite comfortable. A light breeze is blowing through at a speed of <b>20.4 km/h</b>, giving you just enough chill to freshen up your day. So, if you’re stepping out, don’t forget a light jacket! Enjoy your day!"
     },
     "LEMD": {
         "id": "LEMD",
@@ -702,7 +702,7 @@
         "wx_descrip": "light rain",
         "wspd_kmph": 5.6,
         "rh": 76.4,
-        "weather_description": "Good evening, Madrid! As we look at the weather this evening, temperatures are sitting at a comfortable <b>11 °C</b>. The relative humidity is quite high at <b>76.4%</b>, making it feel a bit damp. We're currently experiencing some light rain, so be sure to grab your umbrella if you're heading out. The wind is gentle, blowing at <b>5.6 km/h</b>, adding just a touch of chill to the air. Overall, it’s a typical rainy evening; perfect for a cozy night in. Stay dry out there!"
+        "weather_description": "Good evening! Here’s the weather for Madrid. Currently, the temperature is a mild <b>11 °C</b>, with a relative humidity of <b>76.4%</b>, making it feel a bit damp. We're seeing some light rain falling, so you might want to grab an umbrella if you're heading out. The wind is gentle, blowing at <b>5.6 km/h</b>, which should keep things feeling comfortable. It’s a cozy evening in the capital, perfect for staying indoors with a warm drink. Stay dry, Madrid!"
     },
     "LFPG": {
         "id": "LFPG",
@@ -732,7 +732,7 @@
         "obsTime_local": "2025-02-11 20:30:00+01:00",
         "wspd_kmph": 11.1,
         "rh": 93.2,
-        "weather_description": "Good evening, Paris! As of now, the temperature is a chilly <b>4 °C</b> with a high humidity level of <b>93.2%</b>. This means it feels quite damp out there, so you might want to grab a jacket if you’re heading out. The wind is blowing at a moderate pace of <b>11.1 km/h</b>, adding to the cool feel of the evening. It's a typical winter night in the City of Light. Stay warm!"
+        "weather_description": "Good evening, Paris! As of now, the temperature is a chilly <b>4 °C</b> with a high humidity level sitting at <b>93.2%</b>. You'll likely feel that dampness in the air. The wind is picking up slightly, blowing at a speed of <b>11.1 km/h</b>. It’s a typical winter evening in the City of Lights, so be sure to bundle up if you're heading out. Stay warm and enjoy your night!"
     },
     "LGAV": {
         "id": "LGAV",
@@ -761,7 +761,7 @@
         "obsTime_local": "2025-02-11 21:20:00+02:00",
         "wspd_kmph": 7.4,
         "rh": 60.6,
-        "weather_description": "Good evening, Athens! It's currently a cool <b>5 °C</b> with a relative humidity of <b>60.6%</b>, making it feel a bit brisk outside. The wind is gently blowing at a speed of <b>7.4 km/h</b>, adding a refreshing touch to the evening air. If you're heading out, be sure to grab a jacket to stay comfortable. Enjoy your night!"
+        "weather_description": "Good evening, Athens! Currently, we’re seeing a temperature of <b>5 °C</b>, which brings a bit of a chill to the air. Relative humidity is at <b>60.6%</b>, adding to that cool feel. Winds are picking up slightly, coming in at <b>7.4 km/h</b>, so you might want to grab a light jacket if you're heading out. Overall, it's a crisp night here in the city, perfect for cozy indoor activities!"
     },
     "LIML": {
         "id": "LIML",
@@ -795,7 +795,7 @@
         "wx_descrip": "light rain moderate mist",
         "wspd_kmph": 1.9,
         "rh": 100.0,
-        "weather_description": "Good evening, Milan! As we look at the current weather conditions, you're experiencing a temperature of <b>8 °C</b> right now. It’s quite humid, with the relative humidity sitting at a cool <b>100%</b>, meaning there’s a lot of moisture in the air. We're seeing light rain accompanied by moderate mist, so be sure to bring an umbrella if you're heading out. The wind is also gentle, blowing at about <b>1.9 km/h</b>, which shouldn’t cause much disturbance. Overall, it’s a damp evening in Milan, perfect for cozying up indoors!"
+        "weather_description": "Good evening, Milan! Right now, the temperature is sitting at a cool <b>8 °C</b>. We’re experiencing light rain along with some moderate mist, making it quite damp in the area. The humidity is at a high <b>100%</b>, so it’s certainly feeling moist. Wind conditions are rather calm with a gentle breeze blowing at just <b>1.9 km/h</b>. If you're heading out, be sure to carry an umbrella and take care on the roads due to the misty conditions. Stay warm and dry!"
     },
     "LIRF": {
         "id": "LIRF",
@@ -823,7 +823,7 @@
         "obsTime_local": "2025-02-11 20:20:00+01:00",
         "wspd_kmph": 1.9,
         "rh": 87.3,
-        "weather_description": "Good evening! Here’s the latest weather update for Vatican City. Currently, the temperature sits at a cool <b>9 °C</b>, making it a brisk evening. The relative humidity is quite high at <b>87.3%</b>, which may make it feel a bit chilly. Luckily, the wind is gentle, blowing at just <b>1.9 km/h</b>. So, if you're headed out tonight, be sure to wear a light jacket to stay comfortable. That’s your weather update from Vatican City!"
+        "weather_description": "Good evening! Currently in Vatican City, the temperature is a cool <b>9 °C</b> with a high relative humidity of <b>87.3%</b>, making it feel a bit chilly. The winds are very light, blowing at only <b>1.9 km/h</b>, so you can expect a calm evening. Don't forget to grab a jacket if you're heading out, as the cool air will certainly be felt with that humidity. Stay warm!"
     },
     "LOWW": {
         "id": "LOWW",
@@ -853,7 +853,7 @@
         "obsTime_local": "2025-02-11 20:20:00+01:00",
         "wspd_kmph": 25.9,
         "rh": 41.3,
-        "weather_description": "Good evening, Vienna! Right now, you're experiencing a cool night with a temperature of <b>4 °C</b>. The relative humidity stands at a comfortable <b>41.3%</b>, making the air feel quite pleasant. However, hold onto your hats, because the wind is picking up slightly with gusts reaching <b>25.9 km/h</b>. It's a breezy evening out there, so if you're heading out, be sure to dress warmly. Stay cozy, Vienna!"
+        "weather_description": "Good evening, Vienna! Right now, it's a chilly <b>4 °C</b> with a relative humidity of <b>41.3%</b>, making the air feel quite crisp. We've got a brisk wind blowing in at <b>25.9 km/h</b>, so you might want to grab a light jacket if you're heading out. Overall, it's a cool evening, perfect for a stroll if you're dressed warmly. Stay tuned for your updated forecast!"
     },
     "LTBA": {
         "id": "LTBA",
@@ -887,7 +887,7 @@
         "wx_descrip": "light showers rain",
         "wspd_kmph": 25.9,
         "rh": 86.7,
-        "weather_description": "Good evening, Istanbul! As we head into the night, the temperature is currently sitting at a chilly <b>3 °C</b>. Humidity is quite high at <b>86.7%</b>, making the air feel even cooler. If you're stepping outside, make sure to grab an umbrella, as we're experiencing some light showers of rain. Winds are picking up slightly, blowing at around <b>25.9 km/h</b>. So, if you're out and about, be prepared for a damp and breezy evening. Stay warm and dry!"
+        "weather_description": "Good evening, Istanbul! As we look at the weather this evening, it's a chilly one with the temperature sitting at <b>3 °C</b>. The air feels quite damp, with a relative humidity of <b>86.7%</b>. We have light showers of rain making their presence known, so don’t forget your umbrella if you're heading out! Winds are picking up a bit, blowing in from the west at a speed of <b>25.9 km/h</b>. Overall, it’s a wet and cool night in the city, so stay warm and dry!"
     },
     "MMMX": {
         "id": "MMMX",
@@ -916,7 +916,7 @@
         "obsTime_local": "2025-02-11 12:45:00-06:00",
         "wspd_kmph": 9.3,
         "rh": 27.0,
-        "weather_description": "Good afternoon, Nezahualcoyotl! It's a warm day as we check in with a temperature of <b>23 °C</b>. The air is quite dry, with relative humidity at a comfortable <b>27%</b>. As for the winds, they’re coming in at a gentle pace of <b>9.3 km/h</b>, making for a pleasant day to be outdoors. Enjoy your day!"
+        "weather_description": "Good afternoon, Nezahualcoyotl! Right now, we're enjoying a pleasant temperature of <b>23 °C</b> with a comfortable humidity level at <b>27%</b>. The skies are clear, making it a perfect day to be outside. If you're planning to step out, you might notice a gentle breeze blowing at <b>9.3 km/h</b>, adding a nice touch to the sunny weather. So grab your sunglasses and enjoy the beautiful day ahead!"
     },
     "NZAA": {
         "id": "NZAA",
@@ -946,7 +946,7 @@
         "obsTime_local": "2025-02-12 07:30:00+12:00",
         "wspd_kmph": 5.6,
         "rh": 72.6,
-        "weather_description": "Good morning, Manukau! As we kick off the day on this lovely February 12th at <b>07:30 AM</b>, we’re greeted with a pleasant temperature of <b>18°C</b>. The air is feeling a bit humid with a relative humidity of <b>72.6%</b>, so it might feel a little stickier than usual. Winds are gentle, coming in at <b>5.6 km/h</b>, making for a tranquil morning. It’s a great time to step outside and enjoy the fresh air!"
+        "weather_description": "Good morning, Manukau! As we start the day, the temperature is currently a comfortable <b>18 °C</b>. The relative humidity is quite high at <b>72.6%</b>, which means it might feel a bit sticky out there. Winds are calm, blowing at just <b>5.6 km/h</b>. It looks like a lovely day ahead, so enjoy your morning!"
     },
     "OERK": {
         "id": "OERK",
@@ -974,7 +974,7 @@
         "obsTime_local": "2025-02-11 22:00:00+03:00",
         "wspd_kmph": 11.1,
         "rh": 34.8,
-        "weather_description": "Good evening, Riyadh! Right now, the local temperature sits at a comfortable <b>20 °C</b>, making it a pleasant night. The relative humidity is at <b>34.8%</b>, indicating it's fairly dry out there. As for the winds, they're blowing in gently at <b>11.1 km/h</b>. Overall, it’s a fantastic time to step outside and enjoy the lovely evening weather!"
+        "weather_description": "Good evening from Riyadh! Currently, it's a pleasant <b>20 °C</b> with a relatively low humidity of <b>34.8%</b>, making it quite comfortable out there. As for the wind, it’s blowing in from the northwest at a speed of <b>11.1 km/h</b>. Overall, it’s a great time to be outside enjoying the mild temperatures of this evening in Riyadh!"
     },
     "OMDB": {
         "id": "OMDB",
@@ -1002,7 +1002,7 @@
         "obsTime_local": "2025-02-11 23:30:00+04:00",
         "wspd_kmph": 11.1,
         "rh": 56.7,
-        "weather_description": "Good evening from Dubai! Right now, the temperature is a pleasant <b>22 °C</b> with a relative humidity of <b>56.7%</b>, making it feel quite comfortable out there. If you're planning to step out, you can expect a gentle breeze with wind speeds at <b>11.1 km/h</b>. Overall, it’s a nice night to enjoy the beautiful city! Stay tuned for more updates!"
+        "weather_description": "Good evening from Dubai! Right now, the temperature sits at a pleasant <b>22 °C</b>, perfect for those enjoying the nighttime warmth. The relative humidity is at <b>56.7%</b>, giving us a comfortable feel in the air. You can expect gentle breezes with the wind picking up at about <b>11.1 km/h</b>. It's a lovely evening to be outside, so if you're out and about, enjoy the beautiful weather!"
     },
     "PAJN": {
         "id": "PAJN",
@@ -1033,7 +1033,7 @@
         },
         "obsTime_local": "2025-02-11 09:53:00-09:00",
         "rh": 96.2,
-        "weather_description": "Good morning, Juneau! This morning, we're looking at chilly temperatures with a current reading of <b>-8.9 °C</b>. As you step outside, be prepared for some frosty air, as the relative humidity is sitting high at <b>96.2%</b>. Make sure to bundle up and stay warm out there. It's definitely a day for cozy sweaters and hot drinks. Enjoy your day!"
+        "weather_description": "Good morning, Juneau! Right now, we're feeling quite chilly with a temperature of just <b>-8.9 °C</b>. The air is pretty moist as well, with relative humidity soaring to <b>96.2%</b>. So, bundle up if you're headed outside today! Despite the cold, that humidity can make it feel even colder. Don't forget your layers and stay warm out there!"
     },
     "PALH": {
         "id": "PALH",
@@ -1062,7 +1062,7 @@
         "obsTime_local": "2025-02-11 09:53:00-09:00",
         "wspd_kmph": 5.6,
         "rh": 87.4,
-        "weather_description": "Good morning, Anchorage! Right now, you're experiencing chilly temperatures at around <b>-9.4 °C</b>. There's quite a bit of moisture in the air, with the relative humidity sitting at <b>87.4%</b>, making it feel even colder. Fortunately, winds are calm today, blowing at <b>5.6 km/h</b>. So grab your warm coat if you're heading out and stay safe out there!"
+        "weather_description": "Good morning, Anchorage! Today is a chilly one with the temperature sitting at a frigid <b>-9.4 °C</b>. Make sure to bundle up as you head out! The air is quite humid, sitting at <b>87.4%</b> relative humidity, which will make it feel even colder. We’re also experiencing a light breeze coming in at <b>5.6 km/h</b>, which could add a slight wind chill. So, keep those hats and gloves handy! Have a great day and stay warm!"
     },
     "PHNL": {
         "id": "PHNL",
@@ -1092,30 +1092,28 @@
         "obsTime_local": "2025-02-11 08:53:00-10:00",
         "wspd_kmph": 5.6,
         "rh": 66.7,
-        "weather_description": "Good morning, Honolulu! As we take a look at the weather this morning, temperatures are sitting comfortably at <b>24.4 °C</b>. With a relative humidity of <b>66.7%</b>, it feels just a bit muggy out there, so you might want to have a cool drink handy. The winds are gentle, blowing in at a speed of <b>5.6 km/h</b>, making it a pleasant day for a stroll along the beach. Overall, it’s a lovely day ahead, perfect for enjoying all that beautiful scenery Hawaii has to offer!"
+        "weather_description": "Good morning, Honolulu! On this beautiful day, we're starting off with a temperature of <b>24.4 °C</b> and a pleasant relative humidity of <b>66.7%</b>. You can expect the skies to stay mostly clear as we enjoy warm conditions throughout the day. Winds are gentle, blowing in at around <b>5.6 km/h</b>, making it perfect for outdoor activities. So grab your sunscreen and get ready to soak up some tropical sunshine! Stay tuned for your updated forecast."
     },
     "RCTP": {
         "id": "RCTP",
         "site": "Taipei/Taoyuan Arpt, TA, TW",
         "prior": 2,
-        "obsTime": "2025-02-11T19:00:00Z",
+        "obsTime": "2025-02-11T19:30:00Z",
         "temp": 16,
         "dewp": 15,
-        "wdir": 260,
-        "wspd": 6,
+        "wdir": 280,
+        "wspd": 5,
         "cldCvg1": "SCT",
         "cldBas1": 3,
         "cldCvg2": "BKN",
-        "cldBas2": 5,
-        "cldCvg3": "BKN",
-        "cldBas3": 50,
-        "ceil": 5,
+        "cldBas2": 4,
+        "ceil": 4,
         "cover": "BKN",
-        "fltcat": "IFR",
+        "fltcat": "LIFR",
         "visib": 3.11,
         "altim": 1019,
         "wx": "BR",
-        "rawOb": "RCTP 111900Z 26006KT 5000 BR SCT003 BKN005 BKN050 16/15 Q1019 TEMPO 3000 BR RMK A3009",
+        "rawOb": "RCTP 111930Z 28005KT 5000 BR SCT003 BKN004 16/15 Q1019 NOSIG RMK A3009",
         "place_name": "Zhongli",
         "geometry": {
             "type": "Point",
@@ -1124,11 +1122,11 @@
                 24.9650252
             ]
         },
-        "obsTime_local": "2025-02-12 03:00:00+08:00",
+        "obsTime_local": "2025-02-12 03:30:00+08:00",
         "wx_descrip": "moderate mist",
-        "wspd_kmph": 11.1,
+        "wspd_kmph": 9.3,
         "rh": 93.8,
-        "weather_description": "Good morning from Zhongli! As we look at the weather, we're currently experiencing moderate mist with a temperature of <b>16°C</b>. The humidity is quite high, sitting at <b>93.8%</b>, so it might feel a bit heavier out there. We've got a moderate breeze blowing in at <b>11.1 km/h</b>, which should help clear up some of that mist as the day progresses. Don't forget your umbrella just in case the mist thickens again! Stay warm and enjoy your day!"
+        "weather_description": "Good morning, Zhongli! Right now, we're seeing a cool temperature of <b>16 °C</b> with a high relative humidity of <b>93.8%</b>, which could make things feel a bit damp out there. We've got moderate mist in the area, so visibility might be lower than usual, so drive carefully! The wind is gentle, blowing at about <b>9.3 km/h</b>. Overall, it's a misty morning, perfect for a cozy day indoors or a stroll with an umbrella. Stay warm, and have a great day!"
     },
     "RJOO": {
         "id": "RJOO",
@@ -1156,7 +1154,7 @@
         "obsTime_local": "2025-02-12 04:00:00+09:00",
         "wspd_kmph": 5.6,
         "rh": 86.2,
-        "weather_description": "Good morning, Ōsaka! As we start the day, temperatures are quite chilly, sitting at around <b>-2 °C</b>. The relative humidity is high at <b>86.2%</b>, making it feel even colder out there. It's a bit breezy too, with winds coming in at <b>5.6 km/h</b>. So, if you're heading out, make sure to bundle up to stay warm!"
+        "weather_description": "Good morning, Osaka! Right now, the temperature is a chilly <b>-2 °C</b>, so bundle up if you're heading out. The relative humidity is sitting at a brisk <b>86.2%</b>, making it feel even colder. We have a gentle breeze blowing in at <b>5.6 km/h</b>, adding to the wintery feel. Stay warm and enjoy your day!"
     },
     "RJTT": {
         "id": "RJTT",
@@ -1185,7 +1183,7 @@
         "obsTime_local": "2025-02-12 04:30:00+09:00",
         "wspd_kmph": 3.7,
         "rh": 51.9,
-        "weather_description": "Good morning, Kawasaki! As we start the day, the temperature is sitting at a cool <b>4 °C</b>. The relative humidity is around <b>51.9%</b>, giving us a bit of a crisp feel in the air. Wind speeds are light, coming in at <b>3.7 km/h</b>, so you can expect a calm morning ahead. Don't forget to grab a light jacket if you're heading out! Enjoy the day!"
+        "weather_description": "Good morning, Kawasaki! Right now, the temperature is a cool <b>4 °C</b>, with a relative humidity of about <b>51.9%</b> making it feel brisk outside. Winds are relatively light, blowing at <b>3.7 km/h</b>. So, if you're stepping out this morning, a light jacket will do the trick to keep you warm. Stay tuned for more updates!"
     },
     "RKSS": {
         "id": "RKSS",
@@ -1219,7 +1217,7 @@
         "wx_descrip": "light snow",
         "wspd_kmph": 7.4,
         "rh": 64.2,
-        "weather_description": "Good morning, Bucheon! As we start this chilly day, the temperature is sitting at a brisk <b>1 °C</b>. You'll feel a bit of a bite in the air with the relative humidity at <b>64.2%</b>, making it feel even colder. There’s a touch of winter magic out there with some light snow falling, adding a beautiful layer to the scenery. Make sure to bundle up as we have a gentle wind blowing at <b>7.4 km/h</b>. So, keep an eye on the roads and enjoy the snowy vibes, but stay warm folks!"
+        "weather_description": "Good morning, Bucheon! As we start this chilly February day, the temperature is currently sitting at <b>1°C</b>. With relative humidity at <b>64.2%</b>, it feels quite crisp outside. Adding to the wintery scene, we're experiencing some light snow, so don't forget your umbrella! The winds are coming in at a gentle <b>7.4 km/h</b>, which might add a bit of a chill to the air. Overall, it's a typical winter morning in Bucheon, perfect for cozying up with a warm drink. Stay warm out there!"
     },
     "RPLL": {
         "id": "RPLL",
@@ -1250,7 +1248,7 @@
         },
         "obsTime_local": "2025-02-12 03:00:00+08:00",
         "rh": 88.8,
-        "weather_description": "Good morning, Pasay City! As the clock strikes <b>3:00 AM</b>, we're seeing a warm temperature of <b>26 °C</b>. It's a muggy night with the relative humidity sitting high at <b>88.8%</b>. So, if you're stepping out, be prepared for a touch of stickiness in the air. Don't forget to stay hydrated as we move into the warmer hours of the day!"
+        "weather_description": "Good morning, Pasay City! As we start the day, expect warm and humid conditions. The temperature is currently at <b>26°C</b>, which is quite comfortable. However, with a relative humidity of <b>88.8%</b>, it feels a bit sticky out there. Be prepared for a muggy morning as you step outside, especially if you plan on spending time outdoors. Make sure to stay hydrated and don’t forget that sunscreen if you venture out later in the day!"
     },
     "SAEZ": {
         "id": "SAEZ",
@@ -1284,7 +1282,7 @@
         "wx_descrip": "light rain",
         "wspd_kmph": 13.0,
         "rh": 83.2,
-        "weather_description": "Good afternoon, Buenos Aires! As we look at the current weather conditions, the temperature is a pleasant <b>23 °C</b>. However, it seems we have some light rain falling today, contributing to a relatively high humidity level of <b>83.2%</b>. In terms of wind, we're experiencing gentle breezes with a speed of <b>13.0 km/h</b>. So if you're heading out, you might want to grab an umbrella to stay dry, but overall, it's a mild and somewhat humid day. Stay tuned for more updates!"
+        "weather_description": "Good afternoon, Buenos Aires! It's currently a warm and humid day with a temperature of <b>23 °C</b>. The relative humidity is notably high at <b>83.2%</b>, making it feel quite muggy out there. We're experiencing some light rain, so you might want to grab an umbrella if you're heading out. A gentle breeze is blowing in at <b>13.0 km/h</b>, which should provide a slight relief from that humidity. Stay dry and enjoy the rest of your day!"
     },
     "SBBR": {
         "id": "SBBR",
@@ -1320,7 +1318,7 @@
         "wx_descrip": "moderate thunderstorm",
         "wspd_kmph": 3.7,
         "rh": 83.0,
-        "weather_description": "Good evening, Brasília! It's currently a warm <b>21 °C</b> with high humidity levels sitting at <b>83%</b>. We are experiencing a moderate thunderstorm in the area, so be prepared for some rain. The winds are fairly light, blowing at a speed of just <b>3.7 km/h</b>. It’s a typical stormy afternoon, so stay safe and keep an umbrella handy! We'll keep you updated on any changes in the weather!"
+        "weather_description": "Good afternoon, Brasília! Right now, we're experiencing a moderate thunderstorm, so make sure to take cover if you're out and about! The temperature is sitting comfortably at <b>21 °C</b>, but with a high relative humidity of <b>83%</b>, it feels quite muggy outside. We have a gentle breeze coming in at <b>3.7 km/h</b>, adding to that humid feeling. Keep your umbrellas handy and stay safe as we ride out this storm!"
     },
     "SBGL": {
         "id": "SBGL",
@@ -1349,7 +1347,7 @@
         "obsTime_local": "2025-02-11 16:00:00-03:00",
         "wspd_kmph": 22.2,
         "rh": 49.1,
-        "weather_description": "Good afternoon, Duque de Caxias! As we take a look at your weather at <b>16:00</b>, it’s a hot one with the temperature sitting at a warm <b>32°C</b>. The humidity is relatively comfortable at <b>49.1%</b>, so it’s not too sticky out there. You might notice a gentle breeze, with winds blowing in at <b>22.2 km/h</b>, providing a slight relief from the heat. So, whether you’re heading out for a stroll or relaxing at home, make sure to stay hydrated and enjoy the warmth!"
+        "weather_description": "Good afternoon, Duque de Caxias! Currently, you're enjoying a warm day with a temperature of <b>32 °C</b>. The relative humidity is at a comfortable <b>49.1%</b>, making it a pleasant afternoon. There’s a gentle breeze picking up, with wind speeds reaching around <b>22.2 km/h</b>. So, if you're heading out, don’t forget to stay hydrated and enjoy the beautiful weather!"
     },
     "SBSP": {
         "id": "SBSP",
@@ -1378,7 +1376,7 @@
         "obsTime_local": "2025-02-11 16:00:00-03:00",
         "wspd_kmph": 5.6,
         "rh": 31.2,
-        "weather_description": "Good afternoon, São Paulo! Right now, the skies are looking fairly warm with a temperature of <b>31 °C</b>. Humidity is also on the lower side at <b>31.2%</b>, making the heat more manageable. We have a light breeze blowing in at <b>5.6 km/h</b>, which should help keep things a bit cooler as the day goes on. Overall, it’s a nice day for outdoor activities, so make sure to stay hydrated! Enjoy your afternoon!"
+        "weather_description": "Good afternoon, São Paulo! Right now, the temperature is a warm <b>31 °C</b> with a relative humidity of <b>31.2%</b>, making it a rather comfortable day. There’s a light breeze blowing in at about <b>5.6 km/h</b>, perfect for a stroll outside or enjoying some time in the sun. So grab your sunglasses and enjoy this beautiful afternoon!"
     },
     "SCEL": {
         "id": "SCEL",
@@ -1406,7 +1404,7 @@
         "obsTime_local": "2025-02-11 15:00:00-04:00",
         "wspd_kmph": 20.4,
         "rh": 28.9,
-        "weather_description": "Good afternoon, Santiago! As we take a look at your current weather, temperatures are soaring at a warm <b>30 °C</b> with a comfortable relative humidity of <b>28.9%</b>. It's a great day to be outdoors! The winds are picking up as well, blowing in from the southeast at a brisk <b>20.4 km/h</b>. So, if you're planning any activities, make sure to stay hydrated and enjoy the sunshine! Have a fantastic day!"
+        "weather_description": "Good afternoon, Santiago! Right now, we're experiencing a warm and pleasant day with a temperature sitting at <b>30 °C</b>. The air is fairly dry, with relative humidity at <b>28.9%</b>, making it feel comfortable outside. For those thinking about outdoor plans, there’s a gentle breeze blowing in at about <b>20.4 km/h</b>, adding a nice touch to the warm weather. So, whether you're enjoying a stroll or relaxing at a café, it’s a fantastic time to take advantage of this beautiful weather!"
     },
     "SKBO": {
         "id": "SKBO",
@@ -1438,7 +1436,7 @@
         "obsTime_local": "2025-02-11 14:25:00-05:00",
         "wspd_kmph": 27.8,
         "rh": 82.4,
-        "weather_description": "Good afternoon, Bogota! As of now, the temperature is a pleasant <b>16 °C</b>. However, with a relative humidity of <b>82.4%</b>, you might feel a bit on the muggy side. Winds are picking up at a brisk speed of <b>27.8 km/h</b>, adding a refreshing touch to the air. So, if you're heading out, make sure to enjoy the mild weather, but be prepared for a little humidity! Stay tuned for more updates!"
+        "weather_description": "Good afternoon, Bogota! Currently, the temperature stands at a pleasant <b>16 °C</b>. Humidity is a bit high at <b>82.4%</b>, making it feel a little sticky out there. If you're stepping outside, watch out for the winds; they are gusting at <b>27.8 km/h</b>. So, a light jacket might come in handy today! Stay tuned for more updates!"
     },
     "SVMI": {
         "id": "SVMI",
@@ -1464,7 +1462,7 @@
         "obsTime_local": "2025-02-11 15:03:00-04:00",
         "wspd_kmph": 31.5,
         "rh": 58.1,
-        "weather_description": "Good afternoon, folks! Right now in Maiquetía, the temperature is a warm <b>28 °C</b> with a comfortable relative humidity of <b>58.1%</b>. As we look outside, we can also feel a brisk wind making its presence known at a speed of <b>31.5 km/h</b>, adding a refreshing touch to the warm afternoon. Overall, it's a pleasant day to be outside, so grab your shades and enjoy the sunshine!"
+        "weather_description": "Good afternoon, Maiquetía! Right now, the temperature is a warm <b>28 °C</b>, with a comfortable relative humidity of <b>58.1%</b> making it feel pleasant outside. There's a bit of a breeze, with winds blowing in at <b>31.5 km/h</b>, which should keep things feeling fresh. Overall, it's a lovely day to be out and about, so enjoy the beautiful weather!"
     },
     "TJSJ": {
         "id": "TJSJ",
@@ -1500,7 +1498,7 @@
         "wspd_kmph": 27.8,
         "wgst_kmph": 37.0,
         "rh": 59.2,
-        "weather_description": "Good afternoon, San Juan! Right now, we’re enjoying a warm temperature of <b>29.4 °C</b> with a comfortable humidity level sitting at <b>59.2%</b>. The winds are picking up a bit, blowing in at a speed of <b>27.8 km/h</b>, with gusts reaching as high as <b>37.0 km/h</b>. It’s a lovely day, perfect for outdoor activities, so make the most of it!"
+        "weather_description": "Good afternoon, San Juan! Right now, we’re enjoying a warm temperature of <b>29.4 °C</b> with a comfortable relative humidity of <b>59.2%</b>. You might feel a bit of a breeze as winds are blowing at <b>27.8 km/h</b>, with gusts reaching up to <b>37.0 km/h</b>. It's a lovely day to be outdoors, so grab your sunscreen and enjoy the sunshine!"
     },
     "UUEE": {
         "id": "UUEE",
@@ -1530,7 +1528,7 @@
         "obsTime_local": "2025-02-11 23:30:00+04:00",
         "wspd_kmph": 11.1,
         "rh": 85.5,
-        "weather_description": "Good evening, Moscow! As we check in on the local weather, it's a chilly night with temperatures dropping to around <b>-8°C</b>. The air is feeling quite humid with a relative humidity of <b>85.5%</b>, which can make it feel even colder. Adding to that, we have a gentle breeze blowing in at a speed of <b>11.1 km/h</b>. So, if you're heading out tonight, be sure to bundle up and stay warm! Enjoy your evening!"
+        "weather_description": "Good evening from Moscow, where the current temperature is a chilly <b>-8°C</b>. It feels quite frosty out there with a relative humidity of <b>85.5%</b>, making the air crisp and cold. The wind is blowing at a moderate speed of <b>11.1 km/h</b>, which adds an extra chill to the already low temperatures. If you're out and about, make sure to bundle up to stay warm! That's the latest from Moscow's weather scene."
     },
     "VABB": {
         "id": "VABB",
@@ -1559,7 +1557,7 @@
         "obsTime_local": "2025-02-12 00:30:00+05:00",
         "wx_descrip": "moderate smoke",
         "rh": 44.0,
-        "weather_description": "Good evening, Mumbai! Right now, it’s a warm night with a temperature of <b>24 °C</b>. The humidity is at a comfortable <b>44%</b>, making it feel quite pleasant outside. However, visibility might be affected as we have some moderate smoke in the air. So, if you're heading out, it’s a good idea to be cautious, especially if you have any respiratory sensitivities. Enjoy your evening, and stay safe!"
+        "weather_description": "Good evening, Mumbai! As of now, the temperature is a comfortable <b>24 °C</b> with a relative humidity sitting at a moderate <b>44%</b>. However, we're experiencing some moderate smoke conditions which may affect visibility. Make sure to take precautions if you're heading out. Overall, it's a mild night, but be aware of the air quality as you plan your evening activities!"
     },
     "VHHH": {
         "id": "VHHH",
@@ -1592,7 +1590,7 @@
         "wx_descrip": "light rain",
         "wspd_kmph": 7.4,
         "rh": 93.8,
-        "weather_description": "Good morning, Hong Kong! As we step into the early hours of the day, we can expect light rain to accompany us. The temperature is currently a mild <b>17 °C</b>, making it quite a comfortable yet damp morning. With relative humidity sitting at a high <b>93.8%</b>, it feels a bit more humid out there, so don't forget your umbrella! Winds are gentle, blowing at around <b>7.4 km/h</b>. While it's not blustery, it might feel a bit breezy at times. Remember to stay dry as you head out, and be cautious on the roads. Overall, it's a typical moist morning in our vibrant city!"
+        "weather_description": "Good morning, Hong Kong! As we start our day on February 12th, the temperature is currently a cool <b>17 °C</b>. You can expect a bit of dampness in the air, as the relative humidity is high at <b>93.8%</b>. There’s light rain in the area, so don't forget your umbrella if you're heading out! The winds are gentle, blowing at a speed of <b>7.4 km/h</b>. It’s a perfect time to stay cozy indoors with a warm drink while the light rain adds a serene touch to the city. Have a wonderful day ahead!"
     },
     "VIDP": {
         "id": "VIDP",
@@ -1622,7 +1620,7 @@
         "wx_descrip": "moderate mist",
         "wspd_kmph": 3.7,
         "rh": 77.0,
-        "weather_description": "Good evening, New Delhi! Right now, it's a cool night with a temperature of <b>15 °C</b>. We're experiencing moderate mist, making for quite a mystical atmosphere outside. The relative humidity is at a high <b>77%</b>, so it feels a bit more humid than usual. Wind speeds are light, clocking in at about <b>3.7 km/h</b>, barely rustling those leaves. So if you're heading out, make sure to bundle up a bit, and be cautious of the reduced visibility due to the mist. Stay warm and safe out there!"
+        "weather_description": "Good morning, New Delhi! As we wake up this morning at <b>00:30</b> local time, the temperature is a comfy <b>15 °C</b>. It feels a bit humid too, with the relative humidity sitting at <b>77%</b>, so you might want to grab a light jacket if you're heading out. We are experiencing moderate mist, which could reduce visibility on the roads, so drive safely. The wind is quite calm, blowing at a gentle <b>3.7 km/h</b>. Overall, it's a typical misty morning in the capital, a perfect time for a warm cup of chai. Stay tuned for updates, and have a great day ahead!"
     },
     "VTBD": {
         "id": "VTBD",
@@ -1650,7 +1648,7 @@
         "obsTime_local": "2025-02-12 02:30:00+07:00",
         "wspd_kmph": 5.6,
         "rh": 65.1,
-        "weather_description": "Good evening, Pathum Thani! As we take a look at the current weather, it’s a pleasant night with a temperature sitting at around <b>25 °C</b>. The humidity is fairly comfortable at <b>65.1%</b>, so it’s not too sticky out there. If you're heading out, there's a gentle breeze with a wind speed of <b>5.6 km/h</b> which should keep things nice and refreshing. Overall, it’s a nice evening to enjoy outdoors!"
+        "weather_description": "Good evening, Pathum Thani! As we take a look at your current weather, the temperature is a pleasant <b>25 °C</b>, perfect for a late-night stroll. The relative humidity stands at <b>65.1%</b>, which means it's a bit sticky, so you might want to keep that in mind if you're heading outside. There’s a gentle breeze blowing in at <b>5.6 km/h</b>, providing some relief from the humidity. Overall, it's a comfortable night in your area with a bit of warmth in the air. Enjoy your evening!"
     },
     "VTBS": {
         "id": "VTBS",
@@ -1678,7 +1676,7 @@
         "obsTime_local": "2025-02-12 02:30:00+07:00",
         "wspd_kmph": 1.9,
         "rh": 73.8,
-        "weather_description": "Good morning from Samut Prakan! As we look at the current conditions, it's a warm night with the temperature sitting at <b>25 °C</b>. The air is quite humid, with relative humidity at <b>73.8%</b>, making it feel even more muggy out there. We have a light breeze blowing in at just <b>1.9 km/h</b>, which won't offer much relief from the warmth. Overall, it's a typical tropical night, so stay cool and hydrated!"
+        "weather_description": "Good morning, Samut Prakan! As of now, the temperature is a comfortable <b>25 °C</b>, with a relative humidity level sitting at <b>73.8%</b>. This means it feels a bit muggy out there, so make sure to stay hydrated! The winds are light, blowing at a gentle <b>1.9 km/h</b>, offering little relief from the humidity. Overall, it's a warm and humid early morning, perfect for a leisurely start to your day. Enjoy your day ahead!"
     },
     "WIII": {
         "id": "WIII",
@@ -1709,7 +1707,7 @@
         "wx_descrip": "moderate mist",
         "wspd_kmph": 5.6,
         "rh": 94.2,
-        "weather_description": "Good evening! Here’s the weather update for Jakarta. At this hour, we're seeing a temperature of around <b>25 °C</b>, which is quite comfortable, but with a high relative humidity of <b>94.2%</b>, it feels more humid outside. We've also got moderate mist rolling in, which adds a touch of mystery to the night. Winds are light, blowing at a speed of just <b>5.6 km/h</b>, making for a calm evening. So, if you're out and about, be sure to take care when driving in the misty conditions. Stay tuned for more updates!"
+        "weather_description": "Good evening from Jakarta! Right now, we're experiencing a temperature of <b>25 °C</b>, which feels quite comfortable despite the high humidity sitting at <b>94.2%</b>. There's also a moderate mist blanketing the area, giving it that soft, cinematic feel. Wind is a gentle breeze at <b>5.6 km/h</b>, making it a tranquil night. Stay safe and enjoy the evening!"
     },
     "WSSS": {
         "id": "WSSS",
@@ -1741,7 +1739,7 @@
         "obsTime_local": "2025-02-12 03:30:00+08:00",
         "wspd_kmph": 16.7,
         "rh": 88.7,
-        "weather_description": "Good morning, Singapore! As of <b>3:30 AM</b>, you're waking up to a warm temperature of <b>25°C</b>. Humidity is quite high today at <b>88.7%</b>, so it might feel a bit sticky outside. A gentle breeze is blowing in with winds at a speed of <b>16.7 km/h</b>, providing a slight relief from the heat. It's a typical tropical morning, so make sure to stay hydrated and enjoy your day!"
+        "weather_description": "Good morning, Singapore! As we take a look at the current weather conditions at <b>03:30 AM</b>, it's a warm and humid <b>25°C</b> with a relative humidity of <b>88.7%</b>. You can expect a typical tropical feel today, so stay hydrated! There's also a gentle breeze coming in at <b>16.7 km/h</b>, making it a bit more comfortable out there. Whether you're out for a morning jog or just enjoying some quiet time, don't forget your umbrella just in case! Have a great day ahead!"
     },
     "YMML": {
         "id": "YMML",
@@ -1769,7 +1767,7 @@
         "obsTime_local": "2025-02-12 05:30:00+10:00",
         "wspd_kmph": 9.3,
         "rh": 93.8,
-        "weather_description": "Good morning, Sunbury! As we kick off the day, the temperature is a mild <b>17 °C</b> with a high relative humidity of <b>93.8%</b>, making it feel quite comfortable. There's a gentle breeze blowing at <b>9.3 km/h</b>, keeping things fresh. So, grab your light jacket if you're heading out, and enjoy the pleasant start to your morning!"
+        "weather_description": "Good morning, Sunbury! As of <b>5:30 AM</b>, the temperature is a mild <b>17°C</b>. However, with a relative humidity of <b>93.8%</b>, it feels a bit muggy out there. Winds are gentle, blowing at <b>9.3 km/h</b>, so it should be quite pleasant overall. Don't forget to grab your umbrella just in case the humidity leads to some early morning showers. Have a great day!"
     },
     "YSSY": {
         "id": "YSSY",
@@ -1801,7 +1799,7 @@
         "obsTime_local": "2025-02-12 05:30:00+10:00",
         "wspd_kmph": 13.0,
         "rh": 94.0,
-        "weather_description": "Good morning, Sydney! As we kick off the day on this beautiful <b>12th</b> of February, the temperature is a comfortable <b>21 °C</b>. However, it's feeling quite humid out there with a relative humidity at a high <b>94%</b>. There’s a gentle breeze blowing in at <b>13 km/h</b>, which will provide a slight relief from the humidity as you head out. Don't forget to stay hydrated in this sticky weather, and enjoy your day!"
+        "weather_description": "Good morning, Sydney! As we start our day at <b>5:30 AM</b>, the temperature is a warm <b>21°C</b>. However, the relative humidity is quite high at <b>94%</b>, making it feel a bit muggy out there. A gentle breeze is blowing in from the east at <b>13 km/h</b>, which should keep things comfortable as we move into the morning. Keep in mind to stay hydrated if you’re heading out; it’s definitely a day to enjoy some shade!"
     },
     "ZBAA": {
         "id": "ZBAA",
@@ -1829,7 +1827,7 @@
         "obsTime_local": "2025-02-12 03:30:00+08:00",
         "wspd_kmph": 29.6,
         "rh": 22.7,
-        "weather_description": "Good morning, Beijing! Right now, the thermometer is reading a chilly <b>1 °C</b>. The air is quite dry with a relative humidity level of <b>22.7%</b>, making it feel even colder. If you're heading out, be prepared for a brisk breeze, with wind speeds hitting up to <b>29.6 km/h</b>. Bundle up and stay warm!"
+        "weather_description": "Good morning, Beijing! It's currently a chilly <b>1 °C</b> with a relative humidity of <b>22.7%</b>. If you're heading out, make sure to bundle up! There's a brisk wind blowing in from the east at <b>29.6 km/h</b>, so it might feel even colder outside. Stay warm and have a great day!"
     },
     "ZSSS": {
         "id": "ZSSS",
@@ -1857,7 +1855,7 @@
         "obsTime_local": "2025-02-12 03:30:00+08:00",
         "wspd_kmph": 7.4,
         "rh": 93.5,
-        "weather_description": "Good morning, Shanghai! As we look at the weather this morning, we see a comfortable temperature of <b>10 °C</b> with a high relative humidity of <b>93.5%</b>, making it feel a bit damp out there. The winds are relatively light, blowing at a speed of <b>7.4 km/h</b>. So, if you're heading out, you might want to grab a light jacket to stay warm and dry. Overall, it’s a typical chilly February morning here in Shanghai!"
+        "weather_description": "Good morning, Shanghai! As we check in on the local weather this early morning, temperatures are sitting at a cool <b>10 °C</b>. Humidity levels are quite high at <b>93.5%</b>, making it feel a bit damp outdoors. We also have a gentle breeze coming in from the east at <b>7.4 km/h</b>, which should help a bit with the stickiness in the air. So, if you're stepping out, don’t forget a light jacket to stay comfortable. Overall, it's a typical early morning in Shanghai – chilly and humid!"
     },
     "ZUUU": {
         "id": "ZUUU",
@@ -1890,6 +1888,6 @@
         "wx_descrip": "light rain",
         "wspd_kmph": 18.5,
         "rh": 75.9,
-        "weather_description": "Good morning, Chengdu! As we take a look at the weather this early morning on February 12, 2025, it's a cozy but slightly damp scene. We're currently sitting at a temperature of <b>8 °C</b> with a relative humidity level of <b>75.9%</b>, making it feel quite humid out there. Don't forget your umbrella, as we have light rain reported in the area. The winds are also picking up a bit, blowing from the southeast at <b>18.5 km/h</b>. So, whether you're out for your morning commute or just stepping out for a quick coffee run, make sure to bundle up and stay dry!"
+        "weather_description": "Good morning, Chengdu! As we look out at the weather today, it's currently a cool <b>8°C</b> with a relative humidity of <b>75.9%</b>. You might want to grab an umbrella as we have light rain falling across the area. Winds are picking up a bit, gusting at <b>18.5 km/h</b>, so expect a slight chill in the air while you're out and about. Stay warm and dry!"
     }
 }
