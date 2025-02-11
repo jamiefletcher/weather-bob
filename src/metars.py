@@ -1,5 +1,6 @@
 import json
 import math
+from datetime import datetime, timezone, timedelta
 import urllib.parse
 import openai
 import requests
@@ -84,12 +85,10 @@ class Metars:
                 description += f"{precip[code]} "
         return description.lower()[:-1]
 
-    def __init__(
-        self, station_id: str, place_name: str, utc_offset: int, geometry: dict
-    ):
+    def __init__(self, station_id: str, place_name: str, utc_offset: int, geometry: dict):
         self.station_id = station_id
         self.place_name = place_name
-        self.utc_offset = utc_offset
+        self.tz = timezone(timedelta(hours=utc_offset))
         self.geometry = geometry
         self.request_args = {
             "ids": station_id,
@@ -111,9 +110,7 @@ class Metars:
         self.weather = metars_json["features"][0]["properties"]
         self._add_weather_fields()
 
-    def weather_report(
-        self, client: openai.OpenAI, model: str, sys_prompt: str, prompt: str
-    ):
+    def weather_report(self, client: openai.OpenAI, model: str, sys_prompt: str, prompt: str):
         print(f"  Generating weather report for {self.station_id}")
         weather = self._weather_summary_for_llm()
         msgs = [{"role": "system", "content": sys_prompt}]
@@ -130,6 +127,7 @@ class Metars:
     def _weather_summary_for_llm(
         self,
         summary_params={
+            "local_time": "obsTime_local",
             "temperature_c": "temp",
             "relative_humidity": "rh",
             "wind_speed_kmph": "wspd_kmph",
@@ -146,11 +144,15 @@ class Metars:
     def _add_weather_fields(self):
         self.weather["place_name"] = self.place_name
         self.weather["geometry"] = self.geometry
-        # time_utc = self.weather.get("obsTime")  # TODO: Convert to local
+        
+        time_utc_str = self.weather.get("obsTime", "")
+        if time_utc_str:
+            time_utc = datetime.fromisoformat(time_utc_str)
+            time_local = time_utc.astimezone(self.tz)
+            self.weather["obsTime_local"] = str(time_local)
 
-        wx = self.weather.get("wx", None)
+        wx = self.weather.get("wx", "")
         if wx:
-            print(wx)
             self.weather["wx_descrip"] = Metars._decode_wx(wx)
 
         wspd = self.weather.get("wspd", None)
