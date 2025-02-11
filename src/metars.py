@@ -1,11 +1,10 @@
 import json
 import math
+from datetime import datetime, timezone, timedelta
 import urllib.parse
 import openai
 import requests
 
-
-STATION_IDS = ["CYYZ", "OMDB", "LTFM", "KLAX", "WIII"]
 
 INSTRUCTIONS = (
     "You are a weather expert specialized in interpreting and describing weather data stored in JSON format. "
@@ -69,29 +68,33 @@ class Metars:
         },
     ):
         description = ""
-        if wx[0] == "-":
-            description += "Light "
-            wx = wx[1:]
-        elif wx[0] == "+":
-            description += "Heavy "
-            wx = wx[1:]
-        elif wx[:2] == "VC":
-            wx = wx[2:] + "VC"
-        else:
-            description += "Moderate "
-        while len(wx) > 1:
-            code = wx[:2]
-            wx = wx[2:]
-            description += f"{precip[code]} "
-        return description.lower().strip()
+        for wx_code in wx.split(" "):
+            if wx_code[0] == "-":
+                description += "Light "
+                wx_code = wx_code[1:]
+            elif wx_code[0] == "+":
+                description += "Heavy "
+                wx_code = wx_code[1:]
+            elif wx_code[:2] == "VC":
+                wx_code = wx_code[2:] + "VC"
+            else:
+                description += "Moderate "
+            while len(wx_code) > 1:
+                code = wx_code[:2]
+                wx_code = wx_code[2:]
+                description += f"{precip[code]} "
+        return description.lower()[:-1]
 
-    def __init__(self, station_id: str):
+    def __init__(self, station_id: str, place_name: str, utc_offset: int, geometry: dict):
         self.station_id = station_id
+        self.place_name = place_name
+        self.tz = timezone(timedelta(hours=utc_offset))
+        self.geometry = geometry
         self.request_args = {
             "ids": station_id,
             "format": "geojson",
             "taf": False,
-            "hours": 1,
+            "hours": 2,
         }
 
     def download(self):
@@ -103,14 +106,11 @@ class Metars:
         if resp.status_code != 200:
             print("  Error downloading METARS", resp.status_code)
             return
-        metars_json = json.loads(resp.text)["features"][0]
-        self.weather = metars_json["properties"]
-        self.weather["geometry"] = metars_json["geometry"]
+        metars_json = json.loads(resp.text)
+        self.weather = metars_json["features"][0]["properties"]
         self._add_weather_fields()
 
-    def weather_report(
-        self, client: openai.OpenAI, model: str, sys_prompt: str, prompt: str
-    ):
+    def weather_report(self, client: openai.OpenAI, model: str, sys_prompt: str, prompt: str):
         print(f"  Generating weather report for {self.station_id}")
         weather = self._weather_summary_for_llm()
         msgs = [{"role": "system", "content": sys_prompt}]
@@ -127,6 +127,7 @@ class Metars:
     def _weather_summary_for_llm(
         self,
         summary_params={
+            "local_time": "obsTime_local",
             "temperature_c": "temp",
             "relative_humidity": "rh",
             "wind_speed_kmph": "wspd_kmph",
@@ -134,16 +135,23 @@ class Metars:
             "observed_weather": "wx_descrip",
         },
     ):
-        summary = {"station_name": self.weather["site"]}
+        summary = {"place_name": self.place_name}
         for long_name, short_name in summary_params.items():
             if short_name in self.weather:
                 summary.update({long_name: self.weather[short_name]})
         return summary
 
     def _add_weather_fields(self):
-        # time_utc = self.weather.get("obsTime")  # TODO: Convert to local
+        self.weather["place_name"] = self.place_name
+        self.weather["geometry"] = self.geometry
+        
+        time_utc_str = self.weather.get("obsTime", "")
+        if time_utc_str:
+            time_utc = datetime.fromisoformat(time_utc_str)
+            time_local = time_utc.astimezone(self.tz)
+            self.weather["obsTime_local"] = str(time_local)
 
-        wx = self.weather.get("wx", None)
+        wx = self.weather.get("wx", "")
         if wx:
             self.weather["wx_descrip"] = Metars._decode_wx(wx)
 
@@ -181,8 +189,20 @@ def gpt_chat(client: openai.OpenAI, model: str, messages: list, max_tokens=1024)
 
 def main():
     openai_client = openai.OpenAI()
-    metars = [Metars(s_id) for s_id in STATION_IDS]
+    metars = []
     output_data = {}
+
+    with open("data/metars/metars-places.geojson", "r") as places_file:
+        places = json.load(places_file)
+        for feat in places["features"]:
+            metars.append(
+                Metars(
+                    station_id=feat["properties"]["station_id"],
+                    place_name=feat["properties"]["place"],
+                    utc_offset=int(feat["properties"]["utc_offset"]),
+                    geometry=feat["geometry"],
+                )
+            )
 
     for m in metars:
         print(m.station_id)
