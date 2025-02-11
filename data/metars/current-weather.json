@@ -3,145 +3,1778 @@
         "id": "CYYZ",
         "site": "Toronto/Pearson Intl, ON, CA",
         "prior": 3,
-        "obsTime": "2025-02-11T04:00:00Z",
-        "temp": -9,
-        "dewp": -13,
-        "wdir": 260,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": -3,
+        "dewp": -9,
+        "wdir": 230,
         "wspd": 6,
-        "cldCvg1": "SKC",
-        "cover": "SKC",
+        "cldCvg1": "FEW",
+        "cldBas1": 32,
+        "cldCvg2": "SCT",
+        "cldBas2": 60,
+        "cldCvg3": "BKN",
+        "cldBas3": 80,
+        "cldCvg4": "BKN",
+        "cldBas4": 250,
+        "ceil": 80,
+        "cover": "BKN",
         "fltcat": "VFR",
         "visib": 15,
-        "altim": 1027.9,
-        "slp": 1029.2,
-        "rawOb": "CYYZ 110400Z 26006KT 15SM SKC M09/M13 A3035 RMK SLP292",
+        "altim": 1023.8,
+        "slp": 1024.8,
+        "rawOb": "CYYZ 111800Z 23006KT 15SM FEW032 SCT060 BKN080 BKN250 M03/M09 A3023 RMK CU1SC4AC3CI1 CU TR CI TR SLP248",
         "geometry": {
             "type": "Point",
             "coordinates": [
-                -79.629,
-                43.679
+                -79.38945855491194,
+                43.66464454743429
             ]
         },
         "wspd_kmph": 11.1,
-        "rh": 72.7,
-        "weather_description": "Good evening, Toronto! At Pearson International Airport, we're looking at chilly conditions tonight with a temperature of <b>-9 °C</b>. The relative humidity is sitting at a comfortable <b>72.7%</b>, which may make it feel a bit cooler outside. We've got a light wind blowing from the north at <b>11.1 km/h</b>, so make sure to bundle up if you're heading out. Stay warm and have a great evening!"
+        "rh": 63.3,
+        "weather_description": "Good evening, Toronto! We're looking at a chilly night with a temperature of just <b>-3 °C</b>. The air is fairly humid with a relative humidity of <b>63.3%</b>, so you'll definitely want to bundle up if you're heading out. To add to that, there's a gentle breeze blowing at <b>11.1 km/h</b>, which might make it feel even colder. Remember to stay warm and be safe out there!"
     },
-    "OMDB": {
-        "id": "OMDB",
-        "site": "Dubai Intl, DU, AE",
-        "prior": 3,
-        "obsTime": "2025-02-11T04:30:00Z",
-        "temp": 18,
-        "dewp": 10,
-        "wdir": 90,
+    "EDDF": {
+        "id": "EDDF",
+        "site": "Frankfurt/Main Arpt, HE, DE",
+        "prior": 1,
+        "obsTime": "2025-02-11T18:20:00Z",
+        "temp": 7,
+        "dewp": 4,
+        "wdir": 60,
+        "wspd": 8,
+        "cldCvg1": "BKN",
+        "cldBas1": 16,
+        "ceil": 16,
+        "cover": "BKN",
+        "fltcat": "MVFR",
+        "visib": "6+",
+        "altim": 1019,
+        "rawOb": "EDDF 111820Z AUTO 06008KT 9999 BKN016 07/04 Q1019 BECMG BKN010",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                8.6750154,
+                50.0999768
+            ]
+        },
+        "wspd_kmph": 14.8,
+        "rh": 81.2,
+        "weather_description": "Good evening, Frankfurt! Today, you're experiencing cool temperatures at around <b>7 °C</b>. The air is quite humid, with relative humidity levels at <b>81.2%</b>, which can make it feel a bit chillier than it actually is. As for the wind, it's blowing in at a gentle pace of about <b>14.8 km/h</b>. So, if you're stepping out, make sure to dress warmly! Overall, it's a typical cool day in the heart of Germany. Stay cozy!"
+    },
+    "EFHK": {
+        "id": "EFHK",
+        "site": "Helsinki/Vantaa Arpt, UU, FI",
+        "prior": 1,
+        "obsTime": "2025-02-11T18:20:00Z",
+        "temp": -2,
+        "dewp": -2,
+        "wdir": 250,
+        "wspd": 6,
+        "cldCvg1": "BKN",
+        "cldBas1": 4,
+        "ceil": 4,
+        "cover": "BKN",
+        "fltcat": "LIFR",
+        "visib": "6+",
+        "altim": 1038,
+        "rawOb": "EFHK 111820Z 25006KT 9999 BKN004 M02/M02 Q1038 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                24.932456915043964,
+                60.16380384948568
+            ]
+        },
+        "wspd_kmph": 11.1,
+        "rh": 100.0,
+        "weather_description": "Good evening, folks! In Helsinki, we’re looking at chilly conditions tonight with a current temperature of <b>-2 °C</b>. Make sure to bundle up because the relative humidity is a brisk <b>100%</b>, meaning it feels quite damp out there. We've got a light breeze blowing in at <b>11.1 km/h</b>, which might add a bit of a chill to the air. Overall, it’s a classic wintery evening here, perfect for warm drinks and cozy blankets!"
+    },
+    "EGLL": {
+        "id": "EGLL",
+        "site": "London/Heathrow Intl, EN, GB",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:20:00Z",
+        "temp": 4,
+        "dewp": 1,
+        "wdir": 10,
+        "wspd": 3,
+        "cldCvg1": "OVC",
+        "cldBas1": 18,
+        "ceil": 18,
+        "cover": "OVC",
+        "fltcat": "MVFR",
+        "visib": "6+",
+        "altim": 1018,
+        "rawOb": "EGLL 111820Z AUTO 01003KT 320V050 9999 OVC018 04/01 Q1018",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -0.1186677,
+                51.5019406
+            ]
+        },
+        "wspd_kmph": 5.6,
+        "rh": 80.8,
+        "weather_description": "Good evening! Here’s the weather update for London. Currently, we're looking at a chilly temperature of just <b>4 °C</b>. With a relative humidity level at a high <b>80.8%</b>, it feels quite damp out there. The winds are light, blowing in at around <b>5.6 km/h</b>, so it won't be too breezy tonight. Overall, it's a cool and humid evening, so make sure to bundle up if you're heading outside!"
+    },
+    "EHAM": {
+        "id": "EHAM",
+        "site": "Amsterdam/Schiphol Arpt, NH, NL",
+        "prior": 1,
+        "obsTime": "2025-02-11T18:25:00Z",
+        "temp": 3,
+        "dewp": 2,
+        "wdir": 140,
+        "wspd": 6,
+        "cldCvg1": "FEW",
+        "cldBas1": 6,
+        "cldCvg2": "SCT",
+        "cldBas2": 12,
+        "cldCvg3": "BKN",
+        "cldBas3": 17,
+        "ceil": 17,
+        "cover": "BKN",
+        "fltcat": "MVFR",
+        "visib": 4.35,
+        "altim": 1018,
+        "wx": "-RA -DZ",
+        "rawOb": "EHAM 111825Z 14006KT 7000 -RADZ FEW006 SCT012 BKN017 03/02 Q1018 TEMPO RADZ BKN007",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                4.9146943,
+                52.3519145
+            ]
+        },
+        "wx_descrip": "light rain light drizzle",
+        "wspd_kmph": 11.1,
+        "rh": 93.1,
+        "weather_description": "Good evening, Amsterdam! We're currently experiencing chilly conditions with a temperature of <b>3 °C</b>. You might want to grab an umbrella as we're seeing some light rain and drizzle in the area. The humidity is quite high at <b>93.1%</b>, making it feel a bit cooler. Winds are coming from the west at a speed of <b>11.1 km/h</b>, which may add to that brisk feeling. Stay warm and dry out there!"
+    },
+    "ENGM": {
+        "id": "ENGM",
+        "site": "Oslo/Gardermoen Arpt, AK, NO",
+        "prior": 1,
+        "obsTime": "2025-02-11T18:20:00Z",
+        "temp": -8,
+        "dewp": -10,
+        "wdir": "VRB",
+        "wspd": 2,
+        "cldCvg1": "CAVOK",
+        "cover": "CAVOK",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1037,
+        "rawOb": "ENGM 111820Z VRB02KT CAVOK M08/M10 Q1037 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                11.3472365,
+                59.9134861
+            ]
+        },
+        "wspd_kmph": 3.7,
+        "rh": 85.5,
+        "weather_description": "Good evening, Bærum! We're seeing chilly conditions tonight with a temperature plummeting to around <b>-8 °C</b>. The relative humidity is quite high at <b>85.5%</b>, which means it feels even colder out there! Plus, we have a gentle breeze coming in at <b>3.7 km/h</b>. Make sure to bundle up if you're stepping outside! Stay warm!"
+    },
+    "ESSA": {
+        "id": "ESSA",
+        "site": "Stockholm/Arlanda Arpt, AB, SE",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:20:00Z",
+        "temp": -5,
+        "dewp": -5,
+        "wdir": 230,
         "wspd": 4,
+        "cldCvg1": "OVX",
+        "cldBas1": 0,
+        "ceil": 2,
+        "cover": "OVX",
+        "fltcat": "LIFR",
+        "visib": 0.22,
+        "altim": 1039,
+        "wx": "FZFG",
+        "rawOb": "ESSA 111820Z 23004KT 0350 R01L/P2000N R19R/1800N R01R/P2000D R19L/P2000N FZFG VV002 M05/M05 Q1039 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                17.6399979,
+                59.8600529
+            ]
+        },
+        "wx_descrip": "moderate freezing fog",
+        "wspd_kmph": 7.4,
+        "rh": 100.0,
+        "weather_description": "Good evening from Uppsala! Currently, we're experiencing some chilly conditions with a temperature sitting at around <b>-5 °C</b>. The air is saturated, boasting a relative humidity of <b>100%</b>, which means we're under the grip of moderate freezing fog. Visibility might be limited, so drive safely! To add to the cold, there's a light breeze blowing at <b>7.4 km/h</b>. Bundle up and stay warm out there!"
+    },
+    "GMMC": {
+        "id": "GMMC",
+        "site": "Casablanca/Anfa Arpt, CB, MA",
+        "prior": 6,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": 18,
+        "dewp": 12,
+        "wdir": 290,
+        "wspd": 8,
         "cldCvg1": "CAVOK",
         "cover": "CAVOK",
         "fltcat": "VFR",
         "visib": "6+",
         "altim": 1019,
-        "rawOb": "OMDB 110430Z 09004KT CAVOK 18/10 Q1019 NOSIG",
+        "rawOb": "GMMC 111800Z 29008KT 252V352 CAVOK 18/12 Q1019",
         "geometry": {
             "type": "Point",
             "coordinates": [
-                55.366,
-                25.254
+                -7.6183133,
+                33.6019221
+            ]
+        },
+        "wspd_kmph": 14.8,
+        "rh": 68.0,
+        "weather_description": "Good evening! In Casablanca, we're currently experiencing a pleasant temperature of <b>18 °C</b>. The relative humidity is at a comfortable <b>68%</b>, making it feel just right. As for the winds, they're blowing in at a speed of <b>14.8 km/h</b>, adding a nice breeze to the evening. Overall, it's a lovely night to be outdoors!"
+    },
+    "HECA": {
+        "id": "HECA",
+        "site": "Cairo Intl, QH, EG",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 14,
+        "dewp": 6,
+        "wdir": 320,
+        "wspd": 9,
+        "cldCvg1": "SCT",
+        "cldBas1": 25,
+        "cover": "SCT",
+        "fltcat": "MVFR",
+        "visib": 3.73,
+        "altim": 1020,
+        "rawOb": "HECA 111830Z 32009KT 6000 SCT025 14/06 Q1020 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                31.2480224,
+                30.0519062
+            ]
+        },
+        "wspd_kmph": 16.7,
+        "rh": 58.5,
+        "weather_description": "Good evening! In Cairo today, we are looking at a pleasant temperature of <b>14 °C</b>. The air is holding a relative humidity of <b>58.5%</b>, which adds a touch of comfort to the atmosphere. There’s a light breeze blowing, with wind speeds reaching <b>16.7 km/h</b>. Overall, it’s a lovely evening to be outside, so why not enjoy a stroll?"
+    },
+    "KATL": {
+        "id": "KATL",
+        "site": "Atlanta/Hartsfield-Jackson Intl, GA, US",
+        "prior": 0,
+        "obsTime": "2025-02-11T17:52:00Z",
+        "temp": 6.7,
+        "dewp": 5.6,
+        "wdir": 110,
+        "wspd": 13,
+        "cldCvg1": "OVC",
+        "cldBas1": 3,
+        "ceil": 3,
+        "cover": "OVC",
+        "fltcat": "LIFR",
+        "visib": 1,
+        "altim": 1018.7,
+        "slp": 1018.7,
+        "wx": "-DZ BR",
+        "rawOb": "KATL 111752Z 11013KT 1SM -DZ BR OVC003 07/06 A3008 RMK AO2 SFC VIS 2 SLP187 CIG 002V004 P0000 60007 T00670056 10083 20067 58028",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -84.36764186571386,
+                33.73945728378348
+            ]
+        },
+        "wx_descrip": "light drizzle moderate mist",
+        "wspd_kmph": 24.1,
+        "rh": 92.7,
+        "weather_description": "Good evening Atlanta! It's a chilly night with a temperature sitting at around <b>6.7 °C</b>. The relative humidity is quite high at <b>92.7%</b>, making for some cozy, misty conditions. If you're stepping outside, be prepared for light drizzle paired with moderate mist, so do grab an umbrella! The wind is blowing in at a brisk <b>24.1 km/h</b>, adding a bit of a bite to the air. Stay warm and safe out there!"
+    },
+    "KBOS": {
+        "id": "KBOS",
+        "site": "Boston/Logan Intl, MA, US",
+        "prior": 2,
+        "obsTime": "2025-02-11T17:54:00Z",
+        "temp": -0.6,
+        "dewp": -11.1,
+        "wdir": 230,
+        "wspd": 15,
+        "wgst": 23,
+        "cldCvg1": "SCT",
+        "cldBas1": 200,
+        "cldCvg2": "OVC",
+        "cldBas2": 250,
+        "ceil": 250,
+        "cover": "OVC",
+        "fltcat": "VFR",
+        "visib": "10+",
+        "altim": 1026.8,
+        "slp": 1026.5,
+        "rawOb": "KBOS 111754Z 23015G23KT 10SM SCT200 OVC250 M01/M11 A3032 RMK AO2 SLP265 T10061111 11006 21067 58023",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -71.0719595,
+                42.331906
+            ]
+        },
+        "wspd_kmph": 27.8,
+        "wgst_kmph": 42.6,
+        "rh": 44.9,
+        "weather_description": "Good evening, Boston! We're starting off with a chilly temperature of <b>-0.6 °C</b>, so make sure to bundle up if you're heading out. The relative humidity is relatively low at <b>44.9%</b>, which means the cold might feel a bit sharper. Winds are certainly making their presence known tonight, blowing in from the northwest at a brisk <b>27.8 km/h</b>, with gusts reaching up to <b>42.6 km/h</b>. It's definitely a cold and windy evening, so stay warm and take care on the roads!"
+    },
+    "KBWI": {
+        "id": "KBWI",
+        "site": "Baltimore-Washington Intl, MD, US",
+        "prior": 3,
+        "obsTime": "2025-02-11T17:54:00Z",
+        "temp": 1.7,
+        "dewp": -8.9,
+        "wdir": "VRB",
+        "wspd": 3,
+        "cldCvg1": "SCT",
+        "cldBas1": 75,
+        "cldCvg2": "BKN",
+        "cldBas2": 100,
+        "cldCvg3": "OVC",
+        "cldBas3": 200,
+        "ceil": 100,
+        "cover": "OVC",
+        "fltcat": "VFR",
+        "visib": "10+",
+        "altim": 1027.2,
+        "slp": 1027.2,
+        "rawOb": "KBWI 111754Z VRB03KT 10SM SCT075 BKN100 OVC200 02/M09 A3033 RMK AO2 SLP272 T00171089 10017 21011 58039",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -76.6145820807727,
+                39.28151578641361
+            ]
+        },
+        "wspd_kmph": 5.6,
+        "rh": 45.3,
+        "weather_description": "Good evening, Baltimore! As we check in on your weather today, we're seeing a cool temperature of <b>1.7 °C</b> with a relative humidity sitting at <b>45.3%</b>. It's a crisp day, so if you're heading out, make sure to bundle up! The winds are light, coming in at <b>5.6 km/h</b>, creating a calm atmosphere. Overall, it’s a chilly day, perfect for some warm drinks while you enjoy the seasonal changes. Stay warm and have a great day!"
+    },
+    "KDEN": {
+        "id": "KDEN",
+        "site": "Denver Intl, CO, US",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:16:00Z",
+        "temp": -12.2,
+        "dewp": -15,
+        "wdir": 50,
+        "wspd": 7,
+        "cldCvg1": "BKN",
+        "cldBas1": 11,
+        "cldCvg2": "BKN",
+        "cldBas2": 24,
+        "cldCvg3": "OVC",
+        "cldBas3": 29,
+        "ceil": 11,
+        "cover": "OVC",
+        "fltcat": "MVFR",
+        "visib": 3,
+        "altim": 1009.9,
+        "wx": "-SN BR",
+        "rawOb": "KDEN 111816Z 05007KT 3SM -SN BR BKN011 BKN024 OVC029 M12/M15 A2982 RMK AO2 P0000 T11221150",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -104.808497,
+                39.6958574
+            ]
+        },
+        "wx_descrip": "light snow moderate mist",
+        "wspd_kmph": 13.0,
+        "rh": 79.6,
+        "weather_description": "Good evening, Aurora! We have chilly conditions tonight with the temperature sitting at a brisk <b>-12.2 °C</b>. The humidity is quite high at <b>79.6%</b>, which is contributing to the atmosphere feeling even colder. To top it off, we're experiencing light snow along with moderate mist, creating a winter wonderland effect. Winds are blowing in from the northeast at a gentle speed of <b>13.0 km/h</b>. So, if you're heading out, bundle up and drive safely!"
+    },
+    "KDFW": {
+        "id": "KDFW",
+        "site": "Dallas-Ft Worth Intl, TX, US",
+        "prior": 0,
+        "obsTime": "2025-02-11T17:53:00Z",
+        "temp": 6.7,
+        "dewp": 3.3,
+        "wdir": 30,
+        "wspd": 10,
+        "cldCvg1": "BKN",
+        "cldBas1": 12,
+        "cldCvg2": "OVC",
+        "cldBas2": 16,
+        "ceil": 12,
+        "cover": "OVC",
+        "fltcat": "MVFR",
+        "visib": "10+",
+        "altim": 1016.3,
+        "slp": 1016.3,
+        "rawOb": "KDFW 111753Z 03010KT 10SM BKN012 OVC016 07/03 A3001 RMK AO2 SLP163 60003 T00670033 10067 20056 50002",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -97.0202385,
+                32.6847608
+            ]
+        },
+        "wspd_kmph": 18.5,
+        "rh": 78.9,
+        "weather_description": "Good evening, Arlington! Currently, we're experiencing a cool temperature of <b>6.7 °C</b>, accompanied by a relative humidity of <b>78.9%</b>. It's a bit chilly, so you may want to grab a light jacket if you're heading out. On top of that, the wind is picking up at a speed of <b>18.5 km/h</b>, adding to that brisk feeling in the air. Overall, it's a typical cool day for this time of year. Stay warm and have a great evening!"
+    },
+    "KEWR": {
+        "id": "KEWR",
+        "site": "Newark Intl, NJ, US",
+        "prior": 5,
+        "obsTime": "2025-02-11T17:51:00Z",
+        "temp": 1.1,
+        "dewp": -10.6,
+        "wdir": "VRB",
+        "wspd": 4,
+        "cldCvg1": "SCT",
+        "cldBas1": 100,
+        "cldCvg2": "BKN",
+        "cldBas2": 140,
+        "cldCvg3": "OVC",
+        "cldBas3": 210,
+        "ceil": 140,
+        "cover": "OVC",
+        "fltcat": "VFR",
+        "visib": "10+",
+        "altim": 1028.2,
+        "slp": 1027.9,
+        "rawOb": "KEWR 111751Z VRB04KT 10SM SCT100 BKN140 OVC210 01/M11 A3036 RMK AO2 SLP279 4/001 T00111106 10011 21033 58030",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -74.1700053,
+                40.7004214
             ]
         },
         "wspd_kmph": 7.4,
-        "rh": 59.5,
-        "weather_description": "Good evening! Here’s the weather update from Dubai Intl. Currently, the temperature is a comfortable <b>18 °C</b> with a relative humidity sitting at <b>59.5%</b>. It feels quite pleasant out there! The winds are blowing gently at <b>7.4 km/h</b>, making it a lovely evening to be outdoors. Whether you’re heading out for dinner or just relaxing at home, the weather is certainly on your side!"
+        "rh": 41.3,
+        "weather_description": "Good evening, Newark! Currently, we are experiencing chilly conditions with a temperature of just <b>1.1 °C</b>. The air is relatively dry with a relative humidity of <b>41.3%</b>. As for the winds, they're coming in at a gentle <b>7.4 km/h</b>, adding to that crisp winter feel. Make sure to bundle up if you're heading out! Stay warm!"
     },
-    "LTFM": {
-        "id": "LTFM",
-        "site": "Istanbul Arpt, IS, TR",
-        "prior": 0,
-        "obsTime": "2025-02-11T04:20:00Z",
-        "temp": 1,
-        "dewp": 0,
-        "wdir": 360,
+    "KFLL": {
+        "id": "KFLL",
+        "site": "Ft Lauderdale-Hollywood Intl, FL, US",
+        "prior": 5,
+        "obsTime": "2025-02-11T17:53:00Z",
+        "temp": 26.7,
+        "dewp": 18.9,
+        "wdir": 140,
         "wspd": 14,
+        "wgst": 20,
         "cldCvg1": "SCT",
-        "cldBas1": 4,
-        "cldCvg2": "FEW",
-        "cldBas2": 17,
-        "cldCvg3": "BKN",
-        "cldBas3": 22,
-        "ceil": 22,
-        "cover": "BKN",
-        "fltcat": "LIFR",
-        "visib": 0.56,
-        "altim": 1029,
-        "wx": "SHSN",
-        "rawOb": "LTFM 110420Z 36014KT 0900 R35R/P1500N R17L/0900D R34L/P1500D R36/P1500N SHSN SCT004 FEW017TCU BKN022 01/M00 Q1029 BECMG TL0520 6000 NSW RMK RWY17L 35012KT RWY34L 35015KT RWY16R 35013KT RWY36 35014KT RWY18 34014KT",
+        "cldBas1": 26,
+        "cover": "SCT",
+        "fltcat": "VFR",
+        "visib": "10+",
+        "altim": 1019.4,
+        "slp": 1019,
+        "rawOb": "KFLL 111753Z 14014G20KT 10SM SCT026 27/19 A3010 RMK AO2 SLP190 T02670189 10267 20228 58017",
         "geometry": {
             "type": "Point",
             "coordinates": [
-                28.74,
-                41.262
+                -80.1417855,
+                26.1360649
             ]
         },
-        "wx_descrip": "moderate showers snow",
         "wspd_kmph": 25.9,
-        "weather_description": "Good day from Istanbul Arpt! We are currently experiencing chilly conditions with a temperature of just <b>1 °C</b>. The skies are cloudy, bringing us moderate showers of snow, so be sure to bundle up if you're heading outside! Winds are picking up, gusting at about <b>25.9 km/h</b>, which could make it feel even colder. Stay warm and safe out there!"
+        "wgst_kmph": 37.0,
+        "rh": 62.3,
+        "weather_description": "Good evening, Fort Lauderdale! Today, we're enjoying a warm temperature of <b>26.7 °C</b>. With a relative humidity at <b>62.3%</b>, it feels quite comfortable out there. However, don't forget, there’s a moderate breeze blowing in at <b>25.9 km/h</b>, with occasional gusts reaching up to <b>37.0 km/h</b>. Overall, it's a lovely day to be outdoors, but you might want to keep your hats secured! So, grab your sunglasses and enjoy that beautiful Florida weather!"
+    },
+    "KIAH": {
+        "id": "KIAH",
+        "site": "Houston/Bush Intl, TX, US",
+        "prior": 2,
+        "obsTime": "2025-02-11T18:15:00Z",
+        "temp": 15,
+        "dewp": 13.9,
+        "wdir": 30,
+        "wspd": 7,
+        "cldCvg1": "SCT",
+        "cldBas1": 5,
+        "cldCvg2": "OVC",
+        "cldBas2": 35,
+        "ceil": 35,
+        "cover": "OVC",
+        "fltcat": "MVFR",
+        "visib": 5,
+        "altim": 1012.6,
+        "wx": "-RA BR",
+        "rawOb": "KIAH 111815Z 03007KT 5SM -RA BR SCT005 OVC035 15/14 A2990 RMK AO2 P0003 T01500139",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -95.34843625672217,
+                29.741272831862542
+            ]
+        },
+        "wx_descrip": "light rain moderate mist",
+        "wspd_kmph": 13.0,
+        "rh": 93.1,
+        "weather_description": "Good evening, Houston! We're currently experiencing some light rain along with moderate mist, making for a rather damp evening. The temperature is sitting at a cool <b>15 °C</b>, so you might want to grab a light jacket if you're heading out. With a relative humidity at a high <b>93.1%</b>, it feels pretty muggy out there. Winds are blowing in at a gentle <b>13.0 km/h</b>, adding to that refreshing chill. Overall, it's a cozy night, perfect for staying in and enjoying a warm drink. Stay dry out there!"
     },
     "KLAX": {
         "id": "KLAX",
         "site": "Los Angeles Intl, CA, US",
         "prior": 0,
-        "obsTime": "2025-02-11T03:53:00Z",
-        "temp": 13.3,
-        "dewp": 9.4,
-        "wdir": 260,
-        "wspd": 4,
-        "cldCvg1": "FEW",
-        "cldBas1": 28,
-        "cldCvg2": "OVC",
-        "cldBas2": 35,
-        "ceil": 35,
-        "cover": "OVC",
+        "obsTime": "2025-02-11T17:53:00Z",
+        "temp": 13.9,
+        "dewp": 7.2,
+        "wdir": 0,
+        "wspd": 0,
+        "cldCvg1": "SCT",
+        "cldBas1": 23,
+        "cldCvg2": "SCT",
+        "cldBas2": 50,
+        "cover": "SCT",
         "fltcat": "VFR",
         "visib": "10+",
-        "altim": 1016.7,
-        "slp": 1016.5,
-        "rawOb": "KLAX 110353Z 26004KT 10SM FEW028 OVC035 13/09 A3002 RMK AO2 CIG 028 RWY24 SLP165 T01330094 $",
+        "altim": 1015.3,
+        "slp": 1015.1,
+        "rawOb": "KLAX 111753Z 00000KT 10SM SCT023 SCT050 14/07 A2998 RMK AO2 SLP151 60000 T01390072 10144 20100 50003 $",
         "geometry": {
             "type": "Point",
             "coordinates": [
-                -118.387,
-                33.9382
+                -118.23198647223317,
+                34.049219260337075
+            ]
+        },
+        "rh": 64.0,
+        "weather_description": "Good evening, Los Angeles! Tonight, we have a chilly temperature of <b>13.9 °C</b> with a comfortable relative humidity of <b>64%</b>. It's a great time to grab a light jacket if you're heading out. Expect clear skies, making for a lovely evening. Enjoy the cool air and stay warm!"
+    },
+    "KORD": {
+        "id": "KORD",
+        "site": "Chicago/O'Hare Intl, IL, US",
+        "prior": 0,
+        "obsTime": "2025-02-11T17:51:00Z",
+        "temp": -4.4,
+        "dewp": -9.4,
+        "wdir": 10,
+        "wspd": 16,
+        "cldCvg1": "OVC",
+        "cldBas1": 16,
+        "ceil": 16,
+        "cover": "OVC",
+        "fltcat": "MVFR",
+        "visib": "10+",
+        "altim": 1025.5,
+        "slp": 1026.4,
+        "wx": "-SN",
+        "rawOb": "KORD 111751Z 01016KT 10SM -SN OVC016 M04/M09 A3028 RMK AO2 SLP264 P0000 60000 T10441094 11044 21061 58014",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -87.6999547,
+                42.0483494
+            ]
+        },
+        "wx_descrip": "light snow",
+        "wspd_kmph": 29.6,
+        "rh": 68.1,
+        "weather_description": "Good evening, Evanston! We're currently looking at a chilly temperature of <b>-4.4 °C</b>, making for quite a cold day. The humidity is at <b>68.1%</b>, adding to that brisk atmosphere. If you're heading out, be prepared for gusty conditions, with winds blowing at <b>29.6 km/h</b>. To top it off, we have some light snow in the area, so be cautious of slippery surfaces. Make sure to bundle up and drive safely if you're out and about. Stay warm!"
+    },
+    "KSEA": {
+        "id": "KSEA",
+        "site": "Seattle-Tacoma Intl, WA, US",
+        "prior": 0,
+        "obsTime": "2025-02-11T17:53:00Z",
+        "temp": -1.1,
+        "dewp": -11.1,
+        "wdir": 10,
+        "wspd": 8,
+        "cldCvg1": "CLR",
+        "cover": "CLR",
+        "fltcat": "VFR",
+        "visib": "10+",
+        "altim": 1026.5,
+        "slp": 1027.6,
+        "rawOb": "KSEA 111753Z 01008KT 10SM CLR M01/M11 A3031 RMK AO2 SLP276 T10111111 11011 21050 58009",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -122.31532231603904,
+                47.600423319460475
+            ]
+        },
+        "wspd_kmph": 14.8,
+        "rh": 46.6,
+        "weather_description": "Good evening, Seattle! We're looking at a chilly evening with the temperature sitting at just <b>-1.1 °C</b>. The relative humidity is at <b>46.6%</b>, which might make it feel even cooler as we head into the night. Winds are blowing in at a brisk <b>14.8 km/h</b>, adding a bit of a chill to the air. Make sure to bundle up if you're heading out, and stay warm!"
+    },
+    "KSFO": {
+        "id": "KSFO",
+        "site": "San Francisco Intl, CA, US",
+        "prior": 1,
+        "obsTime": "2025-02-11T17:56:00Z",
+        "temp": 11.1,
+        "dewp": 7.2,
+        "wdir": 270,
+        "wspd": 11,
+        "cldCvg1": "FEW",
+        "cldBas1": 34,
+        "cldCvg2": "BKN",
+        "cldBas2": 250,
+        "ceil": 250,
+        "cover": "BKN",
+        "fltcat": "VFR",
+        "visib": "10+",
+        "altim": 1018,
+        "slp": 1018,
+        "rawOb": "KSFO 111756Z 27011KT 10SM FEW034 BKN250 11/07 A3006 RMK AO2 SLP180 T01110072 10111 20044 50002",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -122.30321361997188,
+                37.54055384225283
+            ]
+        },
+        "wspd_kmph": 20.4,
+        "rh": 76.9,
+        "weather_description": "Good evening! In San Mateo, the weather is looking quite cool with a temperature of <b>11.1 °C</b>. We're experiencing a relatively high humidity level at <b>76.9%</b>, so it might feel a bit damp out there. As for the winds, they're picking up speed at <b>20.4 km/h</b>, which could add to that brisk feeling. Overall, it’s a chilly evening, so be sure to bundle up if you're heading out!"
+    },
+    "LEMD": {
+        "id": "LEMD",
+        "site": "Madrid/Barajas Arpt, M, ES",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 12,
+        "dewp": 6,
+        "wdir": 330,
+        "wspd": 1,
+        "cldCvg1": "BKN",
+        "cldBas1": 50,
+        "ceil": 50,
+        "cover": "BKN",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1015,
+        "rawOb": "LEMD 111830Z 33001KT 9999 BKN050 12/06 Q1015 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -3.6852975,
+                40.4019721
+            ]
+        },
+        "wspd_kmph": 1.9,
+        "rh": 66.7,
+        "weather_description": "Good evening! In Madrid today, we're looking at a pleasant temperature of <b>12°C</b>, perfect for a stroll outside. The relative humidity is sitting at <b>66.7%</b>, so it might feel a bit muggy at times. Winds are gentle, coming in at a mere <b>1.9 km/h</b>, making it a calm evening overall. Enjoy your evening, Madrid!"
+    },
+    "LFPG": {
+        "id": "LFPG",
+        "site": "Paris/De Gaulle Arpt, ID, FR",
+        "prior": 5,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 4,
+        "dewp": 2,
+        "wdir": 50,
+        "wspd": 5,
+        "cldCvg1": "BKN",
+        "cldBas1": 29,
+        "ceil": 29,
+        "cover": "BKN",
+        "fltcat": "MVFR",
+        "visib": 4.97,
+        "altim": 1018,
+        "rawOb": "LFPG 111830Z 05005KT 010V080 8000 BKN029 04/02 Q1018 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                2.352992461539213,
+                48.85809231626911
+            ]
+        },
+        "wspd_kmph": 9.3,
+        "rh": 86.8,
+        "weather_description": "Good evening! In Paris right now, the temperature is a brisk <b>4 °C</b>, so make sure to bundle up if you're heading out. The relative humidity is quite high at <b>86.8%</b>, making it feel even chillier. We also have a gentle breeze with winds blowing at <b>9.3 km/h</b>. It's a typical cool and damp evening in the City of Light, so don’t forget your umbrella just in case! Stay warm!"
+    },
+    "LGAV": {
+        "id": "LGAV",
+        "site": "Athens/Venizelos Intl, I, GR",
+        "prior": 1,
+        "obsTime": "2025-02-11T18:20:00Z",
+        "temp": 6,
+        "dewp": -2,
+        "wdir": 320,
+        "wspd": 5,
+        "cldCvg1": "FEW",
+        "cldBas1": 25,
+        "cover": "FEW",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1029,
+        "rawOb": "LGAV 111820Z 32005KT 280V350 9999 FEW025 06/M02 Q1029 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                23.7313752,
+                37.9852721
+            ]
+        },
+        "wspd_kmph": 9.3,
+        "rh": 56.5,
+        "weather_description": "Good evening! In Athens, we're looking at a cool temperature of just <b>6 °C</b>, perfect for a light jacket if you're heading out. The humidity is moderate at <b>56.5%</b>, making it feel a bit chilly. We have a gentle breeze blowing at <b>9.3 km/h</b>, which might add a slight chill to the air. Overall, it's a crisp day, so enjoy the refreshing weather!"
+    },
+    "LIML": {
+        "id": "LIML",
+        "site": "Milan/Linate Arpt, MI, IT",
+        "prior": 4,
+        "obsTime": "2025-02-11T18:20:00Z",
+        "temp": 8,
+        "dewp": 8,
+        "wdir": 70,
+        "wspd": 2,
+        "cldCvg1": "SCT",
+        "cldBas1": 10,
+        "cldCvg2": "BKN",
+        "cldBas2": 20,
+        "ceil": 20,
+        "cover": "BKN",
+        "fltcat": "IFR",
+        "visib": 2.17,
+        "altim": 1023,
+        "wx": "-RA BR",
+        "rawOb": "LIML 111820Z 07002KT 3500 -RA BR SCT010 BKN020 08/08 Q1023 RERA NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                9.2030631,
+                45.4719211
+            ]
+        },
+        "wx_descrip": "light rain moderate mist",
+        "wspd_kmph": 3.7,
+        "rh": 100.0,
+        "weather_description": "Good evening, Milan! We’re currently experiencing some soggy conditions with a temperature sitting at a cool <b>8 °C</b>. The air is saturated with moisture at a relative humidity of <b>100%</b>, leading to light rain and moderate mist engulfing the city. If you’re stepping out, expect a gentle breeze with wind speeds around <b>3.7 km/h</b>. So make sure to grab an umbrella and be careful on the roads due to reduced visibility. Stay dry out there!"
+    },
+    "LIRF": {
+        "id": "LIRF",
+        "site": "Rome/Fiumicino, RM, IT",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:20:00Z",
+        "temp": 11,
+        "dewp": 8,
+        "wdir": 120,
+        "wspd": 3,
+        "cldCvg1": "CAVOK",
+        "cover": "CAVOK",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1024,
+        "rawOb": "LIRF 111820Z 12003KT 080V170 CAVOK 11/08 Q1024 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                12.4533865,
+                41.9032822
+            ]
+        },
+        "wspd_kmph": 5.6,
+        "rh": 81.8,
+        "weather_description": "Good day, folks! In Vatican City, we are experiencing a cool temperature of <b>11 °C</b> with a relatively high relative humidity at <b>81.8%</b>. This combination of cool temperatures and high humidity can lead to a bit of a chill in the air, so you might want to grab a light jacket if you plan to head out. The winds are gentle, blowing at a speed of <b>5.6 km/h</b>, making for a pleasant albeit brisk day. Overall, it's a perfect time for a stroll around the beautiful streets of Vatican City, just be prepared for that cool, damp feel!"
+    },
+    "LOWW": {
+        "id": "LOWW",
+        "site": "Vienna Intl, NE, AT",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:20:00Z",
+        "temp": 4,
+        "dewp": -8,
+        "wdir": 140,
+        "wspd": 13,
+        "cldCvg1": "FEW",
+        "cldBas1": 40,
+        "cldCvg2": "BKN",
+        "cldBas2": 50,
+        "ceil": 50,
+        "cover": "BKN",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1026,
+        "rawOb": "LOWW 111820Z 14013KT 9999 FEW040 BKN050 04/M08 Q1026 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                16.3646931,
+                48.2019611
+            ]
+        },
+        "wspd_kmph": 24.1,
+        "rh": 41.3,
+        "weather_description": "Good evening! As we look at the weather in Vienna today, we see that the temperature is a cool <b>4 °C</b>. The air feels crisp with a relative humidity hovering around <b>41.3%</b>, giving a fresh feel to the day. Wind speeds are picking up a bit, blowing in from the west at a brisk <b>24.1 km/h</b>. So, if you're heading out, you might want to grab a light jacket to stay comfortable. Overall, a typical chilly day in Vienna!"
+    },
+    "LTBA": {
+        "id": "LTBA",
+        "site": "Istanbul/Ataturk Intl, IS, TR",
+        "prior": 5,
+        "obsTime": "2025-02-11T18:20:00Z",
+        "temp": 2,
+        "dewp": 0,
+        "wdir": 360,
+        "wspd": 14,
+        "cldCvg1": "BKN",
+        "cldBas1": 9,
+        "cldCvg2": "BKN",
+        "cldBas2": 25,
+        "ceil": 9,
+        "cover": "BKN",
+        "fltcat": "IFR",
+        "visib": 4.35,
+        "altim": 1029,
+        "wx": "-SHRA",
+        "rawOb": "LTBA 111820Z 36014KT 7000 -SHRA BKN009 BKN025 02/00 Q1029 RESHRA RMK RWY23 36014KT",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                28.97427681675554,
+                41.01760173507249
+            ]
+        },
+        "wx_descrip": "light showers rain",
+        "wspd_kmph": 25.9,
+        "weather_description": "Good evening, Istanbul! We're experiencing some chilly weather out there with the temperature sitting at a brisk <b>2 °C</b>. Make sure to grab a warm coat if you're heading out! We've also got light showers of rain, so an umbrella might come in handy as well. The winds are picking up a bit, blowing in at <b>25.9 km/h</b>, adding a bit of a chill to the air. Stay dry and warm, everyone!"
+    },
+    "MMMX": {
+        "id": "MMMX",
+        "site": "Mexico City Intl, DF, MX",
+        "prior": 0,
+        "obsTime": "2025-02-11T17:47:00Z",
+        "temp": 22,
+        "dewp": 5,
+        "wdir": 40,
+        "wspd": 6,
+        "cldCvg1": "SKC",
+        "cover": "SKC",
+        "fltcat": "VFR",
+        "visib": 6,
+        "altim": 1025.8,
+        "slp": 1009.2,
+        "rawOb": "MMMX 111747Z 04006KT 6SM SKC 22/05 A3029 NOSIG RMK SLP092 57009 978 HZY ISOL CU DSNT MDT CU 3TH QUAD",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -99.0299866,
+                19.4100155
+            ]
+        },
+        "wspd_kmph": 11.1,
+        "rh": 33.0,
+        "weather_description": "Good evening, Nezahualcoyotl! Today, we've got a pleasant weather update for you. The current temperature is a comfortable <b>22°C</b>, making it a great time to enjoy some outdoor activities. With a relative humidity of <b>33.0%</b>, the air feels a bit dry, so stay hydrated! As for the winds, they're blowing in from the area at a moderate speed of <b>11.1 km/h</b>. Overall, it’s shaping up to be a fantastic day, perfect for a stroll or perhaps a picnic. Enjoy the beautiful weather!"
+    },
+    "NZAA": {
+        "id": "NZAA",
+        "site": "Auckland Intl, AU, NZ",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 17,
+        "dewp": 12,
+        "wdir": 130,
+        "wspd": 2,
+        "cldCvg1": "SCT",
+        "cldBas1": 46,
+        "cldCvg2": "BKN",
+        "cldBas2": 65,
+        "ceil": 65,
+        "cover": "BKN",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1021,
+        "rawOb": "NZAA 111830Z AUTO 13002KT 9999 SCT046/// BKN065/// 17/12 Q1021",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                174.8849708,
+                -36.9999702
+            ]
+        },
+        "wspd_kmph": 3.7,
+        "rh": 72.4,
+        "weather_description": "Good evening, Manukau! Today's weather features a comfortable temperature of <b>17°C</b>. With a relative humidity of <b>72.4%</b>, it feels a bit muggy out there, so you might want to keep it cool. The winds are light, blowing at a gentle <b>3.7 km/h</b>, making for a pleasant evening stroll. Overall, it's a nice day to enjoy outdoors, just don’t forget to stay hydrated!"
+    },
+    "OERK": {
+        "id": "OERK",
+        "site": "Riyadh/King Khaled Intl, RD, SA",
+        "prior": 1,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": 21,
+        "dewp": 5,
+        "wdir": 120,
+        "wspd": 7,
+        "cldCvg1": "CAVOK",
+        "cover": "CAVOK",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1018,
+        "rawOb": "OERK 111800Z 12007KT CAVOK 21/05 Q1018 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                46.720487024887696,
+                24.634497474837755
+            ]
+        },
+        "wspd_kmph": 13.0,
+        "rh": 35.1,
+        "weather_description": "Good evening! Tonight in Riyadh, we're looking at a pleasant temperature of <b>21 °C</b>. The relative humidity is at a comfortable <b>35.1%</b>, which means the air feels quite dry. If you're stepping outside, expect a gentle breeze with winds blowing at <b>13.0 km/h</b>. Overall, it’s a nice evening to enjoy the outdoors. Stay tuned for more updates!"
+    },
+    "OMDB": {
+        "id": "OMDB",
+        "site": "Dubai Intl, DU, AE",
+        "prior": 3,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 22,
+        "dewp": 13,
+        "wdir": 30,
+        "wspd": 6,
+        "cldCvg1": "CAVOK",
+        "cover": "CAVOK",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1017,
+        "rawOb": "OMDB 111830Z 03006KT 360V070 CAVOK 22/13 Q1017 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                55.28694561354246,
+                25.21491189371225
+            ]
+        },
+        "wspd_kmph": 11.1,
+        "rh": 56.7,
+        "weather_description": "Good evening, Dubai! We're looking at a pleasant evening with a current temperature of <b>22 °C</b>. The relative humidity is at <b>56.7%</b>, making for a comfortable atmosphere. With a gentle breeze blowing in at <b>11.1 km/h</b>, it's a great time to be outside. Overall, enjoy the lovely weather!"
+    },
+    "PAJN": {
+        "id": "PAJN",
+        "site": "Juneau Intl, AK, US",
+        "prior": 0,
+        "obsTime": "2025-02-11T17:53:00Z",
+        "temp": -12.2,
+        "dewp": -12.8,
+        "wdir": 0,
+        "wspd": 0,
+        "cldCvg1": "FEW",
+        "cldBas1": 3,
+        "cldCvg2": "FEW",
+        "cldBas2": 9,
+        "cldCvg3": "FEW",
+        "cldBas3": 130,
+        "cover": "FEW",
+        "fltcat": "VFR",
+        "visib": "10+",
+        "altim": 1031.6,
+        "slp": 1031.5,
+        "rawOb": "PAJN 111753Z 00000KT 10SM FEW003 FEW009 FEW130 M12/M13 A3046 RMK AO2 SLP315 4/003 933004 I6000 T11221128 11111 21133 56019",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -134.40071204654924,
+                58.303386246371936
+            ]
+        },
+        "rh": 95.3,
+        "weather_description": "Good evening, Juneau! We're experiencing some chilly conditions with a current temperature of just <b>-12.2°C</b>. Make sure to bundle up if you're heading outside! The relative humidity is quite high at <b>95.3%</b>, which can make it feel even colder. So stay warm and enjoy the beautiful winter scenery!"
+    },
+    "PALH": {
+        "id": "PALH",
+        "site": "Lake Hood, AK, US",
+        "prior": 6,
+        "obsTime": "2025-02-11T17:53:00Z",
+        "temp": -10,
+        "dewp": -11.7,
+        "wdir": 40,
+        "wspd": 4,
+        "cldCvg1": "CLR",
+        "cover": "CLR",
+        "fltcat": "VFR",
+        "visib": "10+",
+        "altim": 1029.2,
+        "slp": 1029.1,
+        "rawOb": "PALH 111753Z 04004KT 10SM CLR M10/M12 A3039 RMK AO2 SLP291 I6000 T11001117 11094 21128 56014",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -149.8874464089115,
+                61.21400426552339
             ]
         },
         "wspd_kmph": 7.4,
-        "rh": 77.2,
-        "weather_description": "Good evening! Here’s the latest weather update for Los Angeles International Airport. We’re currently observing a mild temperature of <b>13.3 °C</b>, which feels quite comfortable. The relative humidity is at a notable <b>77.2%</b>, giving us a bit of that moist feel in the air. As for the wind, it’s gently blowing at <b>7.4 km/h</b>, so you might want to grab a light jacket if you're headed out. Overall, it’s a pleasant evening in LA, perfect for a stroll outside!"
+        "rh": 87.4,
+        "weather_description": "Good evening, Anchorage! We're experiencing chilly weather with a current temperature of <b>-10°C</b>. The relative humidity is quite high at <b>87.4%</b>, making it feel even colder. A gentle breeze is blowing in from the north at <b>7.4 km/h</b>. So, if you're heading out, be sure to bundle up and stay warm!"
+    },
+    "PHNL": {
+        "id": "PHNL",
+        "site": "Honolulu Intl, HI, US",
+        "prior": 0,
+        "obsTime": "2025-02-11T17:53:00Z",
+        "temp": 21.1,
+        "dewp": 17.8,
+        "wdir": 320,
+        "wspd": 5,
+        "cldCvg1": "FEW",
+        "cldBas1": 28,
+        "cover": "FEW",
+        "fltcat": "VFR",
+        "visib": "10+",
+        "altim": 1021.1,
+        "slp": 1021,
+        "rawOb": "PHNL 111753Z 32005KT 10SM FEW028 21/18 A3015 RMK AO2 SLP210 T02110178 10217 20206 53019 PNO VISNO RWY04R $",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -157.85830077406945,
+                21.30342908415294
+            ]
+        },
+        "wspd_kmph": 9.3,
+        "rh": 81.5,
+        "weather_description": "Good evening! The weather in Honolulu is quite pleasant today, with a temperature sitting at a comfortable <b>21.1 °C</b>. The relative humidity is on the higher side at <b>81.5%</b>, making things feel a bit more tropical. If you're heading out, expect a gentle breeze blowing in at <b>9.3 km/h</b>. Overall, it's a lovely day to enjoy the beautiful island vibes!"
+    },
+    "RCTP": {
+        "id": "RCTP",
+        "site": "Taipei/Taoyuan Arpt, TA, TW",
+        "prior": 2,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": 16,
+        "dewp": 15,
+        "wdir": 260,
+        "wspd": 4,
+        "cldCvg1": "SCT",
+        "cldBas1": 3,
+        "cldCvg2": "BKN",
+        "cldBas2": 5,
+        "cldCvg3": "BKN",
+        "cldBas3": 50,
+        "ceil": 5,
+        "cover": "BKN",
+        "fltcat": "IFR",
+        "visib": 3.11,
+        "altim": 1019,
+        "wx": "BR",
+        "rawOb": "RCTP 111800Z 26004KT 5000 BR SCT003 BKN005 BKN050 16/15 Q1019 TEMPO 3000 BR RMK A3009",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                121.2167765,
+                24.9650252
+            ]
+        },
+        "wx_descrip": "moderate mist",
+        "wspd_kmph": 7.4,
+        "rh": 93.8,
+        "weather_description": "Good evening! In Zhongli, we're seeing quite a cool evening with a temperature at <b>16 °C</b>. The humidity is quite high at <b>93.8%</b>, creating a rather damp sensation as we move through the evening. Expect moderate mist to cover the area, reducing visibility a bit. On top of that, we've got a gentle breeze with winds at <b>7.4 km/h</b>. So, if you're heading out, consider a light jacket and drive carefully in the mist. Stay tuned for more updates!"
+    },
+    "RJOO": {
+        "id": "RJOO",
+        "site": "Osaka Intl, 27, JP",
+        "prior": 3,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": -1,
+        "dewp": -3,
+        "wdir": 320,
+        "wspd": 2,
+        "cldCvg1": "CLR",
+        "cover": "CLR",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1025,
+        "rawOb": "RJOO 111800Z AUTO 32002KT 9999 NCD M01/M03 Q1025",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                135.50375419006232,
+                34.691095244477914
+            ]
+        },
+        "wspd_kmph": 3.7,
+        "rh": 86.3,
+        "weather_description": "Good evening, Osaka! Tonight, we're experiencing some chilly conditions with a temperature sitting at a brisk <b>-1 °C</b>. The air is quite humid, with relative humidity levels at <b>86.3%</b>, making it feel a touch colder. Light winds are blowing in from the east at <b>3.7 km/h</b>, adding to the cool evening atmosphere. Don't forget to bundle up if you're stepping outside!"
+    },
+    "RJTT": {
+        "id": "RJTT",
+        "site": "Tokyo/Haneda Intl, 13, JP",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": 4,
+        "dewp": -5,
+        "wdir": 50,
+        "wspd": 5,
+        "cldCvg1": "FEW",
+        "cldBas1": 50,
+        "cover": "FEW",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1023,
+        "rawOb": "RJTT 111800Z 05005KT 350V080 9999 FEW050 04/M05 Q1023 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                139.705002,
+                35.5299876
+            ]
+        },
+        "wspd_kmph": 9.3,
+        "rh": 51.9,
+        "weather_description": "Good evening! In Kawasaki, the temperature is a crisp <b>4°C</b>. With a relative humidity of <b>51.9%</b>, the air feels quite comfortable. However, we do have a gentle breeze blowing in at <b>9.3 km/h</b>, so you might want to grab a light jacket if you're heading out. Overall, it's a nice day but a bit on the chilly side. Stay warm!"
+    },
+    "RKSS": {
+        "id": "RKSS",
+        "site": "Seoul/Gimpo Intl, 41, KR",
+        "prior": 5,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": 1,
+        "dewp": -5,
+        "wdir": 330,
+        "wspd": 1,
+        "cldCvg1": "BKN",
+        "cldBas1": 45,
+        "cldCvg2": "BKN",
+        "cldBas2": 80,
+        "ceil": 45,
+        "cover": "BKN",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1023,
+        "rawOb": "RKSS 111800Z 33001KT 9999 BKN045 BKN080 01/M05 Q1023 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                126.7811097,
+                37.5008348
+            ]
+        },
+        "wspd_kmph": 1.9,
+        "rh": 64.2,
+        "weather_description": "Good evening, Bucheon! Currently, you're experiencing chilly weather with a temperature of just <b>1 °C</b>. The relative humidity is at a moderate level of <b>64.2%</b>, making it feel a bit cooler. We've got a light breeze blowing in at around <b>1.9 km/h</b>, which is barely noticeable. So, if you're heading out, don't forget to dress warmly and enjoy the crisp air!"
+    },
+    "RPLL": {
+        "id": "RPLL",
+        "site": "Manila/Aquino Intl, NC, PH",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": 26,
+        "dewp": 24,
+        "wdir": "VRB",
+        "wspd": 2,
+        "cldCvg1": "SCT",
+        "cldBas1": 25,
+        "cldCvg2": "BKN",
+        "cldBas2": 100,
+        "ceil": 100,
+        "cover": "BKN",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1013,
+        "rawOb": "RPLL 111800Z VRB02KT 9999 SCT025 BKN100 26/24 Q1013 NOSIG RMK A2991",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                120.9999939,
+                14.5504413
+            ]
+        },
+        "wspd_kmph": 3.7,
+        "rh": 88.8,
+        "weather_description": "Good day, Pasay City! We're looking at a warm temperature of <b>26 °C</b> with high humidity at <b>88.8%</b>, making it feel a bit sticky out there. You can expect a gentle breeze with wind speeds around <b>3.7 km/h</b>, so it might be a great time to enjoy some outdoor activities, but don't forget to stay hydrated! Overall, a typical warm and humid day in Pasay City."
+    },
+    "SAEZ": {
+        "id": "SAEZ",
+        "site": "Buenos Aires/Pistarini Arpt, B, AR",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": 25,
+        "dewp": 20,
+        "wdir": 150,
+        "wspd": 7,
+        "cldCvg1": "SCT",
+        "cldBas1": 20,
+        "cldCvg2": "SCT",
+        "cldBas2": 30,
+        "cldCvg3": "BKN",
+        "cldBas3": 200,
+        "ceil": 200,
+        "cover": "BKN",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1007,
+        "rawOb": "SAEZ 111800Z 15007KT 140V200 9999 SCT020 SCT030 BKN200 25/20 Q1007 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -58.43251268766426,
+                -34.61071459139255
+            ]
+        },
+        "wspd_kmph": 13.0,
+        "rh": 73.8,
+        "weather_description": "Good evening, Buenos Aires! Today, we're enjoying a lovely temperature of <b>25 °C</b>. The relative humidity is sitting at a comfortable <b>73.8%</b>, making it feel pretty pleasant out there. Winds are gently blowing in from the southeast at <b>13.0 km/h</b>. Overall, it’s a warm day, ideal for a stroll in the park or a visit to your favorite café. Enjoy the beautiful weather!"
+    },
+    "SBBR": {
+        "id": "SBBR",
+        "site": "Brasília Intl, DF, BR",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": 20,
+        "dewp": 19,
+        "wdir": 60,
+        "wspd": 4,
+        "cldCvg1": "BKN",
+        "cldBas1": 30,
+        "cldCvg2": "FEW",
+        "cldBas2": 35,
+        "cldCvg3": "BKN",
+        "cldBas3": 70,
+        "ceil": 30,
+        "cover": "BKN",
+        "fltcat": "MVFR",
+        "visib": 3.73,
+        "altim": 1017,
+        "wx": "TS",
+        "rawOb": "SBBR 111800Z 06004KT 020V080 6000 TS BKN030 FEW035CB BKN070 20/19 Q1017 RERA",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -47.9179981,
+                -15.7813944
+            ]
+        },
+        "wx_descrip": "moderate thunderstorm",
+        "wspd_kmph": 7.4,
+        "rh": 94.0,
+        "weather_description": "Good day, Brasília! We are currently experiencing a moderate thunderstorm with a temperature of <b>20 °C</b>. The humidity is quite high at <b>94%</b>, making it feel a bit muggy outside. Wind speeds are blowing at a gentle <b>7.4 km/h</b>, so be careful if you plan to step out; those raindrops might catch you by surprise! Stay dry and safe!"
+    },
+    "SBGL": {
+        "id": "SBGL",
+        "site": "Rio de Janeiro/Galeão Intl, RJ, BR",
+        "prior": 1,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": 33,
+        "dewp": 20,
+        "wdir": 130,
+        "wspd": 10,
+        "cldCvg1": "FEW",
+        "cldBas1": 30,
+        "cover": "FEW",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1010,
+        "rawOb": "SBGL 111800Z 13010KT 9999 FEW030 33/20 Q1010",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -43.30560241118898,
+                -22.796378408911043
+            ]
+        },
+        "wspd_kmph": 18.5,
+        "rh": 46.4,
+        "weather_description": "Good evening! Here's what's happening in Duque de Caxias. We're looking at a warm day with a temperature currently sitting at <b>33 °C</b>. The relative humidity is fairly comfortable at <b>46.4%</b>, so it's not too sticky out there. As for the winds, they're coming in at a gentle breeze of around <b>18.5 km/h</b>. Perfect weather to enjoy some outdoor activities while staying hydrated!"
+    },
+    "SBSP": {
+        "id": "SBSP",
+        "site": "Sao Paulo/Congonhas, SP, BR",
+        "prior": 6,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": 32,
+        "dewp": 12,
+        "wdir": 180,
+        "wspd": 4,
+        "cldCvg1": "SCT",
+        "cldBas1": 30,
+        "cover": "SCT",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1016,
+        "rawOb": "SBSP 111800Z 18004KT 130V220 9999 SCT030 32/12 Q1016",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -46.6269658,
+                -23.5567337
+            ]
+        },
+        "wspd_kmph": 7.4,
+        "rh": 29.5,
+        "weather_description": "Good evening, São Paulo! Today, we've got a warm day on our hands with temperatures soaring up to <b>32 °C</b>. Humidity is relatively low at <b>29.5%</b>, making it feel a bit more comfortable out there. As for the winds, they're blowing in at a gentle pace of <b>7.4 km/h</b>, providing just a slight breeze. So, if you're heading outside, be sure to stay hydrated and enjoy the sunshine!"
+    },
+    "SCEL": {
+        "id": "SCEL",
+        "site": "Santiago/Benítez Intl, RM, CL",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": 29,
+        "dewp": 11,
+        "wdir": 230,
+        "wspd": 11,
+        "cldCvg1": "CAVOK",
+        "cover": "CAVOK",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1012,
+        "rawOb": "SCEL 111800Z 23011KT 200V260 CAVOK 29/11 Q1012 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -70.65050407285783,
+                -33.44020506918074
+            ]
+        },
+        "wspd_kmph": 20.4,
+        "rh": 32.8,
+        "weather_description": "Good evening, Santiago! We're looking at a warm day ahead with temperatures soaring to a pleasant <b>29 °C</b>. The air is quite dry, with a relative humidity of just <b>32.8%</b>, making it feel a bit more comfortable despite the heat. A gentle breeze is blowing in from the east at <b>20.4 km/h</b>, adding some relief to the warm conditions. So, make sure to stay hydrated and enjoy the sunshine!"
+    },
+    "SKBO": {
+        "id": "SKBO",
+        "site": "Bogota/El Dorado Arpt, CA, CO",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": 18,
+        "dewp": 11,
+        "wdir": 130,
+        "wspd": 8,
+        "cldCvg1": "SCT",
+        "cldBas1": 20,
+        "cldCvg2": "SCT",
+        "cldBas2": 70,
+        "cover": "SCT",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1024,
+        "rawOb": "SKBO 111800Z 13008KT 060V190 9999 SCT020 SCT070 18/11 Q1024 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -74.0852898,
+                4.5983694
+            ]
+        },
+        "wspd_kmph": 14.8,
+        "rh": 63.6,
+        "weather_description": "Hello, Bogota! Today, we have a pleasant temperature of <b>18 °C</b> with a relative humidity of <b>63.6%</b>, making it feel quite comfortable out there. The winds are picking up a bit, blowing at <b>14.8 km/h</b>, adding a slight breeze to your day. So, whether you’re heading out for a stroll or just enjoying the outdoors, it looks like a lovely day in the capital!"
+    },
+    "SVMI": {
+        "id": "SVMI",
+        "site": "Caracas/Bolívar Intl, A, VE",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:03:00Z",
+        "temp": 28,
+        "dewp": 20,
+        "wdir": 80,
+        "wspd": 16,
+        "cldCvg1": "CLR",
+        "cover": "CLR",
+        "altim": 1013,
+        "rawOb": "SVMI 111803Z AUTO 08016KT NCD 28/20 Q1013",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -66.9699797,
+                10.6003982
+            ]
+        },
+        "wspd_kmph": 29.6,
+        "rh": 61.8,
+        "weather_description": "Good evening, folks! In Maiquetía, we’re experiencing warm temperatures, currently sitting at a pleasant <b>28 °C</b>. The humidity is at <b>61.8%</b>, which gives it a bit of a tropical feel. As for the winds, they're picking up speed at about <b>29.6 km/h</b>, offering a refreshing breeze in the area. Don't forget your sunglasses if you’re heading out, and stay hydrated!"
+    },
+    "TJSJ": {
+        "id": "TJSJ",
+        "site": "San Juan/Marin Intl, --, PR",
+        "prior": 0,
+        "obsTime": "2025-02-11T17:56:00Z",
+        "temp": 29.4,
+        "dewp": 21.1,
+        "wdir": 90,
+        "wspd": 15,
+        "cldCvg1": "FEW",
+        "cldBas1": 38,
+        "cldCvg2": "SCT",
+        "cldBas2": 80,
+        "cover": "SCT",
+        "fltcat": "VFR",
+        "visib": "10+",
+        "altim": 1017,
+        "slp": 1016.6,
+        "rawOb": "TJSJ 111756Z 09015KT 10SM FEW038 SCT080 29/21 A3003 RMK AO2 SLP166 60014 T02940211 10294 20239 58026",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                -66.1299793,
+                18.440023
+            ]
+        },
+        "wspd_kmph": 27.8,
+        "rh": 61.0,
+        "weather_description": "Good day, San Juan! Today, we have a warm temperature sitting at <b>29.4 °C</b>. Humidity is quite comfortable at <b>61%</b>, making it feel a bit sticky but still pleasant. The winds are picking up, blowing at a brisk <b>27.8 km/h</b>, which will help to cool things down a bit. Overall, it's a lovely day to be outdoors, but don't forget your water to stay hydrated!"
+    },
+    "UUEE": {
+        "id": "UUEE",
+        "site": "Moscow/Sheremetyevo Intl, MO, RU",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": -8,
+        "dewp": -10,
+        "wdir": 290,
+        "wspd": 6,
+        "cldCvg1": "OVC",
+        "cldBas1": 5,
+        "ceil": 5,
+        "cover": "OVC",
+        "fltcat": "IFR",
+        "visib": "6+",
+        "altim": 1038,
+        "rawOb": "UUEE 111830Z 29003MPS 250V360 9999 OVC005 M08/M10 Q1038 R06R/410140 R06C/410140 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                37.613577,
+                55.75411
+            ]
+        },
+        "wspd_kmph": 11.1,
+        "rh": 85.5,
+        "weather_description": "Good evening, Moscow! We're looking at chilly conditions tonight with a temperature sitting around <b>-8°C</b>. The air is quite moist, with relative humidity at <b>85.5%</b>, making it feel even colder. Winds are coming in at a brisk <b>11.1 km/h</b>, which will add to that biting chill. So, if you're heading out, make sure to bundle up! Stay warm and have a great evening!"
+    },
+    "VABB": {
+        "id": "VABB",
+        "site": "Mumbai/Shivaji Intl, MM, IN",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 25,
+        "dewp": 12,
+        "wdir": 340,
+        "wspd": 3,
+        "cldCvg1": "CLR",
+        "cover": "CLR",
+        "fltcat": "IFR",
+        "visib": 1.86,
+        "altim": 1014,
+        "wx": "FU",
+        "rawOb": "VABB 111830Z 34003KT 3000 FU NSC 25/12 Q1014 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                72.8758393972653,
+                19.06840847529168
+            ]
+        },
+        "wx_descrip": "moderate smoke",
+        "wspd_kmph": 5.6,
+        "rh": 44.3,
+        "weather_description": "Good evening, Mumbai! Today, we're experiencing a temperature of <b>25 °C</b> with a relative humidity of <b>44.3%</b>. It's a bit hazy out there due to moderate smoke, so if you have any outdoor plans, you may want to take it easy. The wind is coming in at a gentle <b>5.6 km/h</b>, which should help clear the air a bit. Stay safe and enjoy the evening!"
+    },
+    "VHHH": {
+        "id": "VHHH",
+        "site": "Hong Kong Intl, HK, CN",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 18,
+        "dewp": 16,
+        "wdir": 60,
+        "wspd": 6,
+        "cldCvg1": "FEW",
+        "cldBas1": 12,
+        "cldCvg2": "SCT",
+        "cldBas2": 25,
+        "cover": "SCT",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1017,
+        "wx": "-RA",
+        "rawOb": "VHHH 111830Z 06006KT 9999 -RA FEW012 SCT025 18/16 Q1017 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                114.1830635,
+                22.3069268
+            ]
+        },
+        "wx_descrip": "light rain",
+        "wspd_kmph": 11.1,
+        "rh": 88.1,
+        "weather_description": "Good evening, Hong Kong! We're looking at a cool and damp evening with a current temperature of <b>18 °C</b>. The humidity is quite high, sitting at <b>88.1%</b>, making it feel a bit more uncomfortable. For those heading out, you’ll want to grab an umbrella as we're experiencing some light rain. The wind is relatively calm, blowing in at <b>11.1 km/h</b>. So, if you're navigating the outdoor conditions, be mindful of the light drizzle and dress appropriately. Stay safe and keep dry!"
+    },
+    "VIDP": {
+        "id": "VIDP",
+        "site": "New Delhi/Gandhi Intl, DL, IN",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 16,
+        "dewp": 11,
+        "wdir": 0,
+        "wspd": 0,
+        "cldCvg1": "CLR",
+        "cover": "CLR",
+        "fltcat": "IFR",
+        "visib": 2.17,
+        "altim": 1014,
+        "wx": "HZ",
+        "rawOb": "VIDP 111830Z 00000KT 3500 HZ NSC 16/11 Q1014 BECMG 3000 HZ",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                77.19998,
+                28.600023
+            ]
+        },
+        "wx_descrip": "moderate haze",
+        "rh": 72.2,
+        "weather_description": "Good evening! In New Delhi today, we are experiencing a bit of a chill in the air with the temperature sitting at a cool <b>16 °C</b>. The relative humidity is quite notable at <b>72.2%</b>, which adds a bit of discomfort. We're also seeing moderate haze settling in, which might limit visibility a bit. So, if you're out and about, keep that in mind! Overall, it's a typical hazy day for the capital city. Stay warm and safe!"
+    },
+    "VTBD": {
+        "id": "VTBD",
+        "site": "Bangkok Intl, 10, TH",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 25,
+        "dewp": 18,
+        "wdir": 130,
+        "wspd": 1,
+        "cldCvg1": "CAVOK",
+        "cover": "CAVOK",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1011,
+        "rawOb": "VTBD 111830Z 13001KT CAVOK 25/18 Q1011 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                100.5333361,
+                14.0171147
+            ]
+        },
+        "wspd_kmph": 1.9,
+        "rh": 65.1,
+        "weather_description": "Good evening! Today's weather in Pathum Thani is quite pleasant. We currently have a temperature of <b>25 °C</b>, with a comfortable relative humidity level sitting at <b>65.1%</b>. The winds are gentle, coming in at a speed of just <b>1.9 km/h</b>. It's a great evening to enjoy some outdoor activities. So, make sure to step outside and relish the nice weather!"
+    },
+    "VTBS": {
+        "id": "VTBS",
+        "site": "Bangkok/Suvarnabhumi Arpt, 20, TH",
+        "prior": 6,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 27,
+        "dewp": 19,
+        "wdir": 130,
+        "wspd": 3,
+        "cldCvg1": "CLR",
+        "cover": "CLR",
+        "fltcat": "VFR",
+        "visib": 5.59,
+        "altim": 1011,
+        "rawOb": "VTBS 111830Z 13003KT 110V180 9000 NSC 27/19 Q1011 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                100.6114709,
+                13.6069072
+            ]
+        },
+        "wspd_kmph": 5.6,
+        "rh": 61.6,
+        "weather_description": "Good evening! In Samut Prakan, we're experiencing a comfortable evening with a temperature of <b>27 °C</b>. The relative humidity is relatively high at <b>61.6%</b>, so it might feel a bit muggy outside. Winds are gentle, blowing at <b>5.6 km/h</b>, which should provide a slight relief from the humidity. Overall, a typical warm evening in Samut Prakan!"
     },
     "WIII": {
         "id": "WIII",
         "site": "Jakarta/Hatta Intl, JB, ID",
         "prior": 1,
-        "obsTime": "2025-02-11T04:30:00Z",
-        "temp": 30,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 26,
         "dewp": 24,
-        "wdir": 330,
-        "wspd": 12,
-        "cldCvg1": "BKN",
-        "cldBas1": 18,
-        "ceil": 18,
-        "cover": "BKN",
-        "fltcat": "MVFR",
-        "visib": 5.59,
-        "altim": 1011,
-        "rawOb": "WIII 110430Z 33012KT 9000 BKN018 30/24 Q1011 NOSIG",
+        "wdir": 230,
+        "wspd": 5,
+        "cldCvg1": "FEW",
+        "cldBas1": 20,
+        "cover": "FEW",
+        "fltcat": "IFR",
+        "visib": 1.86,
+        "altim": 1010,
+        "wx": "BR",
+        "rawOb": "WIII 111830Z 23005KT 3000 BR FEW020 26/24 Q1010 NOSIG",
         "geometry": {
             "type": "Point",
             "coordinates": [
-                106.659,
-                -6.125
+                106.8274918,
+                -6.1724718
             ]
         },
-        "wspd_kmph": 22.2,
-        "rh": 70.3,
-        "weather_description": "Good evening from Jakarta! Today, we’re experiencing warm conditions with a temperature of <b>30 °C</b>. The relative humidity is at a comfortable level of <b>70.3%</b>, making it feel a bit muggy, so you might want to stay hydrated. Winds are coming in from the east at a brisk <b>22.2 km/h</b>, providing a nice relief from that heat. Overall, it’s a typical tropical day here in Jakarta, so whether you’re out and about or enjoying some time indoors, make sure to keep cool!"
+        "wx_descrip": "moderate mist",
+        "wspd_kmph": 9.3,
+        "rh": 88.8,
+        "weather_description": "Good evening! In Jakarta, we're looking at a warm temperature of <b>26 °C</b>. The atmosphere is quite humid, with relative humidity sitting at a high <b>88.8%</b>, which makes it feel a bit warmer. Visibility is reduced due to moderate mist in the area, so be cautious while traveling. Winds are gentle, blowing at <b>9.3 km/h</b>, adding a slight chill to the air. Overall, it's a typical humid evening in Jakarta, ideal for enjoying some indoor activities. Stay safe and keep hydrated!"
+    },
+    "WSSS": {
+        "id": "WSSS",
+        "site": "Singapore/Changi Intl, 4, SG",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 25,
+        "dewp": 23,
+        "wdir": 10,
+        "wspd": 13,
+        "cldCvg1": "FEW",
+        "cldBas1": 18,
+        "cldCvg2": "BKN",
+        "cldBas2": 300,
+        "ceil": 300,
+        "cover": "BKN",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1011,
+        "rawOb": "WSSS 111830Z 01013KT 9999 FEW018 BKN300 25/23 Q1011 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                103.8538748,
+                1.2949793
+            ]
+        },
+        "wspd_kmph": 24.1,
+        "rh": 88.7,
+        "weather_description": "Good evening! Tonight in Singapore, we're looking at a warm temperature of <b>25 °C</b> with a high relative humidity level of <b>88.7%</b>. This combination is likely to make it feel quite tropical and a bit sticky, so be prepared for that. Winds will be picking up, coming in at a brisk <b>24.1 km/h</b>. Overall, it’s going to be a warm and humid night, perfect for enjoying some local evening activities. Stay cool out there!"
+    },
+    "YMML": {
+        "id": "YMML",
+        "site": "Melbourne Intl, VI, AU",
+        "prior": 1,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 17,
+        "dewp": 16,
+        "wdir": 290,
+        "wspd": 5,
+        "cldCvg1": "CLR",
+        "cover": "CLR",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1010,
+        "rawOb": "YMML 111830Z AUTO 29005KT 9999 // NCD 17/16 Q1010",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                144.7100195,
+                -37.5696073
+            ]
+        },
+        "wspd_kmph": 9.3,
+        "rh": 93.8,
+        "weather_description": "Good evening, Sunbury! Today we're looking at a temperature of <b>17 °C</b>, which is quite comfortable, but don’t forget, it comes with a high humidity level of <b>93.8%</b>. This means it might feel a bit muggy out there. As for the wind, we've got a gentle breeze blowing in at <b>9.3 km/h</b>, which should help keep things feeling a tad fresher. Overall, it’s a mild day, but that humidity could make it feel warmer than it actually is. So, stay cool and hydrated, Sunbury!"
+    },
+    "YSSY": {
+        "id": "YSSY",
+        "site": "Sydney Intl, NS, AU",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 21,
+        "dewp": 19,
+        "wdir": 200,
+        "wspd": 8,
+        "cldCvg1": "FEW",
+        "cldBas1": 30,
+        "cldCvg2": "BKN",
+        "cldBas2": 190,
+        "ceil": 190,
+        "cover": "BKN",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1011,
+        "rawOb": "YSSY 111830Z 20008KT 9999 FEW030 BKN190 21/19 Q1011",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                151.2125477744749,
+                -33.87137339218338
+            ]
+        },
+        "wspd_kmph": 14.8,
+        "rh": 88.4,
+        "weather_description": "Good evening! In Sydney today, we are experiencing a pleasant temperature of <b>21 °C</b>. Despite the warmth, the relative humidity is quite high at <b>88.4%</b>, making it feel a bit muggy. Wind speeds are gentle, coming in from the southeast at approximately <b>14.8 km/h</b>. So, if you're heading out, make sure to stay hydrated and enjoy the warm evening!"
+    },
+    "ZBAA": {
+        "id": "ZBAA",
+        "site": "Beijing Intl, BJ, CN",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 0,
+        "dewp": -16,
+        "wdir": 330,
+        "wspd": 8,
+        "cldCvg1": "CAVOK",
+        "cover": "CAVOK",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1025,
+        "rawOb": "ZBAA 111830Z 33004MPS CAVOK 00/M16 Q1025 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                116.39420089260611,
+                39.901720309862675
+            ]
+        },
+        "wspd_kmph": 14.8,
+        "weather_description": "Good evening! In Beijing today, we're seeing a chilly temperature of <b>0°C</b>, so make sure to bundle up if you're heading outside. The wind is picking up a bit, blowing in at <b>14.8 km/h</b>. This combination could make it feel even colder, so be prepared for a brisk outing. Stay warm!"
+    },
+    "ZSSS": {
+        "id": "ZSSS",
+        "site": "Shanghai/Hongqiao Intl, SH, CN",
+        "prior": 0,
+        "obsTime": "2025-02-11T18:30:00Z",
+        "temp": 10,
+        "dewp": 9,
+        "wdir": 270,
+        "wspd": 6,
+        "cldCvg1": "CLR",
+        "cover": "CLR",
+        "fltcat": "VFR",
+        "visib": "6+",
+        "altim": 1019,
+        "wx": "-RA",
+        "rawOb": "ZSSS 111830Z 27003MPS 9999 -RA NSC 10/09 Q1019 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                121.4345588,
+                31.2183983
+            ]
+        },
+        "wx_descrip": "light rain",
+        "wspd_kmph": 11.1,
+        "rh": 93.5,
+        "weather_description": "Good evening, Shanghai! We're seeing a cool evening with temperatures sitting at <b>10 °C</b>. The relative humidity is quite high at <b>93.5%</b>, which means it feels a bit damp out there. There’s also some light rain falling, so don’t forget your umbrella if you're heading out. The wind is picking up slightly, blowing at a speed of <b>11.1 km/h</b>. Overall, it’s a typical rainy day in Shanghai, so stay warm and dry!"
+    },
+    "ZUUU": {
+        "id": "ZUUU",
+        "site": "Chengdu/Shuangliu Intl, CQ, CN",
+        "prior": 1,
+        "obsTime": "2025-02-11T18:00:00Z",
+        "temp": 8,
+        "dewp": 6,
+        "wdir": 20,
+        "wspd": 8,
+        "cldCvg1": "FEW",
+        "cldBas1": 9,
+        "cldCvg2": "SCT",
+        "cldBas2": 33,
+        "cldCvg3": "BKN",
+        "cldBas3": 50,
+        "ceil": 50,
+        "cover": "BKN",
+        "fltcat": "MVFR",
+        "visib": 3.11,
+        "altim": 1025,
+        "wx": "-RA BR",
+        "rawOb": "ZUUU 111800Z 02004MPS 340V040 5000 -RA BR FEW009 SCT033 BKN050 08/06 Q1025 NOSIG",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                104.0680736,
+                30.6719459
+            ]
+        },
+        "wx_descrip": "light rain moderate mist",
+        "wspd_kmph": 14.8,
+        "rh": 87.2,
+        "weather_description": "Good evening! In Chengdu, we're experiencing some damp conditions with light rain and moderate mist in the air. The temperature is a cool <b>8°C</b>, so make sure to bundle up as you head out. The relative humidity is quite high at <b>87.2%</b>, contributing to that misty feel. On top of that, we have a moderate breeze blowing in at <b>14.8 km/h</b>, which might make it feel a bit chillier. So if you're planning to be outside, don't forget your umbrella and perhaps a light jacket. Stay safe and enjoy your evening!"
     }
 }
