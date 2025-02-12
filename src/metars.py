@@ -103,10 +103,11 @@ class Metars:
         print("  Downloading new METARS data from", url)
 
         resp = requests.get(url)
-        if resp.status_code != 200:
-            print("  Error downloading METARS", resp.status_code)
-            return
+        resp.raise_for_status() # Raise HTTP errors as exceptions
+
         metars_json = json.loads(resp.text)
+
+        # Can fail if API returns an empty METARS for the period
         self.weather = metars_json["features"][0]["properties"]
         self._add_weather_fields()
 
@@ -206,11 +207,15 @@ def main():
 
     for m in metars:
         print(m.station_id)
-        m.download()
-        m.weather_report(
-            openai_client, model="gpt-4o-mini", sys_prompt=INSTRUCTIONS, prompt=PROMPT
-        )
-        output_data[m.station_id] = m.weather
+        try:
+            m.download()
+            m.weather_report(
+                openai_client, model="gpt-4o-mini", sys_prompt=INSTRUCTIONS, prompt=PROMPT
+            )
+        except (IndexError, requests.exceptions.HTTPError) as err:
+            print("  Error downloading METARS", err)
+        else:
+            output_data[m.station_id] = m.weather
 
     with open("data/metars/current-weather.json", "w", encoding="utf-8") as f:
         json.dump(output_data, f, indent=4, ensure_ascii=False)
