@@ -6,6 +6,8 @@
     <meta property="og:description" content="weather-bob" />
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.css' />
     <script src='https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.js'></script>
     <style>
@@ -13,13 +15,13 @@
         body { background-color: hsl(210, 20%, 95%); color: hsl(0, 0%, 20%); }
         .container { display: flex; flex-direction: column; gap: 0; margin: 0 auto; max-width: 768px; }
         .full-width { justify-content: center; align-items: center; padding: 0 20px; }
-        .full-width .column { flex: 0 0 100%; margin: 0 auto; }
+        .full-width .column { flex: 0 0 100%; margin: 0 auto;}
         .half-width { display: flex; flex-wrap: wrap; gap: 0; padding: 0 20px;}
-        .half-width .column { flex: 0 0 50%; margin: 0 auto; }
+        .half-width .column { flex: 0 0 50%; margin: 0 auto;}
         .quarter-width { display: flex; flex-wrap: wrap; gap: 0; padding: 0 20px;}
-        .quarter-width .column { flex: 0 0 25%; margin: 0 auto; padding: 0 5px; }
+        .quarter-width .column { flex: 0 0 25%; margin: 0 auto; }
         .third-width { display: flex; flex-wrap: wrap; gap: 0; padding: 0 20px;}
-        .third-width .column { flex: 0 0 33%; margin: 0 auto; padding: 0 5px; }
+        .third-width .column { flex: 0 0 33%; margin: 0 auto; padding: 0 10px; }
         #map { background: url('img/bg1.png') no-repeat center center; background-size: contain; background-color: hsl(0, 0%, 100%); height: 190px; width: 190px; margin: 10px auto 0px auto; overflow: visible; border-radius: 50%; }
         .maplibregl-ctrl-bottom-right { display: none; } 
         .maplibregl-canvas { pointer-events: none; }
@@ -29,14 +31,12 @@
         .bob{ width:75px; }
         hr {border:none; height:5px; background-color: hsl( 0, 0%, 20%); margin: 5px 0 5px 0; }
         .hr-thin {border:none; height:2px; background-color: hsl( 0, 0%, 20%); margin: 5px 0 5px 0; }
-        h1 { font-family: 'Roboto Mono'; font-size: 60px; font-weight: 600; letter-spacing: -2px; line-height: 0.8; margin: -2px 0 5px -3px; }
+        h1 { font-family: 'Roboto Mono'; font-size: 60px; font-weight: 600; letter-spacing: -2px; line-height: 0.8; margin: 0 0 5px -3px; }
         h2 { font-family: 'Roboto Mono'; font-size: 26px; font-weight: 500; letter-spacing: -2px; line-height: 1; }
-        h3 { font-family: 'Roboto Mono'; font-size: 13px; font-weight: 400; letter-spacing: 0px; line-height: 1; margin: 3px 0 0 0; text-transform: uppercase; }
+        h3 { font-family: 'Roboto Mono'; font-size: 13px; font-weight: 400; letter-spacing: 0px; line-height: 1; text-transform: uppercase; }
         h4 { font-family: 'Roboto Mono'; color: hsl(0, 0%, 50%); font-size: 8px; font-weight: 600; letter-spacing: 1px; line-height: 1; }
         p { font-size: 13px; font-weight: 400; letter-spacing: 0; }
         span { font-family: 'Roboto Mono'; font-size: 11px; letter-spacing: 0; margin: 0 0 0 3px; }
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
 </style>
 </head>
 
