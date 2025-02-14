@@ -10,18 +10,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">    <script src='https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.js'></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Lato', sans-serif; }
-        body { background: linear-gradient(to bottom, hsl(210, 20%, 90%), hsl(210, 20%, 95%)); color: hsl(0, 0%, 20%); background-color: hsl(210, 20%, 95%); height: 100vh; width: 100vw; }
+        body { color: hsl(0, 0%, 20%); background-color: hsl(210, 20%, 95%); height: 100vh; width: 100vw; }
         .container { display: flex; flex-direction: column; gap: 0; margin: 0 auto; max-width: 768px; }
-        .full-width { justify-content: center; align-items: center; padding: 0 20px; }
+        .full-width { position: relative; justify-content: center; align-items: center; padding: 0 20px; }
         .half-width { display: flex; flex-wrap: wrap; gap: 0; padding: 0 20px;}
         .half-width .column { flex: 0 0 50%; margin: 0 auto;}
         .quarter-width { display: flex; flex-wrap: wrap; gap: 0; padding: 0 20px;}
         .quarter-width .column { flex: 0 0 25%; margin: 0 auto; }
         .third-width { display: flex; flex-wrap: wrap; gap: 0; padding: 0 20px;}
         .third-width .column { flex: 0 0 33%; margin: 0 auto; padding: 0 5px; }
-        .bob{ height:75px; width:75px; background-color: hsl(0, 0%, 0%); border-radius: 50%; border: 5px solid hsl(0, 0%, 20%);}
+        .profilepic{ height:75px; width:75px; background-color: hsl(0, 0%, 20%); border-radius: 50%; border: 5px solid hsl(0, 0%, 20%);}
+        #github { position: absolute; top: 10px; right: 20px; }
         #weather_description { overflow-y: scroll; }
-        #map { background: url('img/bg1.png') no-repeat center center; background-size: contain; background-color: hsl(0, 0%, 100%); height: 190px; width: 190px; margin: 10px auto -30px auto; overflow: visible; border-radius: 50%; border: 5px solid hsl(0, 0%, 20%); pointer-events: none; }
+        #map { background: url('img/bg1.png') no-repeat center center; background-size: contain; background-color: hsl(0, 0%, 100%); height: 190px; width: 190px; margin: 20px auto -30px auto; overflow: visible; border-radius: 50%; border: 5px solid hsl(0, 0%, 20%); pointer-events: none; }
         .maplibregl-ctrl-bottom-right { display: none; } 
         @media (max-width: 768px) {
             .half-width .column { flex: 0 0 100%; }
@@ -31,9 +32,10 @@
         h1 { font-family: 'Roboto Mono'; font-size: 69px; font-weight: 600; letter-spacing: -3px; line-height: 0.8; margin: 0 0 4px -2px; }
         h2 { font-family: 'Roboto Mono'; font-size: 26px; font-weight: 500; letter-spacing: -2px; line-height: 1; }
         h3 { font-family: 'Roboto Mono'; font-size: 13px; font-weight: 400; letter-spacing: 0px; line-height: 1; text-transform: uppercase; }
-        h4 { font-family: 'Roboto Mono'; color: hsl(0, 0%, 50%); font-size: 8px; font-weight: 600; letter-spacing: 1px; line-height: 1; }
-        h5 { font-family: 'Lato'; font-size: 15px; font-weight: 900; letter-spacing: 1px; line-height: 1; background-color: hsl( 0, 0%, 20%); color: hsl( 0, 0%, 100%); }
-        p { font-size: 14px; font-weight: 400; letter-spacing: 0; }
+        h4 { font-family: 'Roboto Mono'; color: hsl(0, 0%, 50%); font-size: 8px; font-weight: 600; letter-spacing: 0; line-height: 1; }
+        h5 { font-family: 'Roboto Mono'; font-size: 10px; font-weight: 600; letter-spacing: 0; line-height: 1; background-color: hsl( 0, 0%, 20%); color: hsl( 0, 0%, 90%); padding: 5px; }
+        p { font-size: 16px; font-weight: 400; letter-spacing: 0; }
+        a { text-decoration: none; }
         span { font-family: 'Roboto Mono'; font-size: 13px; font-weight: 400; letter-spacing: -1px; margin: 0 0 0 2px; }
     </style>
 </head>
@@ -41,7 +43,11 @@
 <body>
 
     <div class="container">
-        <div class="full-width" id="station"></div>
+        <div class="full-width">
+            <div id="github"><a href="https://github.com/jamiefletcher/weather-bob" target="_blank"><h5>GITHUB</h5></a></div>
+            <hr>
+            <div id="station"></div>
+        </div>
 
         <div class="third-width" id="weather"></div> 
 
@@ -50,7 +56,7 @@
         </div> 
 
         <div class="full-width">
-            <img class="bob" src="img/bob.png">
+            <img class="profilepic" src="img/bob.png">
             <div id="weather_description"></div>
         </div>
 
@@ -82,7 +88,10 @@
                 let index = 0;
                 let interval = 10000;
 
-                Object.keys(data).forEach((key, index) => {
+                const keys = Object.keys(data);
+                keys.sort(() => Math.random() - 0.5);
+
+                keys.forEach((key, index) => {
                     Object.entries(data[key]).forEach(([prop, value]) => {
                         if (prop === "geometry" && value.coordinates) {
                             // Store coordinates in the station object by index
@@ -109,15 +118,14 @@
                     });
                     
                     document.getElementById('station').innerHTML = `
-                        <hr>
                         <h4>STATION</h4><h1>${station["id"][index]}</h1>
                         <h3>${station["site"][index]}</h3>
                         <hr class="hr-thin">                        
                     `;
                     document.getElementById('weather').innerHTML = `
-                        <div class="column" style="border-right:1px solid hsl(0, 0%, 70%)"><h4>TEMP</h4><h2>${parseInt(station["temp"][index])}<span>°C</span></h2></div>
-                        <div class="column" style="border-right:1px solid hsl(0, 0%, 70%)"><h4>WIND</h4><h2>${parseInt(station["wspd_kmph"][index])}<span>km/h</span></h2></div>
-                        <div class="column"><h4>HUMIDITY</h4><h2>${parseInt(station["rh"][index])}<span>%</span></h2></div>
+                        <div class="column" style="border-right:1px solid hsl(0, 0%, 70%)"><h4>TEMP</h4><h2>${isNaN(parseInt(station["temp"][index])) ? '--' : parseInt(station["temp"][index])}<span>°C</span></h2></div>
+                        <div class="column" style="border-right:1px solid hsl(0, 0%, 70%)"><h4>WIND</h4><h2>${isNaN(parseInt(station["wspd_kmph"][index])) ? '--' : parseInt(station["wspd_kmph"][index])}<span>km/h</span></h2></div>
+                        <div class="column"><h4>HUMIDITY</h4><h2>${isNaN(parseInt(station["rh"][index])) ? '--' : parseInt(station["rh"][index])}<span>%</span></h2></div>
                     `;
                     document.getElementById('weather_description').innerHTML = `
                         <p>${station["weather_description"][index]}</p>
