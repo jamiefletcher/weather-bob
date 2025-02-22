@@ -2,27 +2,25 @@
 <html lang="en">
 
 <head>
-    <title>weather</title>
+    <title>bob</title>
     <meta property="og:description" content="weather-bob" />
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">    <script src='https://unpkg.com/maplibre-gl@5.0.1/dist/maplibre-gl.js'></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' />
+    <script src='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js'></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Lato', sans-serif; }
-        body { color: hsl(0, 0%, 20%); background-color: hsl(210, 20%, 95%); height: 100vh; width: 100vw; }
-        .container { display: flex; flex-direction: column; gap: 0; margin: 0 auto; max-width: 768px; }
-        .full-width { position: relative; justify-content: center; align-items: center; padding: 0 20px; }
-        .half-width { display: flex; flex-wrap: wrap; gap: 0; padding: 0 20px;}
-        .half-width .column { flex: 0 0 50%; margin: 0 auto;}
-        .quarter-width { display: flex; flex-wrap: wrap; gap: 0; padding: 0 20px;}
-        .quarter-width .column { flex: 0 0 25%; margin: 0 auto; }
-        .third-width { display: flex; flex-wrap: wrap; gap: 0; padding: 0 20px;}
+        body { color: hsl(0, 0%, 20%); background-color: hsl(210, 20%, 100%); height: 100%; width: 100%; }
+        .container { display: flex; flex-direction: column; gap: 0; width: 100%; }
+        .card { position: relative; justify-content: center; align-items: center; background-color: hsl(210, 20%, 90%); padding: 10px; margin: 5% auto; width: 90%; max-width: 768px; border-radius: 5px; }
+        .third-width { position: relative; display: flex; flex-wrap: wrap; gap: 0; }
         .third-width .column { flex: 0 0 33%; margin: 0 auto; padding: 0 5px; }
-        .profilepic{ height:75px; width:75px; background-color: hsl(0, 0%, 20%); border-radius: 50%; border: 5px solid hsl(0, 0%, 20%);}
-        #github { position: absolute; top: 10px; right: 20px; }
-        #weather_description { overflow-y: scroll; }
-        #map { background: url('img/bg1.png') no-repeat center center; background-size: contain; background-color: hsl(0, 0%, 100%); height: 190px; width: 190px; margin: 20px auto -30px auto; overflow: visible; border-radius: 50%; border: 5px solid hsl(0, 0%, 20%); pointer-events: none; }
+        .profilepic{ height:75px; width:75px; background-color: hsl(0, 0%, 20%); border-radius: 50%; margin: 20px 0 0 0;}
+        .weather_description { overflow-y: scroll; }
+        #github { position: absolute; top: -5px; right: 0; }
+        #map { position: absolute; top: -5px; right: -5px; background: url('img/bg1.png') no-repeat center center; background-size: contain; height: 110px; width: 110px; overflow: visible; border-radius: 50%; pointer-events: auto; z-index: 0; }
         .maplibregl-ctrl-bottom-right { display: none; } 
         @media (max-width: 768px) {
             .half-width .column { flex: 0 0 100%; }
@@ -30,11 +28,11 @@
         hr {border:none; height:5px; background-color: hsl( 0, 0%, 20%); margin: 5px 0 5px 0; }
         .hr-thin {border:none; height:2px; background-color: hsl( 0, 0%, 20%); margin: 5px 0 5px 0; }
         h1 { font-family: 'Roboto Mono'; font-size: 69px; font-weight: 600; letter-spacing: -3px; line-height: 0.8; margin: 0 0 4px -2px; }
-        h2 { font-family: 'Roboto Mono'; font-size: 26px; font-weight: 500; letter-spacing: -2px; line-height: 1; }
+        h2 { font-family: 'Roboto Mono'; font-size: 24px; font-weight: 500; letter-spacing: -2px; line-height: 1; }
         h3 { font-family: 'Roboto Mono'; font-size: 13px; font-weight: 400; letter-spacing: 0px; line-height: 1; text-transform: uppercase; }
-        h4 { font-family: 'Roboto Mono'; color: hsl(0, 0%, 50%); font-size: 8px; font-weight: 600; letter-spacing: 0; line-height: 1; }
-        h5 { font-family: 'Roboto Mono'; font-size: 10px; font-weight: 600; letter-spacing: 0; line-height: 1; background-color: hsl( 0, 0%, 20%); color: hsl( 0, 0%, 90%); padding: 5px; }
-        p { font-size: 16px; font-weight: 400; letter-spacing: 0; }
+        h4 { font-family: 'Roboto Mono'; color: hsl(0, 0%, 50%); font-size: 9px; font-weight: 600; letter-spacing: 0; line-height: 1; }
+        h5 { font-family: 'Roboto Mono'; font-size: 9px; font-weight: 700; letter-spacing: 0; line-height: 1; background-color: hsl( 0, 0%, 20%); color: hsl( 0, 0%, 90%); padding: 5px; }
+        p { font-size: 19px; font-weight: 400; letter-spacing: 0; }
         a { text-decoration: none; }
         span { font-family: 'Roboto Mono'; font-size: 13px; font-weight: 400; letter-spacing: -1px; margin: 0 0 0 2px; }
     </style>
@@ -43,19 +41,9 @@
 <body>
 
     <div class="container">
-        <div class="full-width">
-            <div id="github"><a href="https://github.com/jamiefletcher/weather-bob" target="_blank"><h5>GITHUB</h5></a></div>
-            <hr>
-            <div id="station"></div>
-        </div>
-
-        <div class="third-width" id="weather"></div> 
-
-        <div class="full-width">
+        <div class="card">
             <div id="map"></div>
-        </div> 
-
-        <div class="full-width">
+            <div id="station"></div>
             <img class="profilepic" src="img/bob.png">
             <div id="weather_description"></div>
         </div>
@@ -66,11 +54,10 @@
 
         const map = new maplibregl.Map({
             container: 'map',
-            style: 'weather-bob.json',
+            style: 'https://raw.githubusercontent.com/jamiefletcher/weather-bob/refs/heads/main/weather-bob.json',
             center: [137.9150899566626, 36.25956997955441],
             zoom: 0,
-            minzoom: 0,
-            antialias: true
+            minzoom: 0
         });
 
         function getAdjustedZoom(latitude, baseZoom = 0) {
@@ -118,14 +105,16 @@
                     });
                     
                     document.getElementById('station').innerHTML = `
+                        <hr>
                         <h4>STATION</h4><h1>${station["id"][index]}</h1>
                         <h3>${station["site"][index]}</h3>
-                        <hr class="hr-thin">                        
-                    `;
-                    document.getElementById('weather').innerHTML = `
-                        <div class="column" style="border-right:1px solid hsl(0, 0%, 70%)"><h4>TEMP</h4><h2>${isNaN(parseInt(station["temp"][index])) ? '--' : parseInt(station["temp"][index])}<span>°C</span></h2></div>
-                        <div class="column" style="border-right:1px solid hsl(0, 0%, 70%)"><h4>WIND</h4><h2>${isNaN(parseInt(station["wspd_kmph"][index])) ? '--' : parseInt(station["wspd_kmph"][index])}<span>km/h</span></h2></div>
-                        <div class="column"><h4>HUMIDITY</h4><h2>${isNaN(parseInt(station["rh"][index])) ? '--' : parseInt(station["rh"][index])}<span>%</span></h2></div>
+                        <hr class="hr-thin">
+                        <div class="third-width">
+                            <div id="github"><a href="https://github.com/jamiefletcher/weather-bob" target="_blank"><h5>GITHUB</h5></a></div>
+                            <div class="column" style="border-right:1px solid hsl(0, 0%, 70%)"><h4>TEMP</h4><h2>${isNaN(parseInt(station["temp"][index])) ? '--' : parseInt(station["temp"][index])}<span>°C</span></h2></div>
+                            <div class="column" style="border-right:1px solid hsl(0, 0%, 70%)"><h4>WIND</h4><h2>${isNaN(parseInt(station["wspd_kmph"][index])) ? '--' : parseInt(station["wspd_kmph"][index])}<span>km/h</span></h2></div>
+                            <div class="column"><h4>HUMIDITY</h4><h2>${isNaN(parseInt(station["rh"][index])) ? '--' : parseInt(station["rh"][index])}<span>%</span></h2></div>
+                        </div>
                     `;
                     document.getElementById('weather_description').innerHTML = `
                         <p>${station["weather_description"][index]}</p>
