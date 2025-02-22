@@ -15,12 +15,14 @@
         body { color: hsl(0, 0%, 20%); background-color: hsl(210, 20%, 100%); height: 100%; width: 100%; }
         .container { display: flex; flex-direction: column; gap: 0; width: 100%; }
         .card { position: relative; justify-content: center; align-items: center; background-color: hsl(210, 20%, 90%); padding: 10px; margin: 5% auto; width: 90%; max-width: 768px; border-radius: 5px; }
-        .third-width { position: relative; display: flex; flex-wrap: wrap; gap: 0; }
-        .third-width .column { flex: 0 0 33%; margin: 0 auto; padding: 0 5px; }
+        .third-width { position: relative; display: flex; flex-wrap: wrap; gap: 0; width: 60%; }
+        .third-width .column { flex: 0 0 33%; margin: 0 auto; padding: 0 0 0 5px; }
         .profilepic{ height:75px; width:75px; background-color: hsl(0, 0%, 20%); border-radius: 50%; margin: 20px 0 0 0;}
         .weather_description { overflow-y: scroll; }
-        #github { position: absolute; top: -5px; right: 0; }
-        #map { position: absolute; top: -5px; right: -5px; background: url('img/bg1.png') no-repeat center center; background-size: contain; height: 110px; width: 110px; overflow: visible; border-radius: 50%; pointer-events: auto; z-index: 0; }
+        #github { position: absolute; top: 15px; right: 5px; }
+        #map-container { height: 100%; width: 100%; top: -10px; right: -60px; position: relative; }
+        #map-background { height: 250px; width: 250px; top: 100%; right: 0%; transform: translate(-50%, 50%); transform: scale(0.5); transform-origin: center; position: absolute; background: url('img/bg1.png') no-repeat center center; background-size: contain; border-radius: 50%; }
+        #map { height: 250px; width: 250px; top: 100%; right: 0%; transform: translate(-50%, 50%); transform: scale(0.6); transform-origin: center; position: absolute; pointer-events: none; z-index: 100; }
         .maplibregl-ctrl-bottom-right { display: none; } 
         @media (max-width: 768px) {
             .half-width .column { flex: 0 0 100%; }
@@ -28,13 +30,13 @@
         hr {border:none; height:5px; background-color: hsl( 0, 0%, 20%); margin: 5px 0 5px 0; }
         .hr-thin {border:none; height:2px; background-color: hsl( 0, 0%, 20%); margin: 5px 0 5px 0; }
         h1 { font-family: 'Roboto Mono'; font-size: 69px; font-weight: 600; letter-spacing: -3px; line-height: 0.8; margin: 0 0 4px -2px; }
-        h2 { font-family: 'Roboto Mono'; font-size: 24px; font-weight: 500; letter-spacing: -2px; line-height: 1; }
-        h3 { font-family: 'Roboto Mono'; font-size: 13px; font-weight: 400; letter-spacing: 0px; line-height: 1; text-transform: uppercase; }
-        h4 { font-family: 'Roboto Mono'; color: hsl(0, 0%, 50%); font-size: 9px; font-weight: 600; letter-spacing: 0; line-height: 1; }
-        h5 { font-family: 'Roboto Mono'; font-size: 9px; font-weight: 700; letter-spacing: 0; line-height: 1; background-color: hsl( 0, 0%, 20%); color: hsl( 0, 0%, 90%); padding: 5px; }
+        h2 { font-family: 'Roboto Mono'; font-size: 13px; font-weight: 500; letter-spacing: -2px; line-height: 1; }
+        h3 { font-family: 'Roboto Mono'; font-size: 11px; font-weight: 400; letter-spacing: 0px; line-height: 1; text-transform: uppercase; }
+        h4 { font-family: 'Roboto Mono'; font-size: 8px; font-weight: 600; letter-spacing: 0; line-height: 1; color: hsl(0, 0%, 50%); }
+        h5 { font-family: 'Roboto Mono'; font-size: 8px; font-weight: 700; letter-spacing: 0; line-height: 1; background-color: hsl( 0, 0%, 20%); color: hsl( 0, 0%, 90%); padding: 5px; }
         p { font-size: 19px; font-weight: 400; letter-spacing: 0; }
         a { text-decoration: none; }
-        span { font-family: 'Roboto Mono'; font-size: 13px; font-weight: 400; letter-spacing: -1px; margin: 0 0 0 2px; }
+        span { font-family: 'Roboto Mono'; font-size: 10px; font-weight: 400; letter-spacing: 0; margin: 0 0 0 2px; }
     </style>
 </head>
 
@@ -42,8 +44,13 @@
 
     <div class="container">
         <div class="card">
-            <div id="map"></div>
+            <div id="github"><a href="https://github.com/jamiefletcher/weather-bob" target="_blank"><h5>GITHUB</h5></a></div>
+            <div id="map-container">
+                <div id="map"></div>
+                <div id="map-background"></div>
+            </div>
             <div id="station"></div>
+
             <img class="profilepic" src="img/bob.png">
             <div id="weather_description"></div>
         </div>
@@ -106,11 +113,10 @@
                     
                     document.getElementById('station').innerHTML = `
                         <hr>
-                        <h4>STATION</h4><h1>${station["id"][index]}</h1>
-                        <h3>${station["site"][index]}</h3>
+                        <h4>${station["site"][index]}</h4>
+                        <h1>${station["id"][index]}</h1>
                         <hr class="hr-thin">
                         <div class="third-width">
-                            <div id="github"><a href="https://github.com/jamiefletcher/weather-bob" target="_blank"><h5>GITHUB</h5></a></div>
                             <div class="column" style="border-right:1px solid hsl(0, 0%, 70%)"><h4>TEMP</h4><h2>${isNaN(parseInt(station["temp"][index])) ? '--' : parseInt(station["temp"][index])}<span>°C</span></h2></div>
                             <div class="column" style="border-right:1px solid hsl(0, 0%, 70%)"><h4>WIND</h4><h2>${isNaN(parseInt(station["wspd_kmph"][index])) ? '--' : parseInt(station["wspd_kmph"][index])}<span>km/h</span></h2></div>
                             <div class="column"><h4>HUMIDITY</h4><h2>${isNaN(parseInt(station["rh"][index])) ? '--' : parseInt(station["rh"][index])}<span>%</span></h2></div>
