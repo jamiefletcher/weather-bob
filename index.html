@@ -49,7 +49,7 @@
             border: 3px solid hsl(0, 0%, 90%);
             background-color: hsl(0, 0%, 0%);
             background-position: center;
-            background-repeat: no-repeat; 
+            background-repeat: no-repeat;
         }
 
         #info {
@@ -134,38 +134,38 @@
         map.on('load', () => {
 
             function printCountryAtCenter() {
-    const center = map.getCenter();
-    const point = map.project(center);
+                const center = map.getCenter();
+                const point = map.project(center);
 
-    const features = map.queryRenderedFeatures(point, {
-        layers: ['countries']
-    });
+                const features = map.queryRenderedFeatures(point, {
+                    layers: ['countries']
+                });
 
-    const infoDiv = document.getElementById('info');
+                const infoDiv = document.getElementById('info');
 
-    if (features.length > 0) {
-        const props = features[0].properties;
-        const entries = Object.entries(props);
+                if (features.length > 0) {
+                    const props = features[0].properties;
+                    const entries = Object.entries(props);
 
-        // Calculate column widths
-        const keyWidth = Math.max(...entries.map(([k]) => k.length));
-        const valWidth = Math.max(...entries.map(([, v]) => String(v).length));
-        const totalWidth = keyWidth + valWidth + 5;
+                    // Calculate column widths
+                    const keyWidth = Math.max(...entries.map(([k]) => k.length));
+                    const valWidth = Math.max(...entries.map(([, v]) => String(v).length));
+                    const totalWidth = keyWidth + valWidth + 5;
 
-        const pad = (str, len) => str.toString().padEnd(len, ' ');
+                    const pad = (str, len) => str.toString().padEnd(len, ' ');
 
-        let lines = [];
-        lines.push('+' + '-'.repeat(keyWidth + 2) + '+' + '-'.repeat(valWidth + 2) + '+');
-        for (const [key, value] of entries) {
-            lines.push(`| ${pad(key, keyWidth)} | ${pad(value, valWidth)} |`);
-        }
-        lines.push('+' + '-'.repeat(keyWidth + 2) + '+' + '-'.repeat(valWidth + 2) + '+');
+                    let lines = [];
+                    lines.push('+' + '-'.repeat(keyWidth + 2) + '+' + '-'.repeat(valWidth + 2) + '+');
+                    for (const [key, value] of entries) {
+                        lines.push(`| ${pad(key, keyWidth)} | ${pad(value, valWidth)} |`);
+                    }
+                    lines.push('+' + '-'.repeat(keyWidth + 2) + '+' + '-'.repeat(valWidth + 2) + '+');
 
-        infoDiv.innerHTML = `<pre style="font-size: 10px; font-family: monospace;">${lines.join('\n')}</pre>`;
-    } else {
-        infoDiv.textContent = 'No country at center';
-    }
-}
+                    infoDiv.innerHTML = `<pre style="font-size: 10px; font-family: monospace;">${lines.join('\n')}</pre>`;
+                } else {
+                    infoDiv.textContent = 'No country at center';
+                }
+            }
 
             //map.on('moveend', printCountryAtCenter);
             //printCountryAtCenter(); // initial print
