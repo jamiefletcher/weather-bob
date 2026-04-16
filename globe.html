@@ -92,24 +92,24 @@
                 }
             });
 
-        });
-
-        // Add the gdps layer
-        map.addLayer({
-            id: "gdps-layer",
-            type: "raster",
-            source: "gdps",
-            minzoom: 0,
-            maxzoom: 4,
-            paint: {
-                'raster-opacity': [
-                    'interpolate',
-                    ['linear'],
-                    ['zoom'],
-                    3, 1,
-                    4, 0
-                ]
-            }
+            // Add the gdps layer
+            map.addLayer({
+                id: "gdps-layer",
+                type: "raster",
+                source: "gdps",
+                minzoom: 0,
+                maxzoom: 4,
+                paint: {
+                    'raster-opacity': [
+                        'interpolate',
+                        ['linear'],
+                        ['zoom'],
+                        3, 1,
+                        4, 0
+                    ]
+                }
+            });
+            
         });
 
         //map.dragRotate.disable();
