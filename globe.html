@@ -49,6 +49,13 @@
                 tileSize: 256
             });
 
+            // Add the gdps source
+            map.addSource('gdps', {
+                type: "raster",
+                tiles: ["data/gdps/tiles/{z}/{x}/{y}.png"],
+                tileSize: 256
+            });
+
             // Add the Natural Earth layer
             map.addLayer({
                 id: "naturalearth-layer",
@@ -85,6 +92,24 @@
                 }
             });
 
+        });
+
+        // Add the gdps layer
+        map.addLayer({
+            id: "gdps-layer",
+            type: "raster",
+            source: "gdps",
+            minzoom: 0,
+            maxzoom: 4,
+            paint: {
+                'raster-opacity': [
+                    'interpolate',
+                    ['linear'],
+                    ['zoom'],
+                    3, 1,
+                    4, 0
+                ]
+            }
         });
 
         //map.dragRotate.disable();
