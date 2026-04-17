@@ -7,16 +7,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
-    <link href="style.css" rel="stylesheet" />
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
+}
 
+html, body {
+    height: 100%;
+}
+
+body {
+    color: hsl(0, 0%, 20%);
+    background-color: hsl(210, 20%, 100%);
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+#map-container {
+    position: relative;
+    flex: 1;
+}
+
+#map {
+    position: absolute;
+    inset: 0;
+}
+    </style>
 </head>
 
 <body>
-
-    <div id="map"></div>
+    <div class="container">
+        <div id="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
 
     <script>
-        // Define the GDPS tiles URL as a variable
+        // GDPS tiles
         const gdpsTilesUrl = "data/gdps/tiles/{z}/{x}/{y}.png";
 
         const map = new maplibregl.Map({
@@ -111,13 +145,70 @@
                         3, 1,
                         4, 0
                     ],
-                    "raster-brightness-min": 0.2,
+                    "raster-brightness-min": 0.1,
                     "raster-brightness-max": 0.9,
-                    "raster-contrast": 0.6
+                    "raster-contrast": 0.6,
+                    "raster-opacity": 0.7
                 }
             });
-            
+
         });
+
+        function getAdjustedZoom(latitude, baseZoom = 0) {
+            return baseZoom + Math.log2(Math.cos(latitude * Math.PI / 180));
+        }
+
+        async function loadMetars() {
+            const res = await fetch('data/metars/metars.csv');
+            const text = await res.text();
+
+            const lines = text.trim().split('\n');
+            const headers = lines[0].split(',').map(h => h.trim());
+
+            return lines.slice(1).map(line => {
+                const cols = line.split(',');
+
+                const obj = {};
+                headers.forEach((h, i) => {
+                    obj[h] = cols[i];
+                });
+
+                return obj;
+            });
+        }
+
+        function panMap(stations) {
+            let index = 0;
+
+            function panToStation() {
+                const s = stations[index];
+                if (!s) return;
+
+                const lat = parseFloat(s.latitude);
+                const lon = parseFloat(s.longitude);
+
+                if (Number.isFinite(lat) && Number.isFinite(lon)) {
+                    map.panTo([lon, lat], {
+                        duration: 1000,
+                        easing: t => t,
+                        animate: true,
+                        zoom: getAdjustedZoom(lat, 0)
+                    });
+                }
+
+                index = (index + 1) % stations.length;
+            }
+
+            panToStation();
+            return setInterval(panToStation, 3000);
+        }
+
+        async function animateGlobe() {
+            const metars = await loadMetars();
+            panMap(metars);
+        }
+
+        animateGlobe();
 
         //map.dragRotate.disable();
         //map.scrollZoom.disable();

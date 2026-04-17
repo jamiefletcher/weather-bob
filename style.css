@@ -9,6 +9,20 @@ body,
     height: 100%;
 }
 
+#map-wrapper {
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  background: radial-gradient(
+    circle at bottom,
+    hsla(210, 100%, 100%, 1) 0%,
+    hsla(210, 95%, 95%, 1) 100%
+  );
+  overflow: hidden;
+}
+
 #map {
-    position: relative;
+  position: absolute;
+  inset: 0;
+  transform: translateY(50%);
 }
