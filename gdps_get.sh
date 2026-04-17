@@ -2,38 +2,58 @@
 
 ### CONFIG
 RUN="00"
-DATE=$(date +%Y%m%d)  # Current date
+DATE=$(date -u +%Y%m%d)
 BASE_URL="https://dd.weather.gc.ca/today/model_gdps/15km"
 OUT_DIR="data/gdps"
 
-# Remove existing directory and recreate
 rm -rf "${OUT_DIR}"
 mkdir -p "${OUT_DIR}"
 
-### FUNCTIONS
 download_file() {
     local url="$1"
     local path="$2"
-    if [[ -f "$path" ]]; then
-        # File exists, skip
-        return 0
-    fi
+
     echo "Downloading: $url"
-    # Use curl with -f to fail silently on 404s, -L to follow redirects, -o to specify output file
     curl -f -L -o "$path" "$url"
-    # Check if curl was successful (exit code 0)
-    if [[ $? -eq 0 ]]; then
-        return 0
-    else
-        # Optionally print an error message if download failed
-        # echo "Failed to download: $url"
-        return 1
-    fi
 }
 
-for h in $(seq -f "%03g" 0 1 24); do  # Loop from 3 to 240, incrementing by 3, format as 0-padded 3-digit
-    grib_file="${OUT_DIR}/${h}.grib2"
-    # Construct URL inside the loop
+# --- download 000 first ---
+h="000"
+url="${BASE_URL}/${RUN}/${h}/${DATE}T${RUN}Z_MSC_GDPS_TotalCloudCover_Sfc_LatLon0.15_PT${h}H.grib2"
+tmp_file="${OUT_DIR}/tmp_${h}.grib2"
+
+download_file "$url" "$tmp_file" || exit 1
+
+# --- extract reference time once ---
+REF_TS=$(gdalinfo "$tmp_file" | awk -F= '/GRIB_REF_TIME/ {print $2}' | tr -d ' ')
+
+if [[ -z "$REF_TS" ]]; then
+    echo "Failed to read GRIB_REF_TIME"
+    exit 1
+fi
+
+# process 000
+VALID_TS=$REF_TS
+UTC_DATE=$(date -u -d "@$VALID_TS" +%Y%m%d)
+UTC_HOUR=$(date -u -d "@$VALID_TS" +%H)
+mv "$tmp_file" "${OUT_DIR}/utc_${UTC_DATE}_${UTC_HOUR}.grib2"
+
+# --- loop remaining hours ---
+for h in $(seq -f "%03g" 1 1 24); do
+
     url="${BASE_URL}/${RUN}/${h}/${DATE}T${RUN}Z_MSC_GDPS_TotalCloudCover_Sfc_LatLon0.15_PT${h}H.grib2"
-    download_file "$url" "$grib_file"
+
+    FH=$((10#$h))
+
+    VALID_TS=$((REF_TS + FH * 3600))
+
+    UTC_DATE=$(date -u -d "@$VALID_TS" +%Y%m%d)
+    UTC_HOUR=$(date -u -d "@$VALID_TS" +%H)
+
+    final_file="${OUT_DIR}/utc_${UTC_DATE}_${UTC_HOUR}.grib2"
+
+    download_file "$url" "$final_file" || continue
+
+    echo "Saved: $final_file"
+
 done
