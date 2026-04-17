@@ -8,37 +8,38 @@
     <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
     <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Lato', sans-serif;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Lato', sans-serif;
+        }
 
-html, body {
-    height: 100%;
-}
+        html,
+        body {
+            height: 100%;
+        }
 
-body {
-    color: hsl(0, 0%, 20%);
-    background-color: hsl(210, 20%, 100%);
-}
+        body {
+            color: hsl(0, 0%, 20%);
+            background-color: hsl(210, 20%, 100%);
+        }
 
-.container {
-    height: 100%;
-    width: 100%;
-    display: flex;
-}
+        .container {
+            height: 100%;
+            width: 100%;
+            display: flex;
+        }
 
-#map-container {
-    position: relative;
-    flex: 1;
-}
+        #map-container {
+            position: relative;
+            flex: 1;
+        }
 
-#map {
-    position: absolute;
-    inset: 0;
-}
+        #map {
+            position: absolute;
+            inset: 0;
+        }
     </style>
 </head>
 
@@ -159,22 +160,68 @@ body {
         }
 
         async function loadMetars() {
+            const CITY_STATIONS = [
+                "Toronto, CYYZ",
+                "Vancouver, CYVR",
+                "Montreal, CYUL",
+                "Calgary, CYYC",
+                "Edmonton, CYEG",
+
+                "New York, KJFK",
+                "Los Angeles, KLAX",
+                "Chicago, KORD",
+                "San Francisco, KSFO",
+                "Miami, KMIA",
+
+                "London, EGLL",
+                "Paris, LFPG",
+                "Berlin, EDDB",
+                "Madrid, LEMD",
+                "Rome, LIRF",
+
+                "Tokyo, RJTT",
+                "Seoul, RKSI",
+                "Beijing, ZBAA",
+                "Shanghai, ZSPD",
+                "Hong Kong, VHHH",
+
+                "Sydney, YSSY",
+                "Melbourne, YMML",
+                "Singapore, WSSS",
+                "Dubai, OMDB",
+                "Istanbul, LTFM"
+            ];
+
+            const CITY_SET = new Set(
+                CITY_STATIONS.map(s => s.split(",")[1].trim())
+            );
+
             const res = await fetch('data/metars/metars.csv');
             const text = await res.text();
 
             const lines = text.trim().split('\n');
             const headers = lines[0].split(',').map(h => h.trim());
 
-            return lines.slice(1).map(line => {
-                const cols = line.split(',');
+            let stations = lines.slice(1)
+                .map(line => {
+                    const cols = line.split(',');
 
-                const obj = {};
-                headers.forEach((h, i) => {
-                    obj[h] = cols[i];
-                });
+                    const obj = {};
+                    headers.forEach((h, i) => {
+                        obj[h] = cols[i];
+                    });
 
-                return obj;
-            });
+                    return obj;
+                })
+                .filter(s => CITY_SET.has(s.station_id));
+
+            // shuffle AFTER filtering
+            for (let i = stations.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [stations[i], stations[j]] = [stations[j], stations[i]];
+            }
+
+            return stations;
         }
 
         function panMap(stations) {
