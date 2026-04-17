@@ -39,6 +39,8 @@
         #map {
             position: absolute;
             inset: 0;
+            opacity: 0;
+            transition: opacity 500ms ease;
         }
     </style>
 </head>
@@ -65,8 +67,7 @@
                 layers: []
             },
             center: [0, 20],
-            zoom: 0,
-            maxzoom: 18,
+            zoom: 1,
             hash: false,
             fitBounds: [[-180, -85], [180, 85]]
         });
@@ -222,36 +223,46 @@
         }
 
         function panMap(stations) {
-            let index = 0;
-
             if (!stations.length) return;
 
-            function panToNext() {
+            let index = 0;
+            const el = map.getContainer();
+
+            // start at first valid station
+            while (index < stations.length) {
+                const lat = parseFloat(stations[index].latitude);
+                const lon = parseFloat(stations[index].longitude);
+
+                if (Number.isFinite(lat) && Number.isFinite(lon)) {
+                    map.jumpTo({ center: [lon, lat] });
+                    el.style.opacity = 1;
+                    break;
+                }
+                index++;
+            }
+
+            function step() {
                 const s = stations[index];
-                if (!s) return;
+                index = (index + 1) % stations.length;
 
                 const lat = parseFloat(s.latitude);
                 const lon = parseFloat(s.longitude);
 
-                index = (index + 1) % stations.length;
-
                 if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
-                    panToNext(); // skip bad row
+                    step();
                     return;
                 }
 
-                map.panTo([lon, lat], {
-                    duration: 1500,
-                    easing: t => t
-                });
+                el.style.opacity = 0;
 
-                // wait for move to finish, then schedule next
-                map.once('moveend', () => {
-                    setTimeout(panToNext, 3000);
-                });
+                setTimeout(() => {
+                    map.jumpTo({ center: [lon, lat] });
+                    el.style.opacity = 1;
+                }, 500); // must match CSS transition duration
             }
 
-            panToNext();
+            step();
+            setInterval(step, 4000);
         }
 
         async function animateGlobe() {
