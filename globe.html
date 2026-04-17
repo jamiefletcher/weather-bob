@@ -148,10 +148,12 @@
                     ],
                     "raster-brightness-min": 0.1,
                     "raster-brightness-max": 0.9,
-                    "raster-contrast": 0.6,
-                    "raster-opacity": 0.7
+                    "raster-contrast": 0.6
                 }
             });
+
+            map.setPaintProperty('gdps-layer', 'raster-fade-duration', 0);
+            map.setRenderWorldCopies(false);
 
         });
 
@@ -227,10 +229,14 @@
         function panMap(stations) {
             let index = 0;
 
-            function panToStation() {
-                const s = stations[index];
-                if (!s) return;
+            let isMoving = false;
 
+            function panToStation() {
+                if (isMoving) return;
+
+                isMoving = true;
+
+                const s = stations[index];
                 const lat = parseFloat(s.latitude);
                 const lon = parseFloat(s.longitude);
 
@@ -238,12 +244,15 @@
                     map.panTo([lon, lat], {
                         duration: 1000,
                         easing: t => t,
-                        animate: true,
                         zoom: getAdjustedZoom(lat, 0)
                     });
                 }
 
                 index = (index + 1) % stations.length;
+
+                setTimeout(() => {
+                    isMoving = false;
+                }, 1000);
             }
 
             panToStation();
