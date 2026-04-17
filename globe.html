@@ -65,7 +65,7 @@
                 layers: []
             },
             center: [0, 20],
-            zoom: 1,
+            zoom: 0,
             maxzoom: 18,
             hash: false,
             fitBounds: [[-180, -85], [180, 85]]
@@ -156,13 +156,6 @@
             map.setRenderWorldCopies(false);
         });
 
-        function getAdjustedZoom(latitude, baseZoom = 0) {
-            const cos = Math.cos(latitude * Math.PI / 180);
-            const safe = Math.max(cos, 0.2); // clamp
-
-            return baseZoom + Math.log2(safe);
-        }
-
         async function loadMetars() {
             const CITY_STATIONS = [
                 "Toronto, CYYZ",
@@ -248,13 +241,13 @@
                 }
 
                 map.panTo([lon, lat], {
-                    duration: 1000,
+                    duration: 1500,
                     easing: t => t
                 });
 
                 // wait for move to finish, then schedule next
                 map.once('moveend', () => {
-                    setTimeout(panToNext, 2000);
+                    setTimeout(panToNext, 3000);
                 });
             }
 
