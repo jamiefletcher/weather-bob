@@ -95,22 +95,22 @@
             });
 
             // Add the OSM layer
-            map.addLayer({
-                id: "osm-layer",
-                type: "raster",
-                source: "osm",
-                minzoom: 2,
-                maxzoom: 18,
-                paint: {
-                    'raster-opacity': [
-                        'interpolate',
-                        ['linear'],
-                        ['zoom'],
-                        3, 0,
-                        4, 1
-                    ]
-                }
-            });
+            // map.addLayer({
+            //     id: "osm-layer",
+            //     type: "raster",
+            //     source: "osm",
+            //     minzoom: 2,
+            //     maxzoom: 18,
+            //     paint: {
+            //         'raster-opacity': [
+            //             'interpolate',
+            //             ['linear'],
+            //             ['zoom'],
+            //             3, 0,
+            //             4, 1
+            //         ]
+            //     }
+            // });
 
             // Add the Natural Earth layer
             map.addLayer({
@@ -148,17 +148,19 @@
                     ],
                     "raster-brightness-min": 0.1,
                     "raster-brightness-max": 0.9,
-                    "raster-contrast": 0.6
+                    "raster-contrast": 0.6,
+                    "raster-opacity": 0.7
                 }
             });
 
-            map.setPaintProperty('gdps-layer', 'raster-fade-duration', 0);
             map.setRenderWorldCopies(false);
-
         });
 
         function getAdjustedZoom(latitude, baseZoom = 0) {
-            return baseZoom + Math.log2(Math.cos(latitude * Math.PI / 180));
+            const cos = Math.cos(latitude * Math.PI / 180);
+            const safe = Math.max(cos, 0.2); // clamp
+
+            return baseZoom + Math.log2(safe);
         }
 
         async function loadMetars() {
@@ -229,34 +231,34 @@
         function panMap(stations) {
             let index = 0;
 
-            let isMoving = false;
+            if (!stations.length) return;
 
-            function panToStation() {
-                if (isMoving) return;
-
-                isMoving = true;
-
+            function panToNext() {
                 const s = stations[index];
+                if (!s) return;
+
                 const lat = parseFloat(s.latitude);
                 const lon = parseFloat(s.longitude);
 
-                if (Number.isFinite(lat) && Number.isFinite(lon)) {
-                    map.panTo([lon, lat], {
-                        duration: 1000,
-                        easing: t => t,
-                        zoom: getAdjustedZoom(lat, 0)
-                    });
-                }
-
                 index = (index + 1) % stations.length;
 
-                setTimeout(() => {
-                    isMoving = false;
-                }, 1000);
+                if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+                    panToNext(); // skip bad row
+                    return;
+                }
+
+                map.panTo([lon, lat], {
+                    duration: 1000,
+                    easing: t => t
+                });
+
+                // wait for move to finish, then schedule next
+                map.once('moveend', () => {
+                    setTimeout(panToNext, 2000);
+                });
             }
 
-            panToStation();
-            return setInterval(panToStation, 3000);
+            panToNext();
         }
 
         async function animateGlobe() {
