@@ -8,20 +8,22 @@
 <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
 <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,600,900" rel="stylesheet">
 
 <style>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Montserrat',sans-serif;
+    font-family: 'Lato',sans-serif;
     color: hsl(0, 0%, 40%);
 }
 
 html, body {
     height: 100%;
     width: 100%;
-    line-height: 0.9;
+    line-height: 1;
 }
 
 .container {
@@ -32,11 +34,12 @@ html, body {
 #map-container {
     position: relative;
     height: 30%;
+    width: 100%;
     overflow: hidden;
     background: radial-gradient(
-        circle at 50% 100%,
+        circle at 0% 50%,
         var(--weather-color),
-        transparent 80%
+        transparent 30%
     );
 }
 
@@ -46,17 +49,29 @@ html, body {
 }
 
 #hud {
-    display: flex;
     position: absolute;
+    display: flex;    
+    justify-content: space-between;
     inset: 0;
     padding: 20px;
-    z-index: 1
+    z-index: 1;
+    pointer-events: none;
 }
 
 #hud-left,
 #hud-right {
-    flex: 1;
     position: relative;
+    flex: 1;
+}
+
+#hud-left {
+    margin-right: auto;
+    text-align: left;
+}
+
+#hud-right {
+    margin-left: auto;
+    text-align: right;
 }
 
 .maplibregl-ctrl-bottom-right {
@@ -64,9 +79,9 @@ html, body {
 }
 
 h1 {
-    font-size: 60px;
+    font-size: 40px;
     font-weight: 300;
-    letter-spacing: -5px;
+    letter-spacing: -2px;
 }
 
 h2 {
@@ -77,6 +92,11 @@ h3 {
     font-weight: 400;
 }
 
+h4 {
+    font-size: 9px;
+    font-weight: 300;
+    line-height: 1.8;
+}
 
 .degree {
     font-size: 0.5em;
@@ -88,7 +108,12 @@ h3 {
 /* DESKTOP */
 @media (min-width: 1024px) {
     h1 {
-        font-size: 120px;
+        font-size: 90px;
+        line-height: 0.9;
+    }
+    
+    h3 {
+        font-size: 30px;
     }
 }
 </style>
@@ -103,7 +128,8 @@ h3 {
                 <div id="hud-city"></div>
                 <div id="hud-temp"></div>
             </div>
-            <div id="hud-right"></div>
+            <div id="hud-right">
+            </div>
         </div>
 
         <div id="map"></div>
@@ -202,7 +228,7 @@ function shuffle(a) {
 // =========================
 function updateHUD(s) {
     document.getElementById("hud-city").innerHTML =
-        `<h3>${s.city}</h3>`;
+        `<h4>WORLD WEATHER</h4><h3>${s.city}</h3>`;
 
     document.getElementById("hud-temp").innerHTML =
         `<h1>${Math.round(s.temp)}<span class="degree">°</span></h1>`;
@@ -323,7 +349,7 @@ async function start() {
             type: "raster",
             source: "gdps",
             paint: {
-                'raster-opacity': 0.7,
+                'raster-opacity': 0.5,
                 'raster-contrast': 0.6
             }
         });
