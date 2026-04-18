@@ -30,7 +30,7 @@ html, body {
 
 #map-container {
     position: relative;
-    height: 50%;
+    height: 30%;
     overflow: hidden;
     background: radial-gradient(
         circle at 50% 100%,
@@ -42,17 +42,14 @@ html, body {
 #map {
     position: absolute;
     inset: 0;
-    top: 50%;
-    height: 100%;
 }
 
 #hud {
     display: flex;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    inset: 0;
     padding: 20px;
+    z-index: 1
 }
 
 #hud-left,
@@ -66,7 +63,7 @@ html, body {
 }
 
 h1 {
-    font-size: 90px;
+    font-size: 60px;
     font-weight: 300;
     letter-spacing: -5px;
 }
@@ -85,7 +82,7 @@ h2 {
 /* DESKTOP */
 @media (min-width: 1024px) {
     h1 {
-        font-size: 200px;
+        font-size: 120px;
     }
 }
 </style>
@@ -110,7 +107,7 @@ h2 {
 
 <script>
 // =========================
-// CITY DATA
+// CONFIG
 // =========================
 const CITY_STATIONS = [
     ["Toronto", "CYYZ"],
@@ -143,6 +140,10 @@ const CITY_STATIONS = [
 const CITY_MAP = new Map(
     CITY_STATIONS.map(([city, code]) => [code, city])
 );
+
+const INITIAL_DELAY = 2000
+const PAN_DURATION = 4000
+const STEP_DELAY = 5000
 
 // =========================
 // GLOBAL MAP
@@ -202,19 +203,31 @@ function updateHUD(s) {
 }
 
 // =========================
-// GRADIENT
+// BACKGROUND GRADIENT
 // =========================
+const TEMP_COLOR_MAP = [
+    [-30, -15, "hsla(220, 90%, 75%, 0.5)"],
+    [-15,   0, "hsla(210, 85%, 78%, 0.5)"],
+    [  0,  10, "hsla(200, 80%, 82%, 0.5)"],
+    [ 10,  18, "hsla(190, 60%, 85%, 0.5)"],
+    [ 18,  24, "hsla(40, 80%, 80%, 0.5)"],
+    [ 24,  30, "hsla(30, 85%, 70%, 0.5)"],
+    [ 30, 100, "hsla(10, 90%, 65%, 0.5)"]
+];
+
 function updateGradient(s) {
+    const temp = parseFloat(s.temp);
 
-    const t = Number.isFinite(s.temp) ? s.temp : 10;
+    let color = "hsl(200, 80%, 85%)"; // fallback
 
-    const hue = 220 - (t * 2);
-    const color = `hsl(${hue}, 80%, 85%)`;
+    for (const [min, max, c] of TEMP_COLOR_MAP) {
+        if (temp >= min && temp < max) {
+            color = c;
+            break;
+        }
+    }
 
-    document.documentElement.style.setProperty(
-        '--weather-color',
-        color
-    );
+    document.documentElement.style.setProperty('--weather-color', color);
 }
 
 // =========================
@@ -235,18 +248,18 @@ function panMap(stations) {
         }
 
         map.easeTo({
-            center: [s.longitude, s.latitude - 20],
-            duration: 1200,
+            center: [s.longitude, s.latitude],
+            duration: PAN_DURATION,
             essential: true
         });
 
         updateHUD(s);
         updateGradient(s);
 
-        setTimeout(step, 4000);
+        setTimeout(step, STEP_DELAY);
     }
 
-    setTimeout(step, 4000); // optional: small delay before motion starts
+    setTimeout(step, INITIAL_DELAY);
 }
 
 // =========================
@@ -268,10 +281,10 @@ async function start() {
             sources: {},
             layers: []
         },
-        hash: true,
+        hash: false,
         center: [first.longitude, first.latitude],
         zoom: 1,
-        pitch: 0
+        pitch: 50
     });
 
     map.on('load', () => {
