@@ -7,13 +7,14 @@
 
 <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
 <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Montserrat',sans-serif;
     color: hsl(0, 0%, 40%);
 }
 
@@ -71,6 +72,11 @@ h1 {
 h2 {
     font-weight: 400;
 }
+
+h3 {
+    font-weight: 400;
+}
+
 
 .degree {
     font-size: 0.5em;
@@ -142,7 +148,7 @@ const CITY_MAP = new Map(
 );
 
 const INITIAL_DELAY = 2000
-const PAN_DURATION = 4000
+const PAN_DURATION = 3000
 const STEP_DELAY = 5000
 
 // =========================
@@ -196,7 +202,7 @@ function shuffle(a) {
 // =========================
 function updateHUD(s) {
     document.getElementById("hud-city").innerHTML =
-        `<h2>${s.city}</h2>`;
+        `<h3>${s.city}</h3>`;
 
     document.getElementById("hud-temp").innerHTML =
         `<h1>${Math.round(s.temp)}<span class="degree">°</span></h1>`;
