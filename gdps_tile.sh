@@ -33,4 +33,4 @@ gdal raster pipeline read "$BEST_FILE" \
     ! color-map --color-map 'data/white-black.txt' --add-alpha --color-selection interpolate \
     ! reproject --dst-crs='EPSG:3857' \
     ! tile data/gdps/tiles/ \
-        --add-alpha --skip-blank --min-zoom 0 --max-zoom 3 --tile-size 256 256
+        --add-alpha --skip-blank --min-zoom 0 --max-zoom 3 --tile-size 256
