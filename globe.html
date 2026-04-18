@@ -39,8 +39,6 @@
         #map {
             position: absolute;
             inset: 0;
-            opacity: 0;
-            transition: opacity 500ms ease;
         }
     </style>
 </head>
@@ -68,7 +66,7 @@
             },
             center: [0, 20],
             zoom: 1,
-            hash: false,
+            hash: true,
             fitBounds: [[-180, -85], [180, 85]]
         });
 
@@ -85,7 +83,7 @@
             map.addSource('naturalearth', {
                 type: "raster",
                 tiles: ["data/naturalearth/{z}/{x}/{y}.png"],
-                tileSize: 512
+                tileSize: 256
             });
 
             // Add the gdps source using the variable
@@ -133,26 +131,26 @@
             });
 
             // Add the gdps layer
-            map.addLayer({
-                id: "gdps-layer",
-                type: "raster",
-                source: "gdps",
-                minzoom: 0,
-                maxzoom: 4,
-                paint: {
-                    'raster-opacity': [
-                        'interpolate',
-                        ['linear'],
-                        ['zoom'],
-                        3, 1,
-                        4, 0
-                    ],
-                    "raster-brightness-min": 0.1,
-                    "raster-brightness-max": 0.9,
-                    "raster-contrast": 0.6,
-                    "raster-opacity": 0.7
-                }
-            });
+            // map.addLayer({
+            //     id: "gdps-layer",
+            //     type: "raster",
+            //     source: "gdps",
+            //     minzoom: 0,
+            //     maxzoom: 4,
+            //     paint: {
+            //         'raster-opacity': [
+            //             'interpolate',
+            //             ['linear'],
+            //             ['zoom'],
+            //             3, 1,
+            //             4, 0
+            //         ],
+            //         "raster-brightness-min": 0.1,
+            //         "raster-brightness-max": 0.9,
+            //         "raster-contrast": 0.6,
+            //         "raster-opacity": 0.7
+            //     }
+            // });
 
             map.setRenderWorldCopies(false);
         });
@@ -223,46 +221,36 @@
         }
 
         function panMap(stations) {
+            let index = 0;
+
             if (!stations.length) return;
 
-            let index = 0;
-            const el = map.getContainer();
-
-            // start at first valid station
-            while (index < stations.length) {
-                const lat = parseFloat(stations[index].latitude);
-                const lon = parseFloat(stations[index].longitude);
-
-                if (Number.isFinite(lat) && Number.isFinite(lon)) {
-                    map.jumpTo({ center: [lon, lat] });
-                    el.style.opacity = 1;
-                    break;
-                }
-                index++;
-            }
-
-            function step() {
+            function panToNext() {
                 const s = stations[index];
-                index = (index + 1) % stations.length;
+                if (!s) return;
 
                 const lat = parseFloat(s.latitude);
                 const lon = parseFloat(s.longitude);
 
+                index = (index + 1) % stations.length;
+
                 if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
-                    step();
+                    panToNext(); // skip bad row
                     return;
                 }
 
-                el.style.opacity = 0;
+                map.panTo([lon, lat], {
+                    duration: 2000,
+                    easing: t => t
+                });
 
-                setTimeout(() => {
-                    map.jumpTo({ center: [lon, lat] });
-                    el.style.opacity = 1;
-                }, 500); // must match CSS transition duration
+                // wait for move to finish, then schedule next
+                map.once('moveend', () => {
+                    setTimeout(panToNext, 4000);
+                });
             }
 
-            step();
-            setInterval(step, 4000);
+            panToNext();
         }
 
         async function animateGlobe() {
