@@ -26,19 +26,15 @@ html, body {
 .container {
     height: 100%;
     width: 100%;
-    padding: 20px;
 }
 
 #map-container {
     position: relative;
     height: 50%;
     overflow: hidden;
-    border-radius: 10px;
     background: radial-gradient(
         circle at 50% 100%,
-        hsl(210, 100%, 85%) 0%,
-        hsl(210, 100%, 95%) 30%,
-        hsl(210, 100%, 100%) 60%,
+        var(--weather-color),
         transparent 80%
     );
 }
@@ -48,8 +44,6 @@ html, body {
     inset: 0;
     top: 50%;
     height: 100%;
-    opacity: 0;
-    transition: opacity 500ms ease;
 }
 
 #hud {
@@ -58,6 +52,7 @@ html, body {
     top: 0;
     left: 0;
     right: 0;
+    padding: 20px;
 }
 
 #hud-left,
@@ -80,6 +75,19 @@ h2 {
     font-weight: 400;
 }
 
+.degree {
+    font-size: 0.5em;
+    font-weight: 400;
+    vertical-align: super;
+    margin-left: 2px;
+}
+
+/* DESKTOP */
+@media (min-width: 1024px) {
+    h1 {
+        font-size: 200px;
+    }
+}
 </style>
 </head>
 
@@ -137,57 +145,9 @@ const CITY_MAP = new Map(
 );
 
 // =========================
-// MAP INIT
+// GLOBAL MAP
 // =========================
-const map = new maplibregl.Map({
-    container: "map",
-    style: {
-        version: 8,
-        projection: { type: "globe" },
-        sources: {},
-        layers: []
-    },
-    center: [0, 20],
-    zoom: 1
-});
-
-map.on('load', () => {
-
-    map.addSource('naturalearth', {
-        type: "raster",
-        tiles: ["data/naturalearth/{z}/{x}/{y}.png"],
-        tileSize: 512
-    });
-
-    map.addSource('gdps', {
-        type: "raster",
-        tiles: ["data/gdps/tiles/{z}/{x}/{y}.png"],
-        tileSize: 256
-    });
-
-    map.addLayer({
-        id: "naturalearth",
-        type: "raster",
-        source: "naturalearth",
-        paint: {
-            'raster-opacity': ['interpolate',['linear'],['zoom'],3,1,4,0],
-            'raster-saturation': 0.2
-        }
-    });
-
-    map.addLayer({
-        id: "gdps",
-        type: "raster",
-        source: "gdps",
-        paint: {
-            'raster-opacity': ['interpolate',['linear'],['zoom'],3,1,4,0],
-            "raster-contrast": 0.6,
-            "raster-opacity": 0.7
-        }
-    });
-
-    map.setRenderWorldCopies(false);
-});
+let map;
 
 // =========================
 // LOAD METARS
@@ -203,15 +163,13 @@ async function loadMetars() {
         const cols = line.split(',');
 
         const row = {};
-        headers.forEach((h,i)=>row[h]=cols[i]);
+        headers.forEach((h, i) => row[h] = cols[i]);
 
         return {
             station_id: row.station_id,
             latitude: parseFloat(row.latitude),
             longitude: parseFloat(row.longitude),
-
-            temp: row.temp_c,
-
+            temp: parseFloat(row.temp_c),
             city: CITY_MAP.get(row.station_id) || row.station_id
         };
     })
@@ -240,8 +198,23 @@ function updateHUD(s) {
         `<h2>${s.city}</h2>`;
 
     document.getElementById("hud-temp").innerHTML =
-        `<h1>${Math.round(s.temp)}°</h1>`;
+        `<h1>${Math.round(s.temp)}<span class="degree">°</span></h1>`;
+}
 
+// =========================
+// GRADIENT
+// =========================
+function updateGradient(s) {
+
+    const t = Number.isFinite(s.temp) ? s.temp : 10;
+
+    const hue = 220 - (t * 2);
+    const color = `hsl(${hue}, 80%, 85%)`;
+
+    document.documentElement.style.setProperty(
+        '--weather-color',
+        color
+    );
 }
 
 // =========================
@@ -250,8 +223,7 @@ function updateHUD(s) {
 function panMap(stations) {
     if (!stations.length) return;
 
-    const el = map.getContainer();
-    let index = 0;
+    let index = 1; // 👈 skip first station (already set)
 
     function step() {
         const s = stations[index];
@@ -262,35 +234,87 @@ function panMap(stations) {
             return;
         }
 
-        el.style.opacity = 0;
+        map.easeTo({
+            center: [s.longitude, s.latitude - 20],
+            duration: 1200,
+            essential: true
+        });
 
-        setTimeout(() => {
-            map.jumpTo({ center: [s.longitude, s.latitude - 30] });
+        updateHUD(s);
+        updateGradient(s);
 
-            updateHUD(s);
-
-            el.style.opacity = 1;
-        }, 500);
+        setTimeout(step, 4000);
     }
 
-    step();
-    setInterval(step, 4000);
+    setTimeout(step, 4000); // optional: small delay before motion starts
 }
 
 // =========================
-// START
+// MAP INIT (AFTER DATA)
 // =========================
 async function start() {
+
     const stations = shuffle(await loadMetars());
-
     const first = stations[0];
-    if (first) {
-        map.jumpTo({ center: [first.longitude, first.latitude] });
-        updateHUD(first);
-        map.getContainer().style.opacity = 1;
-    }
 
-    panMap(stations);
+    if (!first) return;
+
+    // INIT MAP ONLY AFTER DATA IS READY
+    map = new maplibregl.Map({
+        container: "map",
+        style: {
+            version: 8,
+            projection: { type: "globe" },
+            sources: {},
+            layers: []
+        },
+        hash: true,
+        center: [first.longitude, first.latitude],
+        zoom: 1,
+        pitch: 0
+    });
+
+    map.on('load', () => {
+
+        map.addSource('naturalearth', {
+            type: "raster",
+            tiles: ["data/naturalearth/{z}/{x}/{y}.png"],
+            tileSize: 256
+        });
+
+        map.addSource('gdps', {
+            type: "raster",
+            tiles: ["data/gdps/tiles/{z}/{x}/{y}.png"],
+            tileSize: 256
+        });
+
+        map.addLayer({
+            id: "naturalearth",
+            type: "raster",
+            source: "naturalearth",
+            paint: {
+                'raster-saturation': 0.2
+            }
+        });
+
+        map.addLayer({
+            id: "gdps",
+            type: "raster",
+            source: "gdps",
+            paint: {
+                'raster-opacity': 0.7,
+                'raster-contrast': 0.6
+            }
+        });
+
+        map.setRenderWorldCopies(false);
+
+        // FIRST FRAME
+        updateHUD(first);
+        updateGradient(first);
+
+        panMap(stations);
+    });
 }
 
 start();
