@@ -253,8 +253,10 @@ function panMap(stations) {
             essential: true
         });
 
-        updateHUD(s);
-        updateGradient(s);
+        map.once('moveend', () => {
+            updateHUD(s);
+            updateGradient(s);
+        });
 
         setTimeout(step, STEP_DELAY);
     }
@@ -283,8 +285,8 @@ async function start() {
         },
         hash: false,
         center: [first.longitude, first.latitude],
-        zoom: 1,
-        pitch: 50
+        zoom: 0,
+        pitch: 30
     });
 
     map.on('load', () => {
