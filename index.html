@@ -24,6 +24,7 @@ html, body {
     height: 100%;
     width: 100%;
     line-height: 1;
+    font-size: 1vw;
 }
 
 .container {
@@ -31,9 +32,15 @@ html, body {
     width: 100%;
 }
 
+.header {
+    width: 100%;
+    height: 20px;
+    background: hsl(0, 0%, 100%);
+}
+
 #map-container {
     position: relative;
-    height: 30%;
+    height: 30vh;
     width: 100%;
     overflow: hidden;
     background: radial-gradient(
@@ -50,28 +57,45 @@ html, body {
 
 #hud {
     position: absolute;
-    display: flex;    
-    justify-content: space-between;
     inset: 0;
-    padding: 20px;
-    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    z-index: 10;
     pointer-events: none;
 }
 
 #hud-left,
 #hud-right {
-    position: relative;
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-width: 40vw; /* optional safety */
 }
 
 #hud-left {
-    margin-right: auto;
+    align-items: flex-start;
     text-align: left;
 }
 
 #hud-right {
-    margin-left: auto;
+    align-items: flex-end;
     text-align: right;
+}
+
+.hud-item {
+    padding: 3px;
+}
+
+.hud-label {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 1rem;
+}
+
+.hud-value {
+    display: block;
+    font-size: 1rem;
 }
 
 .maplibregl-ctrl-bottom-right {
@@ -79,27 +103,28 @@ html, body {
 }
 
 h1 {
-    font-size: 40px;
+    font-size: 5rem;
     font-weight: 300;
     letter-spacing: -2px;
 }
 
 h2 {
+    font-size: 3rem;
     font-weight: 400;
 }
 
 h3 {
+    font-size: 2rem;
     font-weight: 400;
 }
 
 h4 {
-    font-size: 9px;
+    font-size: 1.5rem;
     font-weight: 300;
-    line-height: 1.8;
 }
 
 .degree {
-    font-size: 0.5em;
+    font-size: 2.5rem;
     font-weight: 400;
     vertical-align: super;
     margin-left: 2px;
@@ -107,36 +132,22 @@ h4 {
 
 /* DESKTOP */
 @media (min-width: 1024px) {
-    h1 {
-        font-size: 90px;
-        line-height: 0.9;
-    }
-    
-    h3 {
-        font-size: 30px;
-    }
 }
 </style>
 </head>
 
 <body>
 <div class="container">
+    <!--<div class="header"></div>-->
     <div id="map-container">
-
         <div id="hud">
-            <div id="hud-left">
-                <div id="hud-city"></div>
-                <div id="hud-temp"></div>
-            </div>
-            <div id="hud-right">
-            </div>
+            <div id="hud-left"></div>
+            <div id="hud-right"></div>
         </div>
 
         <div id="map"></div>
-
     </div>
 </div>
-
 <script>
 // =========================
 // CONFIG
@@ -186,33 +197,68 @@ let map;
 // LOAD METARS
 // =========================
 async function loadMetars() {
-    const res = await fetch('data/metars/metars.csv');
+    const res = await fetch('data/metars/metars.cache.xml');
     const text = await res.text();
 
-    const lines = text.trim().split('\n');
-    const headers = lines[0].split(',').map(h => h.trim());
+    const xml = new DOMParser().parseFromString(text, 'application/xml');
+    const metarNodes = Array.from(xml.getElementsByTagName('METAR'));
 
-    const stations = lines.slice(1).map(line => {
-        const cols = line.split(',');
-
+    return metarNodes.map(node => {
         const row = {};
-        headers.forEach((h, i) => row[h] = cols[i]);
 
-        return {
-            station_id: row.station_id,
-            latitude: parseFloat(row.latitude),
-            longitude: parseFloat(row.longitude),
-            temp: parseFloat(row.temp_c),
-            city: CITY_MAP.get(row.station_id) || row.station_id
-        };
-    })
-    .filter(s =>
-        CITY_MAP.has(s.station_id) &&
-        Number.isFinite(s.latitude) &&
-        Number.isFinite(s.longitude)
-    );
+        // loop over direct children of <METAR>
+        Array.from(node.children).forEach(child => {
+            const key = child.tagName;
 
-    return stations;
+            // handle repeated tags (like sky_condition)
+            if (row[key]) {
+                if (!Array.isArray(row[key])) row[key] = [row[key]];
+                row[key].push(parseNode(child));
+            } else {
+                row[key] = parseNode(child);
+            }
+        });
+
+        const station_id = row.station_id;
+        const lat = parseFloat(row.latitude);
+        const lon = parseFloat(row.longitude);
+
+        if (
+            !CITY_MAP.has(station_id) ||
+            !Number.isFinite(lat) ||
+            !Number.isFinite(lon)
+            //!row.wx_string || row.wx_string.trim() === ""
+        ) {
+            return null;
+        }
+
+        row.city = CITY_MAP.get(station_id) || station_id;
+        row.latitude = lat;
+        row.longitude = lon;
+
+        return row;
+    }).filter(Boolean);
+}
+
+// helper: handles text + attributes
+function parseNode(node) {
+    const hasAttributes = node.attributes.length > 0;
+
+    // if no attributes, just return text
+    if (!hasAttributes) return node.textContent;
+
+    // otherwise return object with attributes + value
+    const obj = {};
+
+    Array.from(node.attributes).forEach(attr => {
+        obj[attr.name] = attr.value;
+    });
+
+    if (node.textContent.trim()) {
+        obj.value = node.textContent;
+    }
+
+    return obj;
 }
 
 function shuffle(a) {
@@ -223,15 +269,126 @@ function shuffle(a) {
     return a;
 }
 
+function decodeWx(wx) {
+    if (!wx) return "";
+
+    const INTENSITY = {
+        "-": "Light",
+        "+": "Heavy",
+        "VC": "Nearby"
+    };
+
+    const DESCRIPTOR = {
+        "MI": "Shallow",
+        "PR": "Partial",
+        "BC": "Patches",
+        "DR": "Drifting",
+        "BL": "Blowing",
+        "SH": "Showers",
+        "TS": "Thunderstorm",
+        "FZ": "Freezing"
+    };
+
+    const PHENOMENA = {
+        "RA": "Rain",
+        "DZ": "Drizzle",
+        "SN": "Snow",
+        "SG": "Snow Grains",
+        "IC": "Ice Crystals",
+        "PL": "Ice Pellets",
+        "GR": "Hail",
+        "GS": "Graupel",
+        "UP": "Unknown Precip",
+        "FG": "Fog",
+        "VA": "Ash",
+        "BR": "Mist",
+        "HZ": "Haze",
+        "DU": "Dust",
+        "FU": "Smoke",
+        "SA": "Sand",
+        "PY": "Spray",
+        "SQ": "Squall",
+        "PO": "Dust Whirls",
+        "DS": "Duststorm",
+        "SS": "Sandstorm",
+        "FC": "Funnel Cloud"
+    };
+
+    return wx.trim().split(/\s+/).map(token => {
+        let intensity = "";
+        let descriptor = "";
+        let phenomenon = "";
+
+        // intensity
+        if (token.startsWith("VC")) {
+            intensity = INTENSITY["VC"];
+            token = token.slice(2);
+        } else if (token.startsWith("-") || token.startsWith("+")) {
+            intensity = INTENSITY[token[0]];
+            token = token.slice(1);
+        }
+
+        // descriptor (2-letter prefix)
+        const desc = token.slice(0, 2);
+        if (DESCRIPTOR[desc]) {
+            descriptor = DESCRIPTOR[desc];
+            token = token.slice(2);
+        }
+
+        // remaining = phenomenon
+        phenomenon = PHENOMENA[token] || token;
+
+        return [intensity, descriptor, phenomenon]
+            .filter(Boolean)
+            .join(" ");
+    }).join(", ");
+}
+
+function decodeSkyCondition(sky) {
+    if (!sky) return "";
+
+    const COVER = {
+        "SKC": "Clear",
+        "CLR": "Clear",
+        "NSC": "Clear",
+        "FEW": "Partly cloudy",
+        "SCT": "Partly cloudy",
+        "BKN": "Mostly cloudy",
+        "OVC": "Overcast",
+        "VV": "Obscured"
+    };
+
+    const layers = Array.isArray(sky) ? sky : [sky];
+    const top = layers[0]; // dominant / lowest layer is most relevant visually
+
+    if (!top || !top.sky_cover) return "Clear";
+
+    return COVER[top.sky_cover] || "Cloudy";
+}
+
 // =========================
 // HUD
 // =========================
 function updateHUD(s) {
-    document.getElementById("hud-city").innerHTML =
-        `<h4>WORLD WEATHER</h4><h3>${s.city}</h3>`;
+    const hud = document.getElementById("hud-left");
 
-    document.getElementById("hud-temp").innerHTML =
-        `<h1>${Math.round(s.temp)}<span class="degree">°</span></h1>`;
+    const temp = Math.round(parseFloat(s.temp_c));
+    const wxText = decodeWx(s.wx_string);
+    const skyText = decodeSkyCondition(s.sky_condition);
+
+    hud.innerHTML = `
+        <div class="hud-item">
+            <h3>${s.city}</h3>
+            <h1>${temp}<span class="degree">°</span></h1>
+            <h2>${skyText}</h2>
+            <h3>${wxText}</h3>
+        </div>
+
+        <!--<div class="hud-item">
+            <span class="hud-label">SKY</span>
+            <span class="hud-value">${wxText}</span>
+        </div>-->
+    `;
 }
 
 // =========================
