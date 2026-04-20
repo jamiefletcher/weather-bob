@@ -24,7 +24,7 @@ html, body {
     height: 100%;
     width: 100%;
     line-height: 1;
-    font-size: 1vw;
+    font-size: clamp(18px,calc(1vw + 1vh),90px);
 }
 
 .container {
@@ -70,7 +70,6 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    max-width: 40vw; /* optional safety */
 }
 
 #hud-left {
@@ -103,28 +102,28 @@ html, body {
 }
 
 h1 {
-    font-size: 5rem;
+    font-size: 3rem;
     font-weight: 300;
     letter-spacing: -2px;
 }
 
 h2 {
-    font-size: 3rem;
+    font-size: 1.8rem;
     font-weight: 400;
 }
 
 h3 {
-    font-size: 2rem;
+    font-size: 1.4rem;
     font-weight: 400;
 }
 
 h4 {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 300;
 }
 
 .degree {
-    font-size: 2.5rem;
+    font-size: 1.6rem;
     font-weight: 400;
     vertical-align: super;
     margin-left: 2px;
@@ -185,8 +184,8 @@ const CITY_MAP = new Map(
 );
 
 const INITIAL_DELAY = 2000
-const PAN_DURATION = 3000
-const STEP_DELAY = 5000
+const PAN_DURATION = 4000
+const STEP_DELAY = 6000
 
 // =========================
 // GLOBAL MAP
@@ -378,7 +377,7 @@ function updateHUD(s) {
 
     hud.innerHTML = `
         <div class="hud-item">
-            <h3>${s.city}</h3>
+            <h4>${s.city}</h4>
             <h1>${temp}<span class="degree">°</span></h1>
             <h2>${skyText}</h2>
             <h3>${wxText}</h3>
@@ -510,8 +509,6 @@ async function start() {
                 'raster-contrast': 0.6
             }
         });
-
-        map.setRenderWorldCopies(false);
 
         // FIRST FRAME
         updateHUD(first);
