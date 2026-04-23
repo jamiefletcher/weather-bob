@@ -471,28 +471,28 @@ async function start() {
             sources: {},
             layers: []
         },
-        hash: true,
-        center: [-79.3832, 43.6532],
-        zoom: 5,
-        pitch: 0
+        hash: false,
+        center: [first.longitude, first.latitude],
+        zoom: 0,
+        pitch: 30
     });
 
     map.on('load', () => {
 
-        map.addSource('topo', {
-            type: "vector",
-            tiles: ["https://jamiefletcher.github.io/toronto-map/data/province/{z}/{x}/{y}.png"]
-        });
+map.addSource('provinces', {
+    type: 'vector',
+    tiles: ["https://jamiefletcher.github.io/data/naturalearth/provinces/{z}/{x}/{y}.pbf"],
+});
 
-        map.addLayer({
-            id: "topo",
-            type: "raster",
-            source: "topo",
-            paint: {
-                'raster-saturation': 0.1,
-                'raster-opacity': 1
-            }
-        });
+map.addLayer({
+    id: 'land',
+    type: 'fill',
+    source: 'provinces',
+    'source-layer': 'provinces',
+    paint: {
+        'fill-color': '#e6e2d3'
+    }
+});
 
         // FIRST FRAME
         //updateHUD(first);
