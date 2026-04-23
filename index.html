@@ -108,12 +108,12 @@ h1 {
 }
 
 h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 400;
 }
 
 h3 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 400;
 }
 
@@ -491,6 +491,13 @@ async function start() {
             tileSize: 256
         });
 
+        map.addSource("cma", {
+            type: "vector",
+            tiles: [
+                "https://geographyclub.github.io/weather-bob/data/statcan/cma/{z}/{x}/{y}.pbf"
+            ]
+        });
+
         map.addLayer({
             id: "naturalearth",
             type: "raster",
@@ -507,6 +514,19 @@ async function start() {
             paint: {
                 'raster-opacity': 0.5,
                 'raster-contrast': 0.6
+            }
+        });
+
+
+        map.addLayer({
+            "id": "cma-line",
+            "type": "line",
+            "source": "cma",
+            "source-layer": "lcma00021a_e",
+            "paint": {
+                'line-color': "#ffffff",
+                'line-width': 1,
+                'line-opacity': 1
             }
         });
 
