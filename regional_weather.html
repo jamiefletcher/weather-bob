@@ -479,96 +479,20 @@ async function start() {
 
     map.on('load', () => {
 
-        // map.addSource('naturalearth', {
-        //     type: "raster",
-        //     tiles: ["data/naturalearth/{z}/{x}/{y}.png"],
-        //     tileSize: 256
-        // });
-
-        // map.addSource('gdps', {
-        //     type: "raster",
-        //     tiles: ["data/gdps/tiles/{z}/{x}/{y}.png"],
-        //     tileSize: 256
-        // });
-
-        // map.addLayer({
-        //     id: "naturalearth",
-        //     type: "raster",
-        //     source: "naturalearth",
-        //     paint: {
-        //         'raster-saturation': 0.2
-        //     }
-        // });
-
-        // map.addLayer({
-        //     id: "gdps",
-        //     type: "raster",
-        //     source: "gdps",
-        //     paint: {
-        //         'raster-opacity': 0.5,
-        //         'raster-contrast': 0.6
-        //     }
-        // });
-
-        map.addSource("cma", {
+        map.addSource('topo', {
             type: "vector",
-            tiles: [
-                "https://geographyclub.github.io/weather-bob/data/statcan/cma/{z}/{x}/{y}.pbf"
-            ]
+            tiles: ["https://jamiefletcher.github.io/toronto-map/data/province/{z}/{x}/{y}.png"]
         });
-        
+
         map.addLayer({
-            "id": "cma-line",
-            "type": "line",
-            "source": "cma",
-            "source-layer": "cma",
-            "paint": {
-                'line-color': "#000",
-                'line-width': 1,
-                'line-opacity': 1
+            id: "topo",
+            type: "raster",
+            source: "topo",
+            paint: {
+                'raster-saturation': 0.1,
+                'raster-opacity': 1
             }
         });
-
-        map.addLayer({
-    id: "cma-fill",
-    type: "fill",
-    source: "cma",
-    "source-layer": "cma",
-    paint: {
-        "fill-color": "rgba(0,0,0,0.05)"
-    }
-});
-
-    map.addSource('coastline', {
-        type: 'geojson',
-        data: 'data/world/coastline.geojson'
-    });
-
-    map.addSource('boundary_lines', {
-        type: 'geojson',
-        data: 'data/world/boundary_lines.geojson'
-    });
-
-    // layers
-    map.addLayer({
-        id: 'coastline',
-        source: 'coastline',
-        type: 'line',
-        paint: {
-            'line-color': 'hsl(0, 0%, 80%)',
-            'line-width': 2
-        }
-    });
-
-    map.addLayer({
-        id: 'boundary_lines',
-        source: 'boundary_lines',
-        type: 'line',
-        paint: {
-            'line-color': 'hsl(0, 0%, 80%)',
-            'line-width': 1
-        }
-    });
 
         // FIRST FRAME
         //updateHUD(first);

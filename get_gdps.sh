@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ### CONFIG
-RUN="00"
+RUN="12"
 DATE=$(date -u +%Y%m%d)
 BASE_URL="https://dd.weather.gc.ca/today/model_gdps/15km"
 OUT_DIR="data/gdps"
