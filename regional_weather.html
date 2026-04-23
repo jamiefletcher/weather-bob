@@ -473,7 +473,7 @@ async function start() {
         },
         hash: true,
         center: [-79.3832, 43.6532],
-        zoom: 2,
+        zoom: 5,
         pitch: 0
     });
 
@@ -521,13 +521,23 @@ async function start() {
             "id": "cma-line",
             "type": "line",
             "source": "cma",
-            "source-layer": "lcma00021a_e",
+            "source-layer": "cma",
             "paint": {
                 'line-color': "#000",
                 'line-width': 1,
                 'line-opacity': 1
             }
         });
+
+        map.addLayer({
+    id: "cma-fill",
+    type: "fill",
+    source: "cma",
+    "source-layer": "cma",
+    paint: {
+        "fill-color": "rgba(0,0,0,0.05)"
+    }
+});
 
     map.addSource('coastline', {
         type: 'geojson',
