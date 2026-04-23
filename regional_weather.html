@@ -469,47 +469,45 @@ async function start() {
             version: 8,
             projection: { type: "mercator" },
             sources: {},
-            layers: []
+            layers: [
+                {
+                "id": "background",
+                "type": "background",
+                "paint": {
+                    "background-color": "hsl(200, 50%, 100%)"
+                }
+                }
+            ]
         },
         hash: true,
-        center: [first.longitude, first.latitude],
+        center: [-79.3832, 43.6532],
         zoom: 5,
         pitch: 0
     });
 
     map.on('load', () => {
 
-map.addSource('provinces', {
-    type: 'vector',
-    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/provinces/{z}/{x}/{y}.pbf"],
-});
+        map.addSource('topo', {
+            type: "raster",
+            tiles: ["data/topo/{z}/{x}/{y}.png"],
+            tileSize: 256,
+            minzoom: 5,
+            maxzoom: 5,
+        });
 
-map.addSource('lakes', {
+        map.addLayer({
+            id: "topo",
+            type: "raster",
+            source: "topo",
+            paint: {
+                'raster-saturation': 0.2,
+                'raster-opacity': 0.5
+            }
+        });
+
+        map.addSource('lakes', {
     type: 'vector',
     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/lakes/{z}/{x}/{y}.pbf"],
-});
-
-map.addLayer({
-    id: 'provinces-fill',
-    source: 'provinces',
-    'source-layer': 'provinces',
-    filter: ['==', ['get', 'adm0_a3'], 'CAN'],
-    type: 'fill',
-    paint: {
-        'fill-color': '#E7E0D2',
-        'fill-opacity': 0.5
-    }
-});
-
-map.addLayer({
-    id: 'provinces-line',
-    source: 'provinces',
-    'source-layer': 'provinces',
-    type: 'line',
-    paint: {
-        'line-color': '#999',
-        'line-width': 1
-    }
 });
 
 map.addLayer({
@@ -518,10 +516,11 @@ map.addLayer({
     'source-layer': 'lakes',
     type: 'fill',
     paint: {
-        'fill-color': '#4E6A6D',
-        'fill-opacity': 1
+        'fill-color': 'hsl(200, 50%, 100%)'
     }
 });
+
+
 
         // FIRST FRAME
         //updateHUD(first);
