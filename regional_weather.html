@@ -471,26 +471,36 @@ async function start() {
             sources: {},
             layers: []
         },
-        hash: false,
+        hash: true,
         center: [first.longitude, first.latitude],
-        zoom: 0,
-        pitch: 30
+        zoom: 5,
+        pitch: 0
     });
 
     map.on('load', () => {
 
 map.addSource('provinces', {
     type: 'vector',
-    tiles: ["https://jamiefletcher.github.io/data/naturalearth/provinces/{z}/{x}/{y}.pbf"],
+    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/provinces/{z}/{x}/{y}.pbf"],
 });
 
 map.addLayer({
-    id: 'land',
-    type: 'fill',
+    id: 'provinces-fill',
     source: 'provinces',
     'source-layer': 'provinces',
+    type: 'fill',
     paint: {
         'fill-color': '#e6e2d3'
+    }
+});
+
+map.addLayer({
+    id: 'provinces-line',
+    source: 'provinces',
+    'source-layer': 'provinces',
+    type: 'line',
+    paint: {
+        'line-color': '#000000'
     }
 });
 
