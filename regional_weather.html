@@ -40,7 +40,7 @@ html, body {
 
 #map-container {
     position: relative;
-    height: 30vh;
+    height: 100%;
     width: 100%;
     overflow: hidden;
     background: radial-gradient(
@@ -467,54 +467,104 @@ async function start() {
         container: "map",
         style: {
             version: 8,
-            projection: { type: "globe" },
+            projection: { type: "mercator" },
             sources: {},
             layers: []
         },
-        hash: false,
-        center: [first.longitude, first.latitude],
-        zoom: 0,
-        pitch: 30
+        hash: true,
+        center: [-79.3832, 43.6532],
+        zoom: 2,
+        pitch: 0
     });
 
     map.on('load', () => {
 
-        map.addSource('naturalearth', {
-            type: "raster",
-            tiles: ["data/naturalearth/{z}/{x}/{y}.png"],
-            tileSize: 256
-        });
+        // map.addSource('naturalearth', {
+        //     type: "raster",
+        //     tiles: ["data/naturalearth/{z}/{x}/{y}.png"],
+        //     tileSize: 256
+        // });
 
-        map.addSource('gdps', {
-            type: "raster",
-            tiles: ["data/gdps/tiles/{z}/{x}/{y}.png"],
-            tileSize: 256
-        });
+        // map.addSource('gdps', {
+        //     type: "raster",
+        //     tiles: ["data/gdps/tiles/{z}/{x}/{y}.png"],
+        //     tileSize: 256
+        // });
 
+        // map.addLayer({
+        //     id: "naturalearth",
+        //     type: "raster",
+        //     source: "naturalearth",
+        //     paint: {
+        //         'raster-saturation': 0.2
+        //     }
+        // });
+
+        // map.addLayer({
+        //     id: "gdps",
+        //     type: "raster",
+        //     source: "gdps",
+        //     paint: {
+        //         'raster-opacity': 0.5,
+        //         'raster-contrast': 0.6
+        //     }
+        // });
+
+        map.addSource("cma", {
+            type: "vector",
+            tiles: [
+                "https://geographyclub.github.io/weather-bob/data/statcan/cma/{z}/{x}/{y}.pbf"
+            ]
+        });
+        
         map.addLayer({
-            id: "naturalearth",
-            type: "raster",
-            source: "naturalearth",
-            paint: {
-                'raster-saturation': 0.2
+            "id": "cma-line",
+            "type": "line",
+            "source": "cma",
+            "source-layer": "lcma00021a_e",
+            "paint": {
+                'line-color': "#000",
+                'line-width': 1,
+                'line-opacity': 1
             }
         });
 
-        map.addLayer({
-            id: "gdps",
-            type: "raster",
-            source: "gdps",
-            paint: {
-                'raster-opacity': 0.5,
-                'raster-contrast': 0.6
-            }
-        });
+    map.addSource('coastline', {
+        type: 'geojson',
+        data: 'data/world/coastline.geojson'
+    });
+
+    map.addSource('boundary_lines', {
+        type: 'geojson',
+        data: 'data/world/boundary_lines.geojson'
+    });
+
+    // layers
+    map.addLayer({
+        id: 'coastline',
+        source: 'coastline',
+        type: 'line',
+        paint: {
+            'line-color': 'hsl(0, 0%, 80%)',
+            'line-width': 2
+        }
+    });
+
+    map.addLayer({
+        id: 'boundary_lines',
+        source: 'boundary_lines',
+        type: 'line',
+        paint: {
+            'line-color': 'hsl(0, 0%, 80%)',
+            'line-width': 1
+        }
+    });
 
         // FIRST FRAME
-        updateHUD(first);
-        updateGradient(first);
+        //updateHUD(first);
+        //updateGradient(first);
 
-        panMap(stations);
+        //panMap(stations);
     });
 }
 
