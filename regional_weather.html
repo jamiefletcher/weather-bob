@@ -484,6 +484,11 @@ map.addSource('provinces', {
     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/provinces/{z}/{x}/{y}.pbf"],
 });
 
+map.addSource('lakes', {
+    type: 'vector',
+    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/lakes/{z}/{x}/{y}.pbf"],
+});
+
 map.addLayer({
     id: 'provinces-fill',
     source: 'provinces',
@@ -500,11 +505,21 @@ map.addLayer({
     id: 'provinces-line',
     source: 'provinces',
     'source-layer': 'provinces',
-    filter: ['==', ['get', 'adm0_a3'], 'CAN'],
     type: 'line',
     paint: {
         'line-color': '#999',
         'line-width': 1
+    }
+});
+
+map.addLayer({
+    id: 'lakes',
+    source: 'lakes',
+    'source-layer': 'lakes',
+    type: 'fill',
+    paint: {
+        'fill-color': '#4E6A6D',
+        'fill-opacity': 1
     }
 });
 
