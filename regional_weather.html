@@ -493,25 +493,35 @@ async function start() {
 
     map.on('load', () => {
 
-map.addSource('provinces', {
+map.addSource('countries', {
     type: 'vector',
-    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/provinces/{z}/{x}/{y}.pbf"],
-});
-
-map.addLayer({
-    id: 'provinces-fill',
-    source: 'provinces',
-    'source-layer': 'provinces',
-    type: 'fill',
-    paint: {
-        'fill-color': '#dfefc1',
-        'fill-opacity': 1
-    }
+    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/countries/{z}/{x}/{y}.pbf"],
 });
 
 map.addSource('lakes', {
     type: 'vector',
     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/lakes/{z}/{x}/{y}.pbf"],
+});
+
+map.addSource('rivers', {
+    type: 'vector',
+    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/rivers/{z}/{x}/{y}.pbf"],
+});
+
+map.addSource('provinces_lines', {
+    type: 'vector',
+    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/provinces_lines/{z}/{x}/{y}.pbf"],
+});
+
+map.addLayer({
+    id: 'countries',
+    source: 'countries',
+    'source-layer': 'countries',
+    type: 'fill',
+    paint: {
+        'fill-color': '#dfefc1',
+        'fill-opacity': 1
+    }
 });
 
 map.addLayer({
@@ -524,9 +534,15 @@ map.addLayer({
     }
 });
 
-map.addSource('provinces_lines', {
-    type: 'vector',
-    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/provinces_lines/{z}/{x}/{y}.pbf"],
+map.addLayer({
+    id: 'countries_lines',
+    source: 'countries',
+    'source-layer': 'countries',
+    type: 'line',
+    paint: {
+        'line-color': 'hsl(0, 0%, 100%)',
+        'line-width': 2
+    }
 });
 
 map.addLayer({
@@ -538,6 +554,17 @@ map.addLayer({
         'line-color': 'hsl(0, 0%, 100%)',
         'line-width': 2,
         'line-dasharray': [2, 2]
+    }
+});
+
+map.addLayer({
+    id: 'rivers',
+    source: 'rivers',
+    'source-layer': 'rivers',
+    type: 'line',
+    paint: {
+        'line-color': '#8ddbf6',
+        'line-width': 2
     }
 });
 
