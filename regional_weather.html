@@ -471,41 +471,45 @@ async function start() {
             sources: {},
             layers: [
                 {
-                "id": "background",
-                "type": "background",
-                "paint": {
-                    "background-color": "hsl(200, 50%, 100%)"
-                }
+                    id: "background",
+                    type: "background",
+                    paint: {
+                        "background-color": "#8ddbf6"
+                    }
                 }
             ]
         },
         hash: true,
         center: [-79.3832, 43.6532],
         zoom: 5,
-        pitch: 0
+        pitch: 0,
+        minZoom: 4,
+        maxZoom: 6.9,
+        maxBounds: [
+            [-145, 40],  // west + south buffer
+            [-50, 85]    // east + north buffer
+        ]
     });
 
     map.on('load', () => {
 
-        map.addSource('topo', {
-            type: "raster",
-            tiles: ["data/topo/{z}/{x}/{y}.png"],
-            tileSize: 256,
-            minzoom: 5,
-            maxzoom: 5,
-        });
+map.addSource('provinces', {
+    type: 'vector',
+    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/provinces/{z}/{x}/{y}.pbf"],
+});
 
-        map.addLayer({
-            id: "topo",
-            type: "raster",
-            source: "topo",
-            paint: {
-                'raster-saturation': 0.2,
-                'raster-opacity': 0.5
-            }
-        });
+map.addLayer({
+    id: 'provinces-fill',
+    source: 'provinces',
+    'source-layer': 'provinces',
+    type: 'fill',
+    paint: {
+        'fill-color': '#dfefc1',
+        'fill-opacity': 1
+    }
+});
 
-        map.addSource('lakes', {
+map.addSource('lakes', {
     type: 'vector',
     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/lakes/{z}/{x}/{y}.pbf"],
 });
@@ -516,10 +520,25 @@ map.addLayer({
     'source-layer': 'lakes',
     type: 'fill',
     paint: {
-        'fill-color': 'hsl(200, 50%, 100%)'
+        'fill-color': '#8ddbf6'
     }
 });
 
+map.addSource('provinces_lines', {
+    type: 'vector',
+    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/provinces_lines/{z}/{x}/{y}.pbf"],
+});
+
+map.addLayer({
+    id: 'provinces_lines',
+    source: 'provinces',
+    'source-layer': 'provinces_lines',
+    type: 'line',
+    paint: {
+        'line-color': 'hsl(0, 0%, 100%)',
+        'line-width': 2
+    }
+});
 
 
         // FIRST FRAME
