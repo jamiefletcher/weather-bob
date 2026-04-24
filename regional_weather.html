@@ -508,6 +508,16 @@ map.addSource('provinces_lines', {
     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/provinces_lines/{z}/{x}/{y}.pbf"],
 });
 
+map.addSource('roads', {
+    type: 'vector',
+    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/roads/{z}/{x}/{y}.pbf"],
+});
+
+map.addSource('urbanareas', {
+    type: 'vector',
+    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/urbanareas/{z}/{x}/{y}.pbf"],
+});
+
 map.addLayer({
     id: 'countries',
     source: 'countries',
@@ -549,6 +559,28 @@ map.addLayer({
     type: 'fill',
     paint: {
         'fill-color': '#8ddbf6'
+    }
+});
+
+map.addLayer({
+    id: 'urbanareas',
+    source: 'urbanareas',
+    'source-layer': 'urbanareas',
+    type: 'fill',
+    paint: {
+        'fill-color': '#8ddbf6'
+    }
+});
+
+map.addLayer({
+    id: 'roads',
+    source: 'roads',
+    'source-layer': 'roads',
+    filter: ['<=', ['get', 'scalerank'], 9],
+    type: 'line',
+    paint: {
+        'line-color': '#a6b2cb',
+        'line-width': 1
     }
 });
 
