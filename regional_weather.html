@@ -520,23 +520,13 @@ map.addLayer({
 });
 
 map.addLayer({
-    id: 'lakes',
-    source: 'lakes',
-    'source-layer': 'lakes',
-    type: 'fill',
-    paint: {
-        'fill-color': '#8ddbf6'
-    }
-});
-
-map.addLayer({
     id: 'countries_lines',
     source: 'countries',
     'source-layer': 'countries',
     type: 'line',
     paint: {
         'line-color': 'hsl(0, 0%, 100%)',
-        'line-width': 2
+        'line-width': 1
     }
 });
 
@@ -552,6 +542,15 @@ map.addLayer({
     }
 });
 
+map.addLayer({
+    id: 'lakes',
+    source: 'lakes',
+    'source-layer': 'lakes',
+    type: 'fill',
+    paint: {
+        'fill-color': '#8ddbf6'
+    }
+});
 
         // FIRST FRAME
         //updateHUD(first);
