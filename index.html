@@ -48,24 +48,41 @@
             position: relative;
         }
 
-        #hud {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 10;
+#hud-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
 
-            width: 100%;
-            height: 100%;
+    width: 100%;
+    height: 100%;
 
-            pointer-events: none;
+    pointer-events: none;
 
-            display: flex;
-            align-items: flex-start;
-            justify-content: flex-start;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
 
-            padding: 2rem;
-            color: white;
-        }
+    padding: 2rem;
+}
+
+.hud {
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(8px);
+
+    padding: 1.2rem 1.4rem;
+    border-radius: 14px;
+
+    max-width: 320px;
+
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
 
         .hud-item {
             background: rgba(0, 0, 0, 0.35);
@@ -143,7 +160,7 @@
     <div class="app">
 
         <div id="map">
-            <div id="hud"></div>
+            <div id="hud-container"></div>
         </div>
 
         <div id="side-panel"></div>
@@ -548,21 +565,23 @@
                         city: globeMap.get(s.station_id)
                     }));
 
-                const hud = document.getElementById("hud");
+                this.hudContainer = document.getElementById("hud-container");
+
+                this.hud = document.createElement("div");
+                this.hud.className = "hud";
+                this.hudContainer.appendChild(this.hud);
 
                 const updateHUD = (s) => {
                     const temp = Math.round(parseFloat(s.temp_c));
                     const wxText = decodeWx(s.wx_string);
                     const skyText = decodeSkyCondition(s.sky_condition);
 
-                    hud.innerHTML = `
-                <div class="hud-item">
-                    <h2>${s.city}</h2>
-                    <h1>${temp}<span class="degree">°</span></h1>
-                    <h3>${skyText}</h3>
-                    <h3>${wxText}</h3>
-                </div>
-            `;
+                    this.hud.innerHTML = `
+                        <h2>${s.city}</h2>
+                        <h1>${temp}<span class="degree">°</span></h1>
+                        <h3>${skyText}</h3>
+                        <h3>${wxText}</h3>
+                    `;
                 };
 
                 this.map = new maplibregl.Map({
@@ -648,6 +667,10 @@
                     this.map.remove();
                     this.map = null;
                 }
+
+                if (this.hud) this.hud.remove();
+                this.hud = null;
+                this.hudContainer = null;
             }
         };
 
