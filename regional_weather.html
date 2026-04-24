@@ -16,46 +16,57 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Lato',sans-serif;
-    color: hsl(0, 0%, 40%);
 }
 
 html, body {
     height: 100%;
     width: 100%;
     line-height: 1;
-    font-size: clamp(18px,calc(1vw + 1vh),90px);
+    font-family: 'Lato',sans-serif;
+    font-size: clamp(12px,calc(1vw + 1vh),90px);
+    color: hsl(0, 0%, 40%);
 }
 
 .container {
     height: 100%;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.header {
+.top-row {
+    display: flex;
+    height: 75%;
     width: 100%;
-    height: 20px;
-    background: hsl(0, 0%, 100%);
 }
 
 #map-container {
     position: relative;
+    width: 75%;
     height: 100%;
-    width: 100%;
     overflow: hidden;
-    background: radial-gradient(
-        circle at 0% 50%,
-        var(--weather-color),
-        transparent 30%
-    );
 }
 
-#map {
+#map2-container {
+    position: relative;
+    width: 25%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#map,
+#map2 {
     position: absolute;
     inset: 0;
 }
 
-#hud {
+#map2 {
+    background-color: hsl(0, 0%, 30%);
+}
+
+#hud,
+#hud2 {
     position: absolute;
     inset: 0;
     display: flex;
@@ -65,36 +76,41 @@ html, body {
     pointer-events: none;
 }
 
+#hud2 {
+    color: hsl(0, 0%, 100%);
+}
+
 #hud-left,
-#hud-right {
+#hud-right,
+#hud2-left,
+#hud2-right {
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
 
-#hud-left {
+#hud-left,
+#hud2-left {
     align-items: flex-start;
-    text-align: left;
 }
 
-#hud-right {
+#hud-right,
+#hud2-right {
     align-items: flex-end;
-    text-align: right;
 }
 
-.hud-item {
-    padding: 3px;
+#bottom-panel {
+    height: 25%;
+    width: 100%;
+    overflow: hidden;
+    background: hsl(0, 0%, 98%);
+    border-top: 1px solid hsl(0, 0%, 90%);
 }
 
-.hud-label {
-    display: block;
-    margin-bottom: 2px;
-    font-size: 1rem;
-}
-
-.hud-value {
-    display: block;
-    font-size: 1rem;
+#forecast-scroll {
+    height: 100%;
+    overflow-y: auto;
+    padding: 10px;
 }
 
 .maplibregl-ctrl-bottom-right {
@@ -129,7 +145,6 @@ h4 {
     margin-left: 2px;
 }
 
-/* DESKTOP */
 @media (min-width: 1024px) {
 }
 </style>
@@ -137,21 +152,42 @@ h4 {
 
 <body>
 <div class="container">
-    <!--<div class="header"></div>-->
-    <div id="map-container">
-        <div id="hud">
-            <div id="hud-left"></div>
-            <div id="hud-right"></div>
+
+    <!-- TOP ROW -->
+    <div class="top-row">
+
+        <div id="map-container">
+            <div id="hud">
+                <div id="hud-left"></div>
+                <div id="hud-right"></div>
+            </div>
+            <div id="map"></div>
         </div>
 
-        <div id="map"></div>
+        <div id="map2-container">
+            <div id="hud2">
+                <div id="hud2-left"></div>
+                <div id="hud2-right"></div>
+            </div>
+            <div id="map2"></div>
+        </div>
+
     </div>
+
+    <!-- BOTTOM PANEL -->
+    <div id="bottom-panel">
+        <div id="forecast-scroll">
+            <!-- dynamic 7-day forecast goes here -->
+        </div>
+    </div>
+
 </div>
 <script>
-// =========================
-// CONFIG
-// =========================
-const CITY_STATIONS = [
+const INITIAL_DELAY = 3000;
+const PAN_DURATION = 6000;
+const STEP_DELAY = 9000;
+
+const GLOBE_STATIONS = [
     ["Toronto", "CYYZ"],
     ["Vancouver", "CYVR"],
     ["Montreal", "CYUL"],
@@ -179,18 +215,9 @@ const CITY_STATIONS = [
     ["Istanbul", "LTFM"]
 ];
 
-const CITY_MAP = new Map(
-    CITY_STATIONS.map(([city, code]) => [code, city])
+const GLOBE_MAP = new Map(
+    GLOBE_STATIONS.map(([city, code]) => [code, city])
 );
-
-const INITIAL_DELAY = 2000
-const PAN_DURATION = 4000
-const STEP_DELAY = 6000
-
-// =========================
-// GLOBAL MAP
-// =========================
-let map;
 
 // =========================
 // LOAD METARS
@@ -202,41 +229,38 @@ async function loadMetars() {
     const xml = new DOMParser().parseFromString(text, 'application/xml');
     const metarNodes = Array.from(xml.getElementsByTagName('METAR'));
 
-    return metarNodes.map(node => {
-        const row = {};
+    return metarNodes
+        .map(node => {
+            const row = {};
 
-        // loop over direct children of <METAR>
-        Array.from(node.children).forEach(child => {
-            const key = child.tagName;
+            Array.from(node.children).forEach(child => {
+                const key = child.tagName;
 
-            // handle repeated tags (like sky_condition)
-            if (row[key]) {
-                if (!Array.isArray(row[key])) row[key] = [row[key]];
-                row[key].push(parseNode(child));
-            } else {
-                row[key] = parseNode(child);
+                if (row[key]) {
+                    if (!Array.isArray(row[key])) row[key] = [row[key]];
+                    row[key].push(parseNode(child));
+                } else {
+                    row[key] = parseNode(child);
+                }
+            });
+
+            const station_id = row.station_id;
+            const lat = parseFloat(row.latitude);
+            const lon = parseFloat(row.longitude);
+
+            // only reject totally unusable records
+            if (!station_id || !Number.isFinite(lat) || !Number.isFinite(lon)) {
+                return null;
             }
-        });
 
-        const station_id = row.station_id;
-        const lat = parseFloat(row.latitude);
-        const lon = parseFloat(row.longitude);
-
-        if (
-            !CITY_MAP.has(station_id) ||
-            !Number.isFinite(lat) ||
-            !Number.isFinite(lon)
-            //!row.wx_string || row.wx_string.trim() === ""
-        ) {
-            return null;
-        }
-
-        row.city = CITY_MAP.get(station_id) || station_id;
-        row.latitude = lat;
-        row.longitude = lon;
-
-        return row;
-    }).filter(Boolean);
+            return {
+                ...row,
+                station_id,
+                latitude: lat,
+                longitude: lon
+            };
+        })
+        .filter(Boolean);
 }
 
 // helper: handles text + attributes
@@ -365,11 +389,38 @@ function decodeSkyCondition(sky) {
     return COVER[top.sky_cover] || "Cloudy";
 }
 
-// =========================
-// HUD
-// =========================
+function panGlobeMap(stations) {
+    if (!stations.length) return;
+
+    let index = 1;
+
+    function step() {
+        const s = stations[index];
+        index = (index + 1) % stations.length;
+
+        if (!Number.isFinite(s.latitude) || !Number.isFinite(s.longitude)) {
+            step();
+            return;
+        }
+
+        map2.easeTo({
+            center: [s.longitude, s.latitude],
+            duration: PAN_DURATION,
+            essential: true
+        });
+
+        map2.once('moveend', () => {
+            updateHUD(s);
+        });
+
+        setTimeout(step, STEP_DELAY);
+    }
+
+    setTimeout(step, INITIAL_DELAY);
+}
+
 function updateHUD(s) {
-    const hud = document.getElementById("hud-left");
+    const hud = document.getElementById("hud2-left");
 
     const temp = Math.round(parseFloat(s.temp_c));
     const wxText = decodeWx(s.wx_string);
@@ -391,78 +442,26 @@ function updateHUD(s) {
 }
 
 // =========================
-// BACKGROUND GRADIENT
-// =========================
-const TEMP_COLOR_MAP = [
-    [-30, -15, "hsla(220, 90%, 75%, 0.5)"],
-    [-15,   0, "hsla(210, 85%, 78%, 0.5)"],
-    [  0,  10, "hsla(200, 80%, 82%, 0.5)"],
-    [ 10,  18, "hsla(190, 60%, 85%, 0.5)"],
-    [ 18,  24, "hsla(40, 80%, 80%, 0.5)"],
-    [ 24,  30, "hsla(30, 85%, 70%, 0.5)"],
-    [ 30, 100, "hsla(10, 90%, 65%, 0.5)"]
-];
-
-function updateGradient(s) {
-    const temp = parseFloat(s.temp);
-
-    let color = "hsl(200, 80%, 85%)"; // fallback
-
-    for (const [min, max, c] of TEMP_COLOR_MAP) {
-        if (temp >= min && temp < max) {
-            color = c;
-            break;
-        }
-    }
-
-    document.documentElement.style.setProperty('--weather-color', color);
-}
-
-// =========================
-// ANIMATION
-// =========================
-function panMap(stations) {
-    if (!stations.length) return;
-
-    let index = 1; // 👈 skip first station (already set)
-
-    function step() {
-        const s = stations[index];
-        index = (index + 1) % stations.length;
-
-        if (!Number.isFinite(s.latitude) || !Number.isFinite(s.longitude)) {
-            step();
-            return;
-        }
-
-        map.easeTo({
-            center: [s.longitude, s.latitude],
-            duration: PAN_DURATION,
-            essential: true
-        });
-
-        map.once('moveend', () => {
-            updateHUD(s);
-            updateGradient(s);
-        });
-
-        setTimeout(step, STEP_DELAY);
-    }
-
-    setTimeout(step, INITIAL_DELAY);
-}
-
-// =========================
 // MAP INIT (AFTER DATA)
 // =========================
+let map;
+let map2;
+
 async function start() {
 
-    const stations = shuffle(await loadMetars());
+    const stations = await loadMetars();
     const first = stations[0];
-
     if (!first) return;
 
-    // INIT MAP ONLY AFTER DATA IS READY
+    const globeStationsRaw = stations
+        .filter(s => GLOBE_MAP.has(s.station_id))
+        .map(s => ({
+            ...s,
+            city: GLOBE_MAP.get(s.station_id)
+        }));
+    const globeStations = shuffle([...globeStationsRaw]);
+    const firstGlobe = globeStations[0];
+
     map = new maplibregl.Map({
         container: "map",
         style: {
@@ -493,90 +492,136 @@ async function start() {
 
     map.on('load', () => {
 
-map.addSource('countries', {
-    type: 'vector',
-    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/countries/{z}/{x}/{y}.pbf"],
-});
+        map.addSource('countries', {
+            type: 'vector',
+            tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/countries/{z}/{x}/{y}.pbf"],
+        });
 
-map.addSource('lakes', {
-    type: 'vector',
-    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/lakes/{z}/{x}/{y}.pbf"],
-});
+        map.addSource('lakes', {
+            type: 'vector',
+            tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/lakes/{z}/{x}/{y}.pbf"],
+        });
 
-map.addSource('provinces_lines', {
-    type: 'vector',
-    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/provinces_lines/{z}/{x}/{y}.pbf"],
-});
+        map.addSource('provinces_lines', {
+            type: 'vector',
+            tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/provinces_lines/{z}/{x}/{y}.pbf"],
+        });
 
-map.addSource('roads', {
-    type: 'vector',
-    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/roads/{z}/{x}/{y}.pbf"],
-});
+        map.addSource('roads', {
+            type: 'vector',
+            tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/roads/{z}/{x}/{y}.pbf"],
+        });
 
-map.addSource('urbanareas', {
-    type: 'vector',
-    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/urbanareas/{z}/{x}/{y}.pbf"],
-});
+        map.addSource('urbanareas', {
+            type: 'vector',
+            tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/urbanareas/{z}/{x}/{y}.pbf"],
+        });
 
-map.addLayer({
-    id: 'countries',
-    source: 'countries',
-    'source-layer': 'countries',
-    type: 'fill',
-    paint: {
-        'fill-color': '#dfefc1'
-    }
-});
+        map.addLayer({
+            id: 'countries',
+            source: 'countries',
+            'source-layer': 'countries',
+            type: 'fill',
+            paint: {
+                'fill-color': '#dfefc1'
+            }
+        });
 
-map.addLayer({
-    id: 'urbanareas',
-    source: 'urbanareas',
-    'source-layer': 'urbanareas',
-    type: 'fill',
-    paint: {
-        'fill-color': '#f1f0eb'
-    }
-});
+        map.addLayer({
+            id: 'urbanareas',
+            source: 'urbanareas',
+            'source-layer': 'urbanareas',
+            type: 'fill',
+            paint: {
+                'fill-color': '#f1f0eb'
+            }
+        });
 
-map.addLayer({
-    id: 'countries-lines',
-    source: 'countries',
-    'source-layer': 'countries',
-    type: 'line',
-    paint: {
-        'line-color': 'hsl(0, 0%, 100%)',
-        'line-width': 2
-    }
-});
+        map.addLayer({
+            id: 'countries-lines',
+            source: 'countries',
+            'source-layer': 'countries',
+            type: 'line',
+            paint: {
+                'line-color': 'hsl(0, 0%, 100%)',
+                'line-width': 2
+            }
+        });
 
-map.addLayer({
-    id: 'provinces-lines',
-    source: 'provinces_lines',
-    'source-layer': 'provinces_lines',
-    type: 'line',
-    paint: {
-        'line-color': 'hsl(0, 0%, 100%)',
-        'line-width': 2,
-        'line-dasharray': [2, 2]
-    }
-});
+        map.addLayer({
+            id: 'provinces-lines',
+            source: 'provinces_lines',
+            'source-layer': 'provinces_lines',
+            type: 'line',
+            paint: {
+                'line-color': 'hsl(0, 0%, 100%)',
+                'line-width': 2,
+                'line-dasharray': [2, 2]
+            }
+        });
 
-map.addLayer({
-    id: 'lakes',
-    source: 'lakes',
-    'source-layer': 'lakes',
-    type: 'fill',
-    paint: {
-        'fill-color': '#8ddbf6'
-    }
-});
-
-        // FIRST FRAME
-        //updateHUD(first);
-        //updateGradient(first);
-
-        //panMap(stations);
+        map.addLayer({
+            id: 'lakes',
+            source: 'lakes',
+            'source-layer': 'lakes',
+            type: 'fill',
+            paint: {
+                'fill-color': '#8ddbf6'
+            }
+        });
     });
+
+    map2 = new maplibregl.Map({
+        container: "map2",
+        style: {
+            version: 8,
+            projection: { type: "globe" },
+            sources: {},
+            layers: []
+        },
+        hash: false,
+        center: [firstGlobe.longitude, firstGlobe.latitude],
+        zoom: -1,
+        pitch: 0
+    });
+
+    map2.on('load', () => {
+
+        map2.addSource('naturalearth', {
+            type: "raster",
+            tiles: ["data/naturalearth/raster/{z}/{x}/{y}.png"],
+            tileSize: 256
+        });
+
+        map2.addSource('gdps', {
+            type: "raster",
+            tiles: ["data/gdps/tiles/{z}/{x}/{y}.png"],
+            tileSize: 256
+        });
+
+        map2.addLayer({
+            id: "naturalearth",
+            type: "raster",
+            source: "naturalearth",
+            paint: {
+                'raster-saturation': 0.2
+            }
+        });
+
+        map2.addLayer({
+            id: "gdps",
+            type: "raster",
+            source: "gdps",
+            paint: {
+                'raster-opacity': 0.5,
+                'raster-contrast': 0.6
+            }
+        });
+
+        updateHUD(firstGlobe);
+        panGlobeMap(globeStations);
+    });
+
 }
 
 start();
