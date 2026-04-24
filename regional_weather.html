@@ -120,7 +120,6 @@ html, body {
 h1 {
     font-size: 3rem;
     font-weight: 300;
-    letter-spacing: -2px;
 }
 
 h2 {
@@ -374,9 +373,9 @@ function decodeSkyCondition(sky) {
         "SKC": "Clear",
         "CLR": "Clear",
         "NSC": "Clear",
-        "FEW": "Partly cloudy",
-        "SCT": "Partly cloudy",
-        "BKN": "Mostly cloudy",
+        "FEW": "Partly Cloudy",
+        "SCT": "Partly Cloudy",
+        "BKN": "Mostly Cloudy",
         "OVC": "Overcast",
         "VV": "Obscured"
     };
@@ -428,9 +427,9 @@ function updateHUD(s) {
 
     hud.innerHTML = `
         <div class="hud-item">
-            <h4>${s.city}</h4>
+            <h2>${s.city}</h2>
             <h1>${temp}<span class="degree">°</span></h1>
-            <h2>${skyText}</h2>
+            <h3>${skyText}</h3>
             <h3>${wxText}</h3>
         </div>
 
