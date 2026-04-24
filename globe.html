@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Weather Channel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,600,900" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Lato',sans-serif;
+    color: hsl(0, 0%, 40%);
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    line-height: 1;
+    font-size: clamp(18px,calc(1vw + 1vh),90px);
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+}
+
+.header {
+    width: 100%;
+    height: 20px;
+    background: hsl(0, 0%, 100%);
+}
+
+#map-container {
+    position: relative;
+    height: 30vh;
+    width: 100%;
+    overflow: hidden;
+    background: radial-gradient(
+        circle at 0% 50%,
+        var(--weather-color),
+        transparent 30%
+    );
+}
+
+#map {
+    position: absolute;
+    inset: 0;
+}
+
+#hud {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+#hud-left,
+#hud-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+#hud-left {
+    align-items: flex-start;
+    text-align: left;
+}
+
+#hud-right {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.hud-item {
+    padding: 3px;
+}
+
+.hud-label {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 1rem;
+}
+
+.hud-value {
+    display: block;
+    font-size: 1rem;
+}
+
+.maplibregl-ctrl-bottom-right {
+    display: none;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 300;
+    letter-spacing: -2px;
+}
+
+h2 {
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+h4 {
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.degree {
+    font-size: 1.6rem;
+    font-weight: 400;
+    vertical-align: super;
+    margin-left: 2px;
+}
+
+/* DESKTOP */
+@media (min-width: 1024px) {
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <!--<div class="header"></div>-->
+    <div id="map-container">
+        <div id="hud">
+            <div id="hud-left"></div>
+            <div id="hud-right"></div>
+        </div>
+
+        <div id="map"></div>
+    </div>
+</div>
+<script>
+// =========================
+// CONFIG
+// =========================
+const CITY_STATIONS = [
+    ["Toronto", "CYYZ"],
+    ["Vancouver", "CYVR"],
+    ["Montreal", "CYUL"],
+    ["Calgary", "CYYC"],
+    ["Edmonton", "CYEG"],
+    ["New York", "KJFK"],
+    ["Los Angeles", "KLAX"],
+    ["Chicago", "KORD"],
+    ["San Francisco", "KSFO"],
+    ["Miami", "KMIA"],
+    ["London", "EGLL"],
+    ["Paris", "LFPG"],
+    ["Berlin", "EDDB"],
+    ["Madrid", "LEMD"],
+    ["Rome", "LIRF"],
+    ["Tokyo", "RJTT"],
+    ["Seoul", "RKSI"],
+    ["Beijing", "ZBAA"],
+    ["Shanghai", "ZSPD"],
+    ["Hong Kong", "VHHH"],
+    ["Sydney", "YSSY"],
+    ["Melbourne", "YMML"],
+    ["Singapore", "WSSS"],
+    ["Dubai", "OMDB"],
+    ["Istanbul", "LTFM"]
+];
+
+const CITY_MAP = new Map(
+    CITY_STATIONS.map(([city, code]) => [code, city])
+);
+
+const INITIAL_DELAY = 2000
+const PAN_DURATION = 4000
+const STEP_DELAY = 6000
+
+// =========================
+// LOAD METARS
+// =========================
+async function loadMetars() {
+    const res = await fetch('data/metars/metars.cache.xml');
+    const text = await res.text();
+
+    const xml = new DOMParser().parseFromString(text, 'application/xml');
+    const metarNodes = Array.from(xml.getElementsByTagName('METAR'));
+
+    return metarNodes.map(node => {
+        const row = {};
+
+        // loop over direct children of <METAR>
+        Array.from(node.children).forEach(child => {
+            const key = child.tagName;
+
+            // handle repeated tags (like sky_condition)
+            if (row[key]) {
+                if (!Array.isArray(row[key])) row[key] = [row[key]];
+                row[key].push(parseNode(child));
+            } else {
+                row[key] = parseNode(child);
+            }
+        });
+
+        const station_id = row.station_id;
+        const lat = parseFloat(row.latitude);
+        const lon = parseFloat(row.longitude);
+
+        if (
+            !CITY_MAP.has(station_id) ||
+            !Number.isFinite(lat) ||
+            !Number.isFinite(lon)
+            //!row.wx_string || row.wx_string.trim() === ""
+        ) {
+            return null;
+        }
+
+        row.city = CITY_MAP.get(station_id) || station_id;
+        row.latitude = lat;
+        row.longitude = lon;
+
+        return row;
+    }).filter(Boolean);
+}
+
+// helper: handles text + attributes
+function parseNode(node) {
+    const hasAttributes = node.attributes.length > 0;
+
+    // if no attributes, just return text
+    if (!hasAttributes) return node.textContent;
+
+    // otherwise return object with attributes + value
+    const obj = {};
+
+    Array.from(node.attributes).forEach(attr => {
+        obj[attr.name] = attr.value;
+    });
+
+    if (node.textContent.trim()) {
+        obj.value = node.textContent;
+    }
+
+    return obj;
+}
+
+function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+function decodeWx(wx) {
+    if (!wx) return "";
+
+    const INTENSITY = {
+        "-": "Light",
+        "+": "Heavy",
+        "VC": "Nearby"
+    };
+
+    const DESCRIPTOR = {
+        "MI": "Shallow",
+        "PR": "Partial",
+        "BC": "Patches",
+        "DR": "Drifting",
+        "BL": "Blowing",
+        "SH": "Showers",
+        "TS": "Thunderstorm",
+        "FZ": "Freezing"
+    };
+
+    const PHENOMENA = {
+        "RA": "Rain",
+        "DZ": "Drizzle",
+        "SN": "Snow",
+        "SG": "Snow Grains",
+        "IC": "Ice Crystals",
+        "PL": "Ice Pellets",
+        "GR": "Hail",
+        "GS": "Graupel",
+        "UP": "Unknown Precip",
+        "FG": "Fog",
+        "VA": "Ash",
+        "BR": "Mist",
+        "HZ": "Haze",
+        "DU": "Dust",
+        "FU": "Smoke",
+        "SA": "Sand",
+        "PY": "Spray",
+        "SQ": "Squall",
+        "PO": "Dust Whirls",
+        "DS": "Duststorm",
+        "SS": "Sandstorm",
+        "FC": "Funnel Cloud"
+    };
+
+    return wx.trim().split(/\s+/).map(token => {
+        let intensity = "";
+        let descriptor = "";
+        let phenomenon = "";
+
+        // intensity
+        if (token.startsWith("VC")) {
+            intensity = INTENSITY["VC"];
+            token = token.slice(2);
+        } else if (token.startsWith("-") || token.startsWith("+")) {
+            intensity = INTENSITY[token[0]];
+            token = token.slice(1);
+        }
+
+        // descriptor (2-letter prefix)
+        const desc = token.slice(0, 2);
+        if (DESCRIPTOR[desc]) {
+            descriptor = DESCRIPTOR[desc];
+            token = token.slice(2);
+        }
+
+        // remaining = phenomenon
+        phenomenon = PHENOMENA[token] || token;
+
+        return [intensity, descriptor, phenomenon]
+            .filter(Boolean)
+            .join(" ");
+    }).join(", ");
+}
+
+function decodeSkyCondition(sky) {
+    if (!sky) return "";
+
+    const COVER = {
+        "SKC": "Clear",
+        "CLR": "Clear",
+        "NSC": "Clear",
+        "FEW": "Partly cloudy",
+        "SCT": "Partly cloudy",
+        "BKN": "Mostly cloudy",
+        "OVC": "Overcast",
+        "VV": "Obscured"
+    };
+
+    const layers = Array.isArray(sky) ? sky : [sky];
+    const top = layers[0]; // dominant / lowest layer is most relevant visually
+
+    if (!top || !top.sky_cover) return "Clear";
+
+    return COVER[top.sky_cover] || "Cloudy";
+}
+
+// =========================
+// HUD
+// =========================
+function updateHUD(s) {
+    const hud = document.getElementById("hud-left");
+
+    const temp = Math.round(parseFloat(s.temp_c));
+    const wxText = decodeWx(s.wx_string);
+    const skyText = decodeSkyCondition(s.sky_condition);
+
+    hud.innerHTML = `
+        <div class="hud-item">
+            <h4>${s.city}</h4>
+            <h1>${temp}<span class="degree">°</span></h1>
+            <h2>${skyText}</h2>
+            <h3>${wxText}</h3>
+        </div>
+
+        <!--<div class="hud-item">
+            <span class="hud-label">SKY</span>
+            <span class="hud-value">${wxText}</span>
+        </div>-->
+    `;
+}
+
+// =========================
+// BACKGROUND GRADIENT
+// =========================
+const TEMP_COLOR_MAP = [
+    [-30, -15, "hsla(220, 90%, 75%, 0.5)"],
+    [-15,   0, "hsla(210, 85%, 78%, 0.5)"],
+    [  0,  10, "hsla(200, 80%, 82%, 0.5)"],
+    [ 10,  18, "hsla(190, 60%, 85%, 0.5)"],
+    [ 18,  24, "hsla(40, 80%, 80%, 0.5)"],
+    [ 24,  30, "hsla(30, 85%, 70%, 0.5)"],
+    [ 30, 100, "hsla(10, 90%, 65%, 0.5)"]
+];
+
+function updateGradient(s) {
+    const temp = parseFloat(s.temp);
+
+    let color = "hsl(200, 80%, 85%)"; // fallback
+
+    for (const [min, max, c] of TEMP_COLOR_MAP) {
+        if (temp >= min && temp < max) {
+            color = c;
+            break;
+        }
+    }
+
+    document.documentElement.style.setProperty('--weather-color', color);
+}
+
+// =========================
+// ANIMATION
+// =========================
+function panMap(stations) {
+    if (!stations.length) return;
+
+    let index = 1; // 👈 skip first station (already set)
+
+    function step() {
+        const s = stations[index];
+        index = (index + 1) % stations.length;
+
+        if (!Number.isFinite(s.latitude) || !Number.isFinite(s.longitude)) {
+            step();
+            return;
+        }
+
+        map.easeTo({
+            center: [s.longitude, s.latitude],
+            duration: PAN_DURATION,
+            essential: true
+        });
+
+        map.once('moveend', () => {
+            updateHUD(s);
+            updateGradient(s);
+        });
+
+        setTimeout(step, STEP_DELAY);
+    }
+
+    setTimeout(step, INITIAL_DELAY);
+}
+
+// =========================
+// MAP INIT (AFTER DATA)
+// =========================
+async function start() {
+
+    const stations = shuffle(await loadMetars());
+    const first = stations[0];
+
+    if (!first) return;
+
+    // INIT MAP ONLY AFTER DATA IS READY
+    map = new maplibregl.Map({
+        container: "map",
+        style: {
+            version: 8,
+            projection: { type: "globe" },
+            sources: {},
+            layers: []
+        },
+        hash: false,
+        center: [first.longitude, first.latitude],
+        zoom: 0,
+        pitch: 30
+    });
+
+    map.on('load', () => {
+
+        map.addSource('naturalearth', {
+            type: "raster",
+            tiles: ["data/naturalearth/raster/{z}/{x}/{y}.png"],
+            tileSize: 256
+        });
+
+        map.addSource('gdps', {
+            type: "raster",
+            tiles: ["data/gdps/tiles/{z}/{x}/{y}.png"],
+            tileSize: 256
+        });
+
+        map.addLayer({
+            id: "naturalearth",
+            type: "raster",
+            source: "naturalearth",
+            paint: {
+                'raster-saturation': 0.2
+            }
+        });
+
+        map.addLayer({
+            id: "gdps",
+            type: "raster",
+            source: "gdps",
+            paint: {
+                'raster-opacity': 0.5,
+                'raster-contrast': 0.6
+            }
+        });
+
+        // FIRST FRAME
+        updateHUD(first);
+        updateGradient(first);
+
+        panMap(stations);
+    });
+}
+
+start();
+</script>
+</body>
+</html>
