@@ -524,24 +524,33 @@ map.addLayer({
     'source-layer': 'countries',
     type: 'fill',
     paint: {
-        'fill-color': '#dfefc1',
-        'fill-opacity': 1
+        'fill-color': '#dfefc1'
     }
 });
 
 map.addLayer({
-    id: 'countries_lines',
+    id: 'urbanareas',
+    source: 'urbanareas',
+    'source-layer': 'urbanareas',
+    type: 'fill',
+    paint: {
+        'fill-color': '#f1f0eb'
+    }
+});
+
+map.addLayer({
+    id: 'countries-lines',
     source: 'countries',
     'source-layer': 'countries',
     type: 'line',
     paint: {
         'line-color': 'hsl(0, 0%, 100%)',
-        'line-width': 1
+        'line-width': 2
     }
 });
 
 map.addLayer({
-    id: 'provinces_lines',
+    id: 'provinces-lines',
     source: 'provinces_lines',
     'source-layer': 'provinces_lines',
     type: 'line',
@@ -559,28 +568,6 @@ map.addLayer({
     type: 'fill',
     paint: {
         'fill-color': '#8ddbf6'
-    }
-});
-
-map.addLayer({
-    id: 'urbanareas',
-    source: 'urbanareas',
-    'source-layer': 'urbanareas',
-    type: 'fill',
-    paint: {
-        'fill-color': '#8ddbf6'
-    }
-});
-
-map.addLayer({
-    id: 'roads',
-    source: 'roads',
-    'source-layer': 'roads',
-    filter: ['<=', ['get', 'scalerank'], 9],
-    type: 'line',
-    paint: {
-        'line-color': '#a6b2cb',
-        'line-width': 1
     }
 });
 
