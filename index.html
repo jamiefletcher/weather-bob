@@ -142,6 +142,15 @@
     border-top-color: hsl(270, 35%, 99%);
 }
 
+.popup-data {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.1rem;
+    text-align: center;
+}
+
 .popup-places h1 {
     font-size: 2rem;
 }
@@ -391,6 +400,28 @@
             return COVER[top.sky_cover] || "Cloudy";
         }
 
+        function decodeSkyConditionSymbol(sky) {
+            if (!sky) return "☀️";
+
+            const SYMBOL = {
+                "SKC": "☀️",
+                "CLR": "☀️",
+                "NSC": "🌤️",
+                "FEW": "🌤️",
+                "SCT": "⛅",
+                "BKN": "☁️",
+                "OVC": "☁️",
+                "VV": "🌫️"
+            };
+
+            const layers = Array.isArray(sky) ? sky : [sky];
+            const top = layers[0];
+
+            if (!top || !top.sky_cover) return "☀️";
+
+            return SYMBOL[top.sky_cover] || "☁️";
+        }
+
         const SceneController = {
             current: null,
             scenes: {},
@@ -580,9 +611,11 @@
                     const m = f.metar;
                     if (!m) return;
 
+                    const city = f.properties.city;
                     const temp = Math.round(parseFloat(m.temp_c));
                     const wxText = decodeWx(m.wx_string);
                     const skyText = decodeSkyCondition(m.sky_condition);
+                    const skyIcon = decodeSkyConditionSymbol(m.sky_condition);
 
                     const popup = new maplibregl.Popup({
                         closeButton: false,
@@ -590,20 +623,15 @@
                         anchor: "bottom"
                     })
                         .setLngLat(f.geometry.coordinates)
-.setHTML(`
-    <div class="popup-places">
-        <div class="popup-row">
-            <div class="popup-temp">
-                <h1>${temp}°</h1>
-            </div>
-
-            <div class="popup-conditions">
-                <h3>${skyText}</h3>
-                <h3>${wxText}</h3>
-            </div>
-        </div>
-    </div>
-`)
+                        .setHTML(`
+                            <div class="popup-places">
+                                <h2>${city}</h2>
+                                <div class="popup-data">
+                                    <h1>${temp}°</h1>
+                                    <h1>${skyIcon}</h1>
+                                </div>
+                            </div>
+                        `)
                         .addTo(this.map);
 
                     popup.getElement().classList.add("popup-places");
