@@ -619,29 +619,27 @@
                 // });
             },
 
-            getSafeBounds(pct = 0.1) {
-                const b = this.map.getBounds();
+getSafeBounds(pct = 0.1) {
+    const canvas = this.map.getCanvas();
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
 
-                const sw = this.map.project(b.getSouthWest());
-                const ne = this.map.project(b.getNorthEast());
+    const padX = width * pct;
+    const padY = height * pct;
 
-                const canvas = this.map.getCanvas();
-                const padX = canvas.clientWidth * pct;
-                const padY = canvas.clientHeight * pct;
+    return {
+        contains: (lngLat) => {
+            const p = this.map.project(lngLat);
 
-                return {
-                    contains: (lngLat) => {
-                        const p = this.map.project(lngLat);
-
-                        return (
-                            p.x > sw.x + padX &&
-                            p.x < ne.x - padX &&
-                            p.y > ne.y + padY &&
-                            p.y < sw.y - padY
-                        );
-                    }
-                };
-            },
+            return (
+                p.x > padX &&
+                p.x < (width - padX) &&
+                p.y > padY &&
+                p.y < (height - padY)
+            );
+        }
+    };
+},
 
             addPopups() {
                 const safeBounds = this.getSafeBounds(0.1);
