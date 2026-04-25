@@ -130,7 +130,7 @@
             background: hsl(0, 0%, 98%);
         }
 
-.popup-places .maplibregl-popup-content {
+.popup-places {
     padding: 5px;
     border-radius: 5px;
     line-height: 1;
@@ -138,7 +138,7 @@
     color: hsl(270, 35%, 20%);
 }
 
-.popup-places .maplibregl-popup-tip {
+.maplibregl-popup-tip .popup-places {
     border-color: hsla(270, 35%, 99%, 0);
 }
 
@@ -171,6 +171,12 @@
         .maplibregl-ctrl-bottom-right {
             display: none;
         }
+
+.maplibregl-popup-content {
+    padding: 0 !important;
+    background: transparent;
+    box-shadow: none;
+}
 
         .maplibregl-popup,
         .maplibregl-popup * {
@@ -451,6 +457,7 @@
             map: null,
             timer: null,
             running: false,
+            popups: [],
 
             start(container, data) {
                 this.running = true;
@@ -474,6 +481,8 @@
                     style: {
                         version: 8,
                         projection: { type: "mercator" },
+                        glyphs: "https://geographyclub.github.io/toronto-map/assets/fonts/{fontstack}/{range}.pbf",
+	                    sprite: "https://geographyclub.github.io/toronto-map/assets/sprites/sprites-trees",
                         sources: {},
                         layers: [
                             {
@@ -493,10 +502,13 @@
                 this.map.on("load", () => {
 
                     this.addSourcesAndLayers();
-
                     this.addPopups();
-
                     this.loop(stations);
+                });
+
+                this.map.on("moveend", () => {
+                    this.clearPopups();
+                    this.addPopups();
                 });
             },
 
@@ -605,37 +617,76 @@
                 // });
             },
 
-            addPopups() {
-                this.enrichedPlaces.forEach(f => {
-                    const m = f.metar;
-                    if (!m) return;
+getSafeBounds(pct = 0.1) {
+    const b = this.map.getBounds();
 
-                    const city = f.properties.city;
-                    const temp = Math.round(parseFloat(m.temp_c));
-                    const wxText = decodeWx(m.wx_string);
-                    const skyText = decodeSkyCondition(m.sky_condition);
-                    const skyIcon = decodeSkyConditionSymbol(m.sky_condition);
+    const sw = this.map.project(b.getSouthWest());
+    const ne = this.map.project(b.getNorthEast());
 
-                    const popup = new maplibregl.Popup({
-                        closeButton: false,
-                        closeOnClick: false,
-                        anchor: "center"
-                    })
-                        .setLngLat(f.geometry.coordinates)
-                        .setHTML(`
-                            <div class="popup-places">
-                                <h2>${city}</h2>
-                                <div class="popup-data">
-                                    <h1>${temp}°</h1>
-                                    <h1>${skyIcon}</h1>
-                                </div>
-                            </div>
-                        `)
-                        .addTo(this.map);
+    const canvas = this.map.getCanvas();
+    const padX = canvas.clientWidth * pct;
+    const padY = canvas.clientHeight * pct;
 
-                    popup.getElement().classList.add("popup-places");
-                });
-            },
+    return {
+        contains: (lngLat) => {
+            const p = this.map.project(lngLat);
+
+            return (
+                p.x > sw.x + padX &&
+                p.x < ne.x - padX &&
+                p.y > ne.y + padY &&
+                p.y < sw.y - padY
+            );
+        }
+    };
+},
+
+addPopups() {
+    const safeBounds = this.getSafeBounds(0.1);
+
+    // 🔴 CRITICAL: clear old popups first
+    this.clearPopups();
+
+    this.popups = [];
+
+    this.enrichedPlaces.forEach(f => {
+        const m = f.metar;
+        if (!m) return;
+
+        const coords = f.geometry.coordinates;
+        if (!safeBounds.contains(coords)) return;
+
+        const city = f.properties.city;
+        const temp = Math.round(parseFloat(m.temp_c));
+        const skyIcon = decodeSkyConditionSymbol(m.sky_condition);
+
+        const popup = new maplibregl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            anchor: "center"
+        })
+        .setLngLat(coords)
+        .setHTML(`
+            <div class="popup-places">
+                <h2>${city}</h2>
+                <div class="popup-data">
+                    <h1>${temp}°</h1>
+                    <h1>${skyIcon}</h1>
+                </div>
+            </div>
+        `)
+        .addTo(this.map);
+
+        this.popups.push(popup);
+    });
+},
+
+clearPopups() {
+    if (!this.popups) return;
+
+    this.popups.forEach(p => p.remove());
+    this.popups = [];
+},
 
             loop() {
                 // intentionally empty for now
