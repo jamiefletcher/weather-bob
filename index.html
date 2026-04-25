@@ -43,7 +43,7 @@
                 "bottom";
         }
 
-/*
+        /*
         .app {
             height: 100%;
             width: 100%;
@@ -130,37 +130,38 @@
             background: hsl(0, 0%, 98%);
         }
 
-.popup-places {
-    padding: 5px;
-    border-radius: 5px;
-    line-height: 1;
-    background-color: hsl(270, 35%, 99%);
-    color: hsl(270, 35%, 20%);
-}
+        .popup-places {
+            padding: 5px;
+            border: 1px solid hsl(0, 0%, 40%);
+            border-radius: 5px;
+            line-height: 1;
+            background-color: hsl(270, 35%, 99%);
+            color: hsl(270, 35%, 20%);
+        }
 
-.maplibregl-popup-tip .popup-places {
-    border-color: hsla(270, 35%, 99%, 0);
-}
+        .maplibregl-popup-tip .popup-places {
+            border-color: hsla(270, 35%, 99%, 0);
+        }
 
-.popup-data {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: left;
-    gap: 0.1rem;
-}
+        .popup-data {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: left;
+            gap: 0.1rem;
+        }
 
-.popup-places h1 {
-    font-size: 1rem;
-}
+        .popup-places h1 {
+            font-size: 1rem;
+        }
 
-.popup-places h2 {
-    font-size: 0.5rem;
-}
+        .popup-places h2 {
+            font-size: 0.8rem;
+        }
 
-.popup-places h3 {
-    font-size: 0.1rem;
-}
+        .popup-places h3 {
+            font-size: 0.1rem;
+        }
 
         #map>.maplibregl-canvas-container,
         #map canvas {
@@ -172,11 +173,11 @@
             display: none;
         }
 
-.maplibregl-popup-content {
-    padding: 0 !important;
-    background: transparent;
-    box-shadow: none;
-}
+        .maplibregl-popup-content {
+            padding: 0 !important;
+            background: transparent;
+            box-shadow: none;
+        }
 
         .maplibregl-popup,
         .maplibregl-popup * {
@@ -482,7 +483,7 @@
                         version: 8,
                         projection: { type: "mercator" },
                         glyphs: "https://geographyclub.github.io/toronto-map/assets/fonts/{fontstack}/{range}.pbf",
-	                    sprite: "https://geographyclub.github.io/toronto-map/assets/sprites/sprites-trees",
+                        sprite: "https://geographyclub.github.io/toronto-map/assets/sprites/sprites-trees",
                         sources: {},
                         layers: [
                             {
@@ -617,56 +618,56 @@
                 // });
             },
 
-getSafeBounds(pct = 0.1) {
-    const b = this.map.getBounds();
+            getSafeBounds(pct = 0.1) {
+                const b = this.map.getBounds();
 
-    const sw = this.map.project(b.getSouthWest());
-    const ne = this.map.project(b.getNorthEast());
+                const sw = this.map.project(b.getSouthWest());
+                const ne = this.map.project(b.getNorthEast());
 
-    const canvas = this.map.getCanvas();
-    const padX = canvas.clientWidth * pct;
-    const padY = canvas.clientHeight * pct;
+                const canvas = this.map.getCanvas();
+                const padX = canvas.clientWidth * pct;
+                const padY = canvas.clientHeight * pct;
 
-    return {
-        contains: (lngLat) => {
-            const p = this.map.project(lngLat);
+                return {
+                    contains: (lngLat) => {
+                        const p = this.map.project(lngLat);
 
-            return (
-                p.x > sw.x + padX &&
-                p.x < ne.x - padX &&
-                p.y > ne.y + padY &&
-                p.y < sw.y - padY
-            );
-        }
-    };
-},
+                        return (
+                            p.x > sw.x + padX &&
+                            p.x < ne.x - padX &&
+                            p.y > ne.y + padY &&
+                            p.y < sw.y - padY
+                        );
+                    }
+                };
+            },
 
-addPopups() {
-    const safeBounds = this.getSafeBounds(0.1);
+            addPopups() {
+                const safeBounds = this.getSafeBounds(0.1);
 
-    // 🔴 CRITICAL: clear old popups first
-    this.clearPopups();
+                // 🔴 CRITICAL: clear old popups first
+                this.clearPopups();
 
-    this.popups = [];
+                this.popups = [];
 
-    this.enrichedPlaces.forEach(f => {
-        const m = f.metar;
-        if (!m) return;
+                this.enrichedPlaces.forEach(f => {
+                    const m = f.metar;
+                    if (!m) return;
 
-        const coords = f.geometry.coordinates;
-        if (!safeBounds.contains(coords)) return;
+                    const coords = f.geometry.coordinates;
+                    if (!safeBounds.contains(coords)) return;
 
-        const city = f.properties.city;
-        const temp = Math.round(parseFloat(m.temp_c));
-        const skyIcon = decodeSkyConditionSymbol(m.sky_condition);
+                    const city = f.properties.city;
+                    const temp = Math.round(parseFloat(m.temp_c));
+                    const skyIcon = decodeSkyConditionSymbol(m.sky_condition);
 
-        const popup = new maplibregl.Popup({
-            closeButton: false,
-            closeOnClick: false,
-            anchor: "center"
-        })
-        .setLngLat(coords)
-        .setHTML(`
+                    const popup = new maplibregl.Popup({
+                        closeButton: false,
+                        closeOnClick: false,
+                        anchor: "center"
+                    })
+                        .setLngLat(coords)
+                        .setHTML(`
             <div class="popup-places">
                 <h2>${city}</h2>
                 <div class="popup-data">
@@ -675,18 +676,18 @@ addPopups() {
                 </div>
             </div>
         `)
-        .addTo(this.map);
+                        .addTo(this.map);
 
-        this.popups.push(popup);
-    });
-},
+                    this.popups.push(popup);
+                });
+            },
 
-clearPopups() {
-    if (!this.popups) return;
+            clearPopups() {
+                if (!this.popups) return;
 
-    this.popups.forEach(p => p.remove());
-    this.popups = [];
-},
+                this.popups.forEach(p => p.remove());
+                this.popups = [];
+            },
 
             loop() {
                 // intentionally empty for now
