@@ -2,6 +2,14 @@
 
 ### CONFIG
 RUN="12"
+
+BASE_CHECK="https://dd.weather.gc.ca/today/model_gdps/15km/${RUN}"
+
+if ! curl -s --head "$BASE_CHECK" | head -n 1 | grep -q "200"; then
+    echo "RUN 12 not available, falling back to 00"
+    RUN="00"
+fi
+
 DATE=$(date -u +%Y%m%d)
 BASE_URL="https://dd.weather.gc.ca/today/model_gdps/15km"
 OUT_DIR="data/gdps"

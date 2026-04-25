@@ -30,18 +30,18 @@
             color: hsl(0, 0%, 40%);
         }
 
-.app {
-    height: 100%;
-    width: 100%;
+        .app {
+            height: 100%;
+            width: 100%;
 
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr clamp(140px, 20vh, 260px);
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr clamp(140px, 20vh, 260px);
 
-    grid-template-areas:
-        "map"
-        "bottom";
-}
+            grid-template-areas:
+                "map"
+                "bottom";
+        }
 
 /*
         .app {
@@ -57,6 +57,7 @@
                 "bottom bottom";
         }
 */
+
         #map {
             grid-area: map;
             position: relative;
@@ -129,6 +130,30 @@
             background: hsl(0, 0%, 98%);
         }
 
+.popup-places .maplibregl-popup-content {
+    padding: 5px;
+    border-radius: 5px;
+    line-height: 1;
+    background-color: hsl(270, 35%, 99%);
+    color: hsl(270, 35%, 20%);
+}
+
+.popup-places .maplibregl-popup-tip {
+    border-top-color: hsl(270, 35%, 99%);
+}
+
+.popup-places h1 {
+    font-size: 2rem;
+}
+
+.popup-places h2 {
+    font-size: 1.5rem;
+}
+
+.popup-places h3 {
+    font-size: 1rem;
+}
+
         #map>.maplibregl-canvas-container,
         #map canvas {
             width: 100% !important;
@@ -137,6 +162,12 @@
 
         .maplibregl-ctrl-bottom-right {
             display: none;
+        }
+
+        .maplibregl-popup,
+        .maplibregl-popup * {
+            pointer-events: none;
+            user-select: none;
         }
 
         h1 {
@@ -157,13 +188,6 @@
         h4 {
             font-size: 1rem;
             font-weight: 300;
-        }
-
-        .degree {
-            font-size: 1.6rem;
-            font-weight: 400;
-            vertical-align: super;
-            margin-left: 2px;
         }
 
         @media (min-width: 1024px) {}
@@ -225,6 +249,20 @@
                     };
                 })
                 .filter(Boolean);
+        }
+
+        // =========================
+        // LOAD STATIONS PLACES
+        // =========================
+        async function loadStationsPlaces() {
+            const res = await fetch('data/stations_places.geojson');
+            const geojson = await res.json();
+
+            if (!geojson || !geojson.features) {
+                return { type: "FeatureCollection", features: [] };
+            }
+
+            return geojson;
         }
 
         // helper functions
@@ -388,6 +426,18 @@
                 this.running = true;
 
                 const stations = data.stations;
+                const places = data.places.features;
+
+                const metarMap = new Map(
+                    stations.map(s => [s.station_id, s])
+                );
+
+                this.enrichedPlaces = places
+                    .map(p => ({
+                        ...p,
+                        metar: metarMap.get(p.properties.station_code)
+                    }))
+                    .filter(p => p.metar);
 
                 this.map = new maplibregl.Map({
                     container,
@@ -405,8 +455,8 @@
                     },
                     hash: true,
                     center: [-79.3832, 43.6532],
-                    zoom: 5,
-                    minZoom: 4,
+                    zoom: 5.9,
+                    minZoom: 3,
                     maxZoom: 6.9
                 });
 
@@ -414,12 +464,21 @@
 
                     this.addSourcesAndLayers();
 
-                    // placeholder for future animation parity
+                    this.addPopups();
+
                     this.loop(stations);
                 });
             },
 
             addSourcesAndLayers() {
+                this.map.addSource("places", {
+                    type: "geojson",
+                    data: {
+                        type: "FeatureCollection",
+                        features: this.enrichedPlaces
+                    }
+                });
+
                 this.map.addSource('countries', {
                     type: 'vector',
                     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/countries/{z}/{x}/{y}.pbf"]
@@ -440,25 +499,14 @@
                     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/roads/{z}/{x}/{y}.pbf"]
                 });
 
-                this.map.addSource('urbanareas', {
-                    type: 'vector',
-                    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/urbanareas/{z}/{x}/{y}.pbf"]
-                });
-
                 this.map.addLayer({
                     id: 'countries',
                     source: 'countries',
                     'source-layer': 'countries',
                     type: 'fill',
-                    paint: { 'fill-color': '#bde0a4' }
-                });
-
-                this.map.addLayer({
-                    id: 'urbanareas',
-                    source: 'urbanareas',
-                    'source-layer': 'urbanareas',
-                    type: 'fill',
-                    paint: { 'fill-color': '#f1f0eb' }
+                    paint: {
+                        'fill-color': 'hsl(93, 47%, 76%)'
+                    }
                 });
 
                 this.map.addLayer({
@@ -489,7 +537,9 @@
                     source: 'lakes',
                     'source-layer': 'lakes',
                     type: 'fill',
-                    paint: { 'fill-color': '#8ddbf6' }
+                    paint: {
+                        'fill-color': 'hsl(197, 85%, 75%)'
+                    }
                 });
 
                 this.map.addLayer({
@@ -498,9 +548,65 @@
                     'source-layer': 'lakes',
                     type: 'line',
                     paint: {
-                        'line-color': '#fff',
+                        'line-color': 'hsl(0, 0%, 100%)',
                         'line-width': 1
                     }
+                });
+
+                this.map.addLayer({
+                    id: 'roads',
+                    source: 'roads',
+                    'source-layer': 'roads',
+                    type: 'line',
+                    paint: {
+                        'line-color': 'hsl(93, 47%, 86%)',
+                        'line-width': 1
+                    }
+                });
+
+                this.map.addLayer({
+                    id: "places",
+                    type: "circle",
+                    source: "places",
+                    paint: {
+                        "circle-radius": 6,
+                        "circle-color": "hsl(0, 0%, 0%)"
+                    }
+                });
+            },
+
+            addPopups() {
+                this.enrichedPlaces.forEach(f => {
+                    const m = f.metar;
+                    if (!m) return;
+
+                    const temp = Math.round(parseFloat(m.temp_c));
+                    const wxText = decodeWx(m.wx_string);
+                    const skyText = decodeSkyCondition(m.sky_condition);
+
+                    const popup = new maplibregl.Popup({
+                        closeButton: false,
+                        closeOnClick: false,
+                        anchor: "bottom"
+                    })
+                        .setLngLat(f.geometry.coordinates)
+.setHTML(`
+    <div class="popup-places">
+        <div class="popup-row">
+            <div class="popup-temp">
+                <h1>${temp}°</h1>
+            </div>
+
+            <div class="popup-conditions">
+                <h3>${skyText}</h3>
+                <h3>${wxText}</h3>
+            </div>
+        </div>
+    </div>
+`)
+                        .addTo(this.map);
+
+                    popup.getElement().classList.add("popup-places");
                 });
             },
 
@@ -592,7 +698,7 @@
 
                     this.hud.innerHTML = `
                         <h2>${s.city}</h2>
-                        <h1>${temp}<span class="degree">°</span></h1>
+                        <h1>${temp}°</h1>
                         <h3>${skyText}</h3>
                         <h3>${wxText}</h3>
                     `;
@@ -691,9 +797,11 @@
         async function start() {
 
             const stations = await loadMetars();
+            const places = await loadStationsPlaces();
 
             window.__weatherData = {
-                stations
+                stations,
+                places
             };
 
             SceneController.register("scene1", Scene1);
@@ -701,7 +809,6 @@
 
             SceneController.switch("scene1", "map", window.__weatherData);
         }
-
         start();
     </script>
 </body>
