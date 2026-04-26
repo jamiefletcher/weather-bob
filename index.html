@@ -131,12 +131,33 @@
         }
 
         .popup-places {
+            position: relative;
+            overflow: visible;
             border: 1px solid hsl(0, 0%, 100%);
             border-radius: 5px;
             line-height: 1;
             background-color: hsl(270, 35%, 100%);
             color: hsl(270, 35%, 20%);
             box-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.1);
+        }
+
+        .popup-wx-badge {
+            position: absolute;
+            bottom: -1rem;
+            right: -1rem;
+            transform: translateX(0.5px) translateY(-0.5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: hsla(0, 0%, 100%, 1);
+            border-radius: 5px;
+            padding: 2px;
+            aspect-ratio: 1 / 1;
+            font-size: 1.4rem;
+            line-height: 1;
+            box-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.1);
+            z-index: 10;
+            pointer-events: none;
         }
 
         .popup-city {
@@ -246,7 +267,7 @@
 
             const xml = new DOMParser().parseFromString(text, 'application/xml');
             const metarNodes = Array.from(xml.getElementsByTagName('METAR'));
-console.log(text)
+
             return metarNodes
                 .map(node => {
                     const row = {};
@@ -398,6 +419,35 @@ console.log(text)
                     .join(" ");
             }).join(", ");
         }
+
+        function decodeWxIcon(wx) {
+            if (!wx) return "";
+
+            const RAIN = new Set(["RA", "DZ"]);
+            const SNOW = new Set(["SN", "SG", "GR", "GS", "PL"]);
+
+            const seen = new Set();
+
+            return wx.trim()
+                .split(/\s+/)
+                .map(token => {
+                    token = token.replace(/^[-+]/, "");
+                    const code = token.slice(0, 2);
+
+                    let icon = ""; // default fallback (no clouds)
+
+                    if (RAIN.has(code)) icon = "💧";
+                    else if (SNOW.has(code)) icon = "❄️";
+
+                    return icon;
+                })
+                .filter(icon => {
+                    if (seen.has(icon)) return false;
+                    seen.add(icon);
+                    return true;
+                })
+                .join(" ");
+        };
 
         function decodeSkyCondition(sky) {
             if (!sky) return "";
@@ -632,7 +682,7 @@ console.log(text)
                     source: 'roads',
                     'source-layer': 'roads',
                     type: 'line',
-                    filter: [ "in", "featurecla", "Road" ],
+                    filter: ["in", "featurecla", "Road"],
                     paint: {
                         'line-color': 'hsl(100, 30%, 100%)',
                         'line-width': 1
@@ -710,6 +760,11 @@ console.log(text)
                     const city = f.properties.city;
                     const temp = Math.round(parseFloat(m.temp_c));
                     const skyIcon = decodeSkyConditionSymbol(m.sky_condition);
+                    const wxIcon = decodeWxIcon(m.wx_string);
+
+                    const wxBadgeHTML = wxIcon
+                        ? `<div class="popup-wx-badge">${wxIcon}</div>`
+                        : "";
 
                     const isLongCity = city.split(" ").some(word => word.length > 10);
 
@@ -721,16 +776,20 @@ console.log(text)
                     })
                         .setLngLat(coords)
                         .setHTML(`
-                            <div class="popup-places">
-                                <div class="popup-city">
-                                    <h2>${city}</h2>
-                                </div>
-                                <div class="popup-data">
-                                    <h1>${temp}°</h1>
-                                    <h1>${skyIcon}</h1>
-                                </div>
-                            </div>
-                        `)
+    <div class="popup-places">
+        ${wxBadgeHTML}
+
+        <div class="popup-city">
+            <h2>${city}</h2>
+        </div>
+
+        <div class="popup-data">
+            <h1>${temp}°</h1>
+            <h1>${skyIcon}</h1>
+        </div>
+
+    </div>
+`)
                         .addTo(this.map);
 
                     this.popups.push(popup);
