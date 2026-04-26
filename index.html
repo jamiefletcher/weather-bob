@@ -220,16 +220,16 @@
             box-shadow: none;
         }
 
-.maplibregl-popup-content {
-    opacity: 0;
-    transform: translateY(8px) scale(0.95);
-    transition: opacity 280ms ease, transform 280ms ease;
-}
+        .maplibregl-popup-content {
+            opacity: 0;
+            transform: translateY(8px) scale(0.95);
+            transition: opacity 280ms ease, transform 280ms ease;
+        }
 
-.maplibregl-popup.popup-visible .maplibregl-popup-content {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
+        .maplibregl-popup.popup-visible .maplibregl-popup-content {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
 
         h1 {
             font-size: 3rem;
@@ -632,6 +632,11 @@
                     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/roads/{z}/{x}/{y}.pbf"]
                 });
 
+                this.map.addSource('rivers', {
+                    type: 'vector',
+                    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/rivers/{z}/{x}/{y}.pbf"]
+                });
+
                 this.map.addLayer({
                     id: 'countries',
                     source: 'countries',
@@ -648,8 +653,19 @@
                     'source-layer': 'coastline',
                     type: 'line',
                     paint: {
-                        'line-color': 'hsl(210, 15%, 72%)',
+                        'line-color': 'hsl(210, 15%, 82%)',
                         'line-width': 2
+                    }
+                });
+
+                this.map.addLayer({
+                    id: 'rivers',
+                    source: 'rivers',
+                    'source-layer': 'rivers',
+                    type: 'line',
+                    paint: {
+                        'line-color': 'hsl(205, 45%, 68%)',
+                        'line-width': 1
                     }
                 });
 
@@ -669,7 +685,7 @@
                     'source-layer': 'lakes',
                     type: 'line',
                     paint: {
-                        'line-color': 'hsl(210, 15%, 72%)',
+                        'line-color': 'hsl(205, 45%, 68%)',
                         'line-width': 1
                     }
                 });
@@ -681,7 +697,7 @@
                     type: 'line',
                     filter: ["in", "featurecla", "Road"],
                     paint: {
-                        'line-color': 'hsl(100, 30%, 100%)',
+                        'line-color': 'hsl(210, 15%, 99%)',
                         'line-width': 2
                     }
                 });
@@ -692,7 +708,7 @@
                     'source-layer': 'provinces_lines',
                     type: 'line',
                     paint: {
-                        'line-color': 'hsl(210, 15%, 72%)',
+                        'line-color': 'hsl(210, 15%, 82%)',
                         'line-width': 2,
                         'line-dasharray': [2, 2]
                     }
@@ -704,7 +720,7 @@
                     'source-layer': 'boundaries',
                     type: 'line',
                     paint: {
-                        'line-color': 'hsl(210, 15%, 72%)',
+                        'line-color': 'hsl(210, 15%, 82%)',
                         'line-width': 2
                     }
                 });
