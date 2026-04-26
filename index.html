@@ -136,7 +136,7 @@
             border: 2px solid hsl(0, 0%, 100%);
             border-radius: 5px;
             line-height: 1;
-            background-color: hsl(270, 35%, 100%);
+            background-color: hsl(0, 0%, 100%);
             color: hsl(270, 35%, 20%);
             box-shadow: 1px 1px 2px hsla(0, 0%, 0%, 0.1);
         }
@@ -160,7 +160,11 @@
         }
 
         .popup-city {
-            background-color: hsl(270, 35%, 70%);
+            background: linear-gradient(
+    to bottom,
+    hsl(270, 35%, 80%),
+    hsl(270, 35%, 70%)
+);
             color: hsl(270, 35%, 100%);
             border-radius: 5px 5px 0 0;
             padding: 5px;
@@ -737,14 +741,14 @@
                     'source-layer': 'elevation',
                     layout: {
                         'text-field': "▲",
-                        'text-size': 20,
+                        'text-size': 24,
                         'text-font': ['montserrat-semibold'],
                         'text-anchor': 'center',
                         'text-allow-overlap': true,
                         'text-ignore-placement': true
                     },
                     paint: {
-                        'text-color': 'hsl(210, 15%, 72%)',
+                        'text-color': 'hsl(210, 15%, 62%)',
                         'text-halo-color': 'hsl(0, 0%, 100%)',
                         'text-halo-width': 0
                     }
