@@ -160,7 +160,7 @@
         }
 
         .popup-city {
-            background-color: hsl(270, 30%, 70%);
+            background-color: hsl(270, 35%, 70%);
             color: hsl(270, 35%, 100%);
             border-radius: 5px 5px 0 0;
             padding: 5px;
@@ -637,6 +637,11 @@
                     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/rivers/{z}/{x}/{y}.pbf"]
                 });
 
+                this.map.addSource('elevation', {
+                    type: 'vector',
+                    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/elevation/{z}/{x}/{y}.pbf"]
+                });
+
                 this.map.addLayer({
                     id: 'countries',
                     source: 'countries',
@@ -708,20 +713,39 @@
                     'source-layer': 'provinces_lines',
                     type: 'line',
                     paint: {
-                        'line-color': 'hsl(210, 15%, 82%)',
+                        'line-color': 'hsl(210, 15%, 72%)',
                         'line-width': 2,
                         'line-dasharray': [2, 2]
                     }
                 });
 
                 this.map.addLayer({
-                    id: 'boundaries',
-                    source: 'boundaries',
-                    'source-layer': 'boundaries',
-                    type: 'line',
+                    id: "elevation",
+                    type: "circle",
+                    source: "elevation",
                     paint: {
-                        'line-color': 'hsl(210, 15%, 82%)',
-                        'line-width': 2
+                        "circle-radius": 3,
+                        "circle-color": "hsl(0, 0%, 40%)"
+                    }
+                });
+
+               this.map.addLayer({
+                    id: 'elevation',
+                    type: 'symbol',
+                    source: 'elevation',
+                    'source-layer': 'elevation',
+                    layout: {
+                        'text-field': "▲",
+                        'text-size': 12,
+                        'text-font': ['montserrat-semibold'],
+                        'text-anchor': 'center',
+                        'text-allow-overlap': true,
+                        'text-ignore-placement': true
+                    },
+                    paint: {
+                        'text-color': 'hsl(210, 15%, 72%)',
+                        'text-halo-color': 'hsl(0, 0%, 100%)',
+                        'text-halo-width': 0
                     }
                 });
 
@@ -740,7 +764,7 @@
                         'text-ignore-placement': false
                     },
                     paint: {
-                        'text-color': 'hsl(210, 50%, 38%)',
+                        'text-color': 'hsl(205, 45%, 48%)',
                         'text-halo-color': 'hsl(0, 0%, 100%)',
                         'text-halo-width': 1
                     }
