@@ -160,11 +160,7 @@
         }
 
         .popup-city {
-            background: linear-gradient(
-                to bottom,
-                hsl(270, 35%, 80%),
-                hsl(270, 35%, 70%)
-            );
+            background: hsl(135, 45%, 68%);
             color: hsl(270, 35%, 100%);
             border-radius: 5px 5px 0 0;
             padding: 5px;
@@ -439,6 +435,7 @@
 
             const RAIN = new Set(["RA", "DZ"]);
             const SNOW = new Set(["SN", "SG", "GR", "GS", "PL"]);
+            const STORM = new Set(["TS"]);
 
             const seen = new Set();
 
@@ -450,18 +447,20 @@
 
                     let icon = ""; // default fallback (no clouds)
 
-                    if (RAIN.has(code)) icon = "💧";
+                    if (STORM.has(code)) icon = "⚡";
+                    else if (RAIN.has(code)) icon = "💧";
                     else if (SNOW.has(code)) icon = "❄️";
 
                     return icon;
                 })
                 .filter(icon => {
+                    if (!icon) return false;
                     if (seen.has(icon)) return false;
                     seen.add(icon);
                     return true;
                 })
                 .join(" ");
-        };
+        }
 
         function decodeSkyCondition(sky) {
             if (!sky) return "";
@@ -719,7 +718,7 @@
                     paint: {
                         'line-color': 'hsl(210, 15%, 72%)',
                         'line-width': 2,
-                        'line-dasharray': [2, 2]
+                        'line-dasharray': [1, 1]
                     }
                 });
 
@@ -730,7 +729,8 @@
                     type: 'line',
                     paint: {
                         'line-color': 'hsl(210, 15%, 72%)',
-                        'line-width': 2
+                        'line-width': 2,
+                        'line-dasharray': [2, 1]
                     }
                 });
 
