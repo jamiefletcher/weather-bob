@@ -587,6 +587,11 @@
                     }
                 });
 
+                // this.map.addSource("hillshade", {
+                //     type: "vector",
+                //     tiles: ["https://jamiefletcher.github.io/weather-bob/data/hillshade/{z}/{x}/{y}.pbf"]
+                // });
+
                 this.map.addSource('countries', {
                     type: 'vector',
                     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/countries/{z}/{x}/{y}.pbf"]
@@ -607,11 +612,6 @@
                     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/roads/{z}/{x}/{y}.pbf"]
                 });
 
-                this.map.addSource("hillshade", {
-                    type: "vector",
-                    tiles: ["https://jamiefletcher.github.io/weather-bob/data/hillshade/{z}/{x}/{y}.pbf"]
-                });
-
                 this.map.addLayer({
                     id: 'countries',
                     source: 'countries',
@@ -622,16 +622,16 @@
                     }
                 });
 
-                this.map.addLayer({
-                    id: 'hillshade',
-                    source: 'hillshade',
-                    'source-layer': 'hillshade',
-                    type: 'fill',
-                    paint: {
-                        'fill-color': 'hsl(210, 15%, 90%)',
-                        'fill-opacity': 1
-                    }
-                });
+                // this.map.addLayer({
+                //     id: 'hillshade',
+                //     source: 'hillshade',
+                //     'source-layer': 'hillshade',
+                //     type: 'fill',
+                //     paint: {
+                //         'fill-color': 'hsl(210, 15%, 90%)',
+                //         'fill-opacity': 1
+                //     }
+                // });
 
                 this.map.addLayer({
                     id: 'countries-lines',
