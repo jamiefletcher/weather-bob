@@ -133,7 +133,7 @@
         .popup-places {
             position: relative;
             overflow: visible;
-            border: 1px solid hsl(0, 0%, 100%);
+            border: 2px solid hsl(0, 0%, 100%);
             border-radius: 5px;
             line-height: 1;
             background-color: hsl(270, 35%, 100%);
@@ -617,6 +617,16 @@
                     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/provinces_lines/{z}/{x}/{y}.pbf"]
                 });
 
+                this.map.addSource('coastline', {
+                    type: 'vector',
+                    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/coastline/{z}/{x}/{y}.pbf"]
+                });
+
+                this.map.addSource('boundaries', {
+                    type: 'vector',
+                    tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/boundaries/{z}/{x}/{y}.pbf"]
+                });
+
                 this.map.addSource('roads', {
                     type: 'vector',
                     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/roads/{z}/{x}/{y}.pbf"]
@@ -644,25 +654,13 @@
                 // });
 
                 this.map.addLayer({
-                    id: 'countries-lines',
-                    source: 'countries',
-                    'source-layer': 'countries',
+                    id: 'coastline',
+                    source: 'coastline',
+                    'source-layer': 'coastline',
                     type: 'line',
                     paint: {
-                        'line-color': 'hsl(0, 0%, 100%)',
+                        'line-color': 'hsl(210, 15%, 72%)',
                         'line-width': 2
-                    }
-                });
-
-                this.map.addLayer({
-                    id: 'provinces-lines',
-                    source: 'provinces_lines',
-                    'source-layer': 'provinces_lines',
-                    type: 'line',
-                    paint: {
-                        'line-color': 'hsl(0, 0%, 100%)',
-                        'line-width': 2,
-                        'line-dasharray': [2, 2]
                     }
                 });
 
@@ -682,8 +680,8 @@
                     'source-layer': 'lakes',
                     type: 'line',
                     paint: {
-                        'line-color': 'hsl(0, 0%, 100%)',
-                        'line-width': 2
+                        'line-color': 'hsl(210, 15%, 72%)',
+                        'line-width': 1
                     }
                 });
 
@@ -695,6 +693,29 @@
                     filter: ["in", "featurecla", "Road"],
                     paint: {
                         'line-color': 'hsl(100, 30%, 100%)',
+                        'line-width': 2
+                    }
+                });
+
+                this.map.addLayer({
+                    id: 'provinces-lines',
+                    source: 'provinces_lines',
+                    'source-layer': 'provinces_lines',
+                    type: 'line',
+                    paint: {
+                        'line-color': 'hsl(210, 15%, 72%)',
+                        'line-width': 2,
+                        'line-dasharray': [2, 2]
+                    }
+                });
+
+                this.map.addLayer({
+                    id: 'boundaries',
+                    source: 'boundaries',
+                    'source-layer': 'boundaries',
+                    type: 'line',
+                    paint: {
+                        'line-color': 'hsl(210, 15%, 72%)',
                         'line-width': 2
                     }
                 });

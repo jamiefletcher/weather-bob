@@ -1,0 +1,12 @@
+{
+  "name":"coastline",
+  "description":"",
+  "version":2,
+  "minzoom":3,
+  "maxzoom":6,
+  "center":"0.0000000,-0.6829497,3",
+  "bounds":"-180.0000000,-85.0000000,180.0000000,83.6341007",
+  "type":"overlay",
+  "format":"pbf",
+  "json":"{\n  \"vector_layers\":[\n    {\n      \"id\":\"coastline\",\n      \"description\":\"\",\n      \"minzoom\":3,\n      \"maxzoom\":6,\n      \"fields\":{\n        \"featurecla\":\"String\",\n        \"scalerank\":\"Number\",\n        \"min_zoom\":\"Number\"\n      }\n    }\n  ],\n  \"tilestats\":{\n    \"layerCount\":1,\n    \"layers\":[\n      {\n        \"layer\":\"coastline\",\n        \"count\":4133,\n        \"geometry\":\"LineString\",\n        \"attributeCount\":3,\n        \"attributes\":[\n          {\n            \"attribute\":\"featurecla\",\n            \"count\":2,\n            \"type\":\"string\",\n            \"values\":[\n              \"Coastline\",\n              \"Null island\"\n            ]\n          },\n          {\n            \"attribute\":\"scalerank\",\n            \"count\":7,\n            \"type\":\"number\",\n            \"values\":[\n              0,\n              1,\n              3,\n              4,\n              5,\n              6,\n              100\n            ],\n            \"min\":0,\n            \"max\":100\n          },\n          {\n            \"attribute\":\"min_zoom\",\n            \"count\":11,\n            \"type\":\"number\",\n            \"values\":[\n              0.0,\n              0.5,\n              1.0,\n              1.5,\n              2.0,\n              3.0,\n              4.0,\n              5.0,\n              6.0,\n              6.2999999999999998,\n              7.0\n            ],\n            \"min\":0.0,\n            \"max\":7.0\n          }\n        ]\n      }\n    ]\n  }\n}"
+}
