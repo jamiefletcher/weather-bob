@@ -160,6 +160,10 @@
             font-weight: 700;
         }
 
+        .maplibregl-popup.popup-long-city .popup-places h2 {
+            font-size: 0.7rem;
+        }
+
         .maplibregl-popup-content .popup-places .popup-data h1 {
             font-size: 1.4rem;
             font-weight: 500;
@@ -553,6 +557,11 @@ console.log(text)
                     tiles: ["https://jamiefletcher.github.io/weather-bob/data/naturalearth/roads/{z}/{x}/{y}.pbf"]
                 });
 
+                this.map.addSource("hillshade", {
+                    type: "vector",
+                    tiles: ["https://jamiefletcher.github.io/weather-bob/data/hillshade/{z}/{x}/{y}.pbf"]
+                });
+
                 this.map.addLayer({
                     id: 'countries',
                     source: 'countries',
@@ -560,6 +569,17 @@ console.log(text)
                     type: 'fill',
                     paint: {
                         'fill-color': 'hsl(210, 15%, 92%)'
+                    }
+                });
+
+                this.map.addLayer({
+                    id: 'hillshade',
+                    source: 'hillshade',
+                    'source-layer': 'hillshade',
+                    type: 'fill',
+                    paint: {
+                        'fill-color': 'hsl(210, 15%, 90%)',
+                        'fill-opacity': 1
                     }
                 });
 
@@ -691,10 +711,13 @@ console.log(text)
                     const temp = Math.round(parseFloat(m.temp_c));
                     const skyIcon = decodeSkyConditionSymbol(m.sky_condition);
 
+                    const isLongCity = city.split(" ").some(word => word.length > 10);
+
                     const popup = new maplibregl.Popup({
                         closeButton: false,
                         closeOnClick: false,
-                        anchor: "center"
+                        anchor: "center",
+                        className: isLongCity ? "popup-long-city" : ""
                     })
                         .setLngLat(coords)
                         .setHTML(`
