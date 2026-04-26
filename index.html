@@ -179,16 +179,21 @@
             display: none;
         }
 
-        .maplibregl-popup-content {
-            padding: 0 !important;
-            background: transparent;
-            box-shadow: none;
-        }
-
         .maplibregl-popup,
         .maplibregl-popup * {
             pointer-events: none;
             user-select: none;
+        }
+
+        .maplibregl-popup {
+            min-width: 0 !important;
+            max-width: 80px !important;
+        }
+
+        .maplibregl-popup-content {
+            padding: 0 !important;
+            background: transparent;
+            box-shadow: none;
         }
 
         h1 {
