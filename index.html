@@ -221,6 +221,17 @@
             box-shadow: none;
         }
 
+.maplibregl-popup-content {
+    opacity: 0;
+    transform: translateY(8px) scale(0.95);
+    transition: opacity 280ms ease, transform 280ms ease;
+}
+
+.maplibregl-popup.popup-visible .maplibregl-popup-content {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
         h1 {
             font-size: 3rem;
             font-weight: 300;
@@ -776,21 +787,27 @@
                     })
                         .setLngLat(coords)
                         .setHTML(`
-    <div class="popup-places">
-        ${wxBadgeHTML}
+                            <div class="popup-places">
+                                ${wxBadgeHTML}
 
-        <div class="popup-city">
-            <h2>${city}</h2>
-        </div>
+                                <div class="popup-city">
+                                    <h2>${city}</h2>
+                                </div>
 
-        <div class="popup-data">
-            <h1>${temp}°</h1>
-            <h1>${skyIcon}</h1>
-        </div>
+                                <div class="popup-data">
+                                    <h1>${temp}°</h1>
+                                    <h1>${skyIcon}</h1>
+                                </div>
 
-    </div>
-`)
+                            </div>
+                        `)
                         .addTo(this.map);
+
+                        // force next-frame animation trigger
+                        requestAnimationFrame(() => {
+                            const el = popup.getElement();
+                            if (el) el.classList.add("popup-visible");
+                        });
 
                     this.popups.push(popup);
                 });
