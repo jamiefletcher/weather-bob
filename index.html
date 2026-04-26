@@ -138,7 +138,7 @@
             line-height: 1;
             background-color: hsl(270, 35%, 100%);
             color: hsl(270, 35%, 20%);
-            box-shadow: 0px 0px 8px hsla(0, 0%, 100%, 1);
+            box-shadow: 1px 1px 2px hsla(0, 0%, 0%, 0.1);
         }
 
         .popup-wx-badge {
@@ -154,7 +154,7 @@
             aspect-ratio: 1 / 1;
             font-size: 1rem;
             line-height: 1;
-            box-shadow: 2px 2px 6px hsla(0, 0%, 0%, 0.2);
+            box-shadow: 1px 1px 4px hsla(0, 0%, 0%, 0.2);
             z-index: 10;
             pointer-events: none;
         }
@@ -683,7 +683,7 @@
                     type: 'line',
                     paint: {
                         'line-color': 'hsl(0, 0%, 100%)',
-                        'line-width': 1
+                        'line-width': 2
                     }
                 });
 
@@ -695,7 +695,7 @@
                     filter: ["in", "featurecla", "Road"],
                     paint: {
                         'line-color': 'hsl(100, 30%, 100%)',
-                        'line-width': 1
+                        'line-width': 2
                     }
                 });
 
@@ -720,15 +720,15 @@
                     }
                 });
 
-                this.map.addLayer({
-                    id: "places",
-                    type: "circle",
-                    source: "places",
-                    paint: {
-                        "circle-radius": 4,
-                        "circle-color": "hsl(0, 0%, 0%)"
-                    }
-                });
+                // this.map.addLayer({
+                //     id: "places",
+                //     type: "circle",
+                //     source: "places",
+                //     paint: {
+                //         "circle-radius": 3,
+                //         "circle-color": "hsl(0, 0%, 40%)"
+                //     }
+                // });
             },
 
             getSafeBounds(pct = 0.1) {
