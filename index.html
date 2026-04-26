@@ -131,17 +131,19 @@
         }
 
         .popup-places {
-            padding: 5px;
-            border: 1px solid hsl(0, 0%, 40%);
+            border: 1px solid hsl(0, 0%, 100%);
             border-radius: 5px;
             line-height: 1;
-            background-color: hsl(270, 35%, 99%);
+            background-color: hsl(270, 35%, 100%);
             color: hsl(270, 35%, 20%);
             box-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.1);
         }
 
-        .maplibregl-popup-tip .popup-places {
-            border-color: hsla(270, 35%, 99%, 0);
+        .popup-city {
+            background-color: hsl(270, 35%, 20%);
+            color: hsl(270, 35%, 100%);
+            border-radius: 5px 5px 0 0;
+            padding: 5px;
         }
 
         .popup-data {
@@ -150,6 +152,7 @@
             align-items: center;
             justify-content: left;
             gap: 0.1rem;
+            padding: 5px;
         }
 
         .popup-places h1 {
@@ -162,6 +165,10 @@
 
         .popup-places h3 {
             font-size: 0.1rem;
+        }
+
+        .maplibregl-popup-tip .popup-places {
+            border-color: hsla(270, 35%, 100%, 0);
         }
 
         #map>.maplibregl-canvas-container,
@@ -232,7 +239,7 @@
 
             const xml = new DOMParser().parseFromString(text, 'application/xml');
             const metarNodes = Array.from(xml.getElementsByTagName('METAR'));
-
+console.log(text)
             return metarNodes
                 .map(node => {
                     const row = {};
@@ -494,7 +501,7 @@
                             }
                         ]
                     },
-                    hash: true,
+                    hash: false,
                     center: [-79.3832, 43.6532],
                     zoom: 5.9,
                     minZoom: 3,
@@ -619,27 +626,27 @@
                 // });
             },
 
-getSafeBounds(pct = 0.1) {
-    const canvas = this.map.getCanvas();
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
+            getSafeBounds(pct = 0.1) {
+                const canvas = this.map.getCanvas();
+                const width = canvas.clientWidth;
+                const height = canvas.clientHeight;
 
-    const padX = width * pct;
-    const padY = height * pct;
+                const padX = width * pct;
+                const padY = height * pct;
 
-    return {
-        contains: (lngLat) => {
-            const p = this.map.project(lngLat);
+                return {
+                    contains: (lngLat) => {
+                        const p = this.map.project(lngLat);
 
-            return (
-                p.x > padX &&
-                p.x < (width - padX) &&
-                p.y > padY &&
-                p.y < (height - padY)
-            );
-        }
-    };
-},
+                        return (
+                            p.x > padX &&
+                            p.x < (width - padX) &&
+                            p.y > padY &&
+                            p.y < (height - padY)
+                        );
+                    }
+                };
+            },
 
             addPopups() {
                 const safeBounds = this.getSafeBounds(0.1);
@@ -667,14 +674,16 @@ getSafeBounds(pct = 0.1) {
                     })
                         .setLngLat(coords)
                         .setHTML(`
-            <div class="popup-places">
-                <h2>${city}</h2>
-                <div class="popup-data">
-                    <h1>${temp}°</h1>
-                    <h1>${skyIcon}</h1>
-                </div>
-            </div>
-        `)
+                            <div class="popup-places">
+                                <div class="popup-city">
+                                    <h2>${city}</h2>
+                                </div>
+                                <div class="popup-data">
+                                    <h1>${temp}°</h1>
+                                    <h1>${skyIcon}</h1>
+                                </div>
+                            </div>
+                        `)
                         .addTo(this.map);
 
                     this.popups.push(popup);
