@@ -720,12 +720,13 @@
                 });
 
                 this.map.addLayer({
-                    id: "elevation",
-                    type: "circle",
-                    source: "elevation",
+                    id: 'boundaries',
+                    source: 'boundaries',
+                    'source-layer': 'boundaries',
+                    type: 'line',
                     paint: {
-                        "circle-radius": 3,
-                        "circle-color": "hsl(0, 0%, 40%)"
+                        'line-color': 'hsl(210, 15%, 72%)',
+                        'line-width': 2
                     }
                 });
 
@@ -736,7 +737,7 @@
                     'source-layer': 'elevation',
                     layout: {
                         'text-field': "▲",
-                        'text-size': 12,
+                        'text-size': 20,
                         'text-font': ['montserrat-semibold'],
                         'text-anchor': 'center',
                         'text-allow-overlap': true,
