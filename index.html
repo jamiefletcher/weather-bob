@@ -151,7 +151,7 @@
             flex-direction: row;
             align-items: center;
             justify-content: left;
-            gap: 0.1rem;
+            gap: 0.05rem;
             padding: 5px;
         }
 
@@ -612,9 +612,30 @@ console.log(text)
                     source: 'roads',
                     'source-layer': 'roads',
                     type: 'line',
+                    filter: [ "in", "featurecla", "Road" ],
                     paint: {
                         'line-color': 'hsl(93, 47%, 96%)',
                         'line-width': 1
+                    }
+                });
+
+                this.map.addLayer({
+                    id: 'lakes-labels',
+                    type: 'symbol',
+                    source: 'lakes',
+                    'source-layer': 'lakes',
+                    layout: {
+                        'text-field': ['get', 'name'],
+                        'text-size': 12,
+                        'text-font': ['montserrat-semibold'],
+                        'text-anchor': 'center',
+                        'text-allow-overlap': false,
+                        'text-ignore-placement': false
+                    },
+                    paint: {
+                        'text-color': 'hsl(197, 85%, 35%)',
+                        'text-halo-color': 'hsl(0, 0%, 100%)',
+                        'text-halo-width': 1
                     }
                 });
 
