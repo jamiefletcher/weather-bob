@@ -316,7 +316,7 @@
         // LOAD STATIONS PLACES
         // =========================
         async function loadStationsPlaces() {
-            const res = await fetch('data/stations_places.geojson');
+            const res = await fetch('data/metars/stations_places.geojson');
             const geojson = await res.json();
 
             if (!geojson || !geojson.features) {
