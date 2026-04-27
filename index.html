@@ -323,7 +323,7 @@
                     const station_id = row.station_id;
                     const lat = parseFloat(row.latitude);
                     const lon = parseFloat(row.longitude);
-                    const temp = parseFloat(row.temp_c);
+                    const temp = parseFloat(row.temp_c?.replace("M", "-"));
 
                     if (
                         !station_id ||
@@ -774,6 +774,8 @@
 
                 this.hideTafPanel();
 
+                if (this.tafTimer) clearTimeout(this.tafTimer);
+
                 if (this.map) {
                     this.map.stop();
                     this.map.remove();
@@ -1204,15 +1206,13 @@
                 this.hudContainer.appendChild(this.hud);
 
                 const updateHUD = (s) => {
-                    const temp = Math.round(parseFloat(s.temp_c));
-                    const wxText = decodeWx(s.wx_string);
-                    const skyText = decodeSkyCondition(s.sky_condition);
+                    const temp = Math.round(s.temp_c);
 
                     this.hud.innerHTML = `
                         <h2>${s.city}</h2>
                         <h1>${temp}°</h1>
-                        <h3>${skyText}</h3>
-                        <h3>${wxText}</h3>
+                        <h3>${s.sky_icon ?? ""}</h3>
+                        <h3>${s.wx_text ?? ""}</h3>
                     `;
                 };
 
