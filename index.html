@@ -723,6 +723,7 @@
                     this.addPopups();
 
                     this.updateVisibleTafStations();
+                    this.hideTafPanel();
                     this.startTafSequence();
                 });
             },
@@ -842,14 +843,14 @@
                 const step = () => {
                     if (!this.running) return;
                     if (!this.visibleTafStations.length) {
-                        this.tafPanel.style.display = "none";
+                        this.hideTafPanel();
                         return;
                     }
 
                     const station = this.visibleTafStations[this.tafIndex];
 
                     if (!station) {
-                        this.tafPanel.style.display = "none";
+                        this.hideTafPanel();
                         return;
                     }
 
@@ -879,7 +880,7 @@
                     // last station reached → wait, then hide
                     if (this.tafIndex >= this.visibleTafStations.length) {
                         this.tafTimer = setTimeout(() => {
-                            this.tafPanel.style.display = "none";
+                            this.hideTafPanel();
                         }, this.STEP_DELAY);
 
                         return;
@@ -889,6 +890,20 @@
                 };
 
                 this.tafTimer = setTimeout(step, this.INITIAL_DELAY);
+            },
+
+            hideTafPanel() {
+                if (this.tafPanel) {
+                    this.tafPanel.style.display = "none";
+                    this.tafPanel.innerHTML = "";
+                }
+
+                if (this.tafTimer) {
+                    clearTimeout(this.tafTimer);
+                    this.tafTimer = null;
+                }
+
+                this.tafIndex = 0;
             },
 
             updateVisibleTafStations() {
