@@ -647,7 +647,6 @@
             STEP_DELAY: 3000,
 
             map: null,
-            timer: null,
             running: false,
             popups: [],
 
@@ -677,8 +676,6 @@
                         taf: tafMap.get(p.properties.station_code)
                     }))
                     .filter(p => p.metar || p.taf);
-
-                this.tafStations = this.enrichedPlaces.filter(p => p.taf);
 
                 this.tafPanel = document.createElement("div");
                 this.tafPanel.className = "taf-panel";
@@ -719,7 +716,6 @@
                 });
 
                 this.map.on("moveend", () => {
-                    this.clearPopups();
                     this.addPopups();
 
                     this.updateVisibleTafStations();
@@ -728,20 +724,17 @@
                 });
             },
 
-            stop() {
-                this.running = false;
+stop() {
+    this.running = false;
 
-                if (this.timer) {
-                    clearTimeout(this.timer);
-                    this.timer = null;
-                }
+    this.hideTafPanel();
 
-                if (this.map) {
-                    this.map.stop();
-                    this.map.remove();
-                    this.map = null;
-                }
-            },
+    if (this.map) {
+        this.map.stop();
+        this.map.remove();
+        this.map = null;
+    }
+},
 
             getSafeBounds(pct = 0.1) {
                 const canvas = this.map.getCanvas();
@@ -1112,7 +1105,6 @@
 
         const Scene2 = {
             map: null,
-            timer: null,
             running: false,
 
             // scene-owned constants
