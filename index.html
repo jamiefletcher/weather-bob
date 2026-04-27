@@ -313,6 +313,76 @@
         }
 
         // =========================
+        // LOAD TAFS
+        // =========================
+        async function loadTafs() {
+            const res = await fetch('data/metars/tafs.cache.xml');
+            const text = await res.text();
+
+            const xml = new DOMParser().parseFromString(text, 'application/xml');
+            const tafNodes = Array.from(xml.getElementsByTagName('TAF'));
+
+            return tafNodes
+                .map(node => {
+                    const row = {};
+                    const forecasts = [];
+
+                    Array.from(node.children).forEach(child => {
+                        const key = child.tagName;
+
+                        if (key === 'forecast') {
+                            const fcst = {};
+
+                            Array.from(child.children).forEach(fcChild => {
+                                const fcKey = fcChild.tagName;
+
+                                if (fcKey === 'sky_condition') {
+                                    fcst.sky_condition = {
+                                        sky_cover: fcChild.getAttribute('sky_cover'),
+                                        cloud_base_ft_agl: parseFloat(fcChild.getAttribute('cloud_base_ft_agl'))
+                                    };
+                                } else {
+                                    fcst[fcKey] = parseNode(fcChild);
+                                }
+                            });
+
+                            // normalize numbers
+                            fcst.wind_dir_degrees = parseFloat(fcst.wind_dir_degrees);
+                            fcst.wind_speed_kt = parseFloat(fcst.wind_speed_kt);
+                            fcst.wind_gust_kt = fcst.wind_gust_kt ? parseFloat(fcst.wind_gust_kt) : null;
+
+                            forecasts.push(fcst);
+
+                        } else {
+                            if (row[key]) {
+                                if (!Array.isArray(row[key])) row[key] = [row[key]];
+                                row[key].push(parseNode(child));
+                            } else {
+                                row[key] = parseNode(child);
+                            }
+                        }
+                    });
+
+                    const station_id = row.station_id;
+                    const lat = parseFloat(row.latitude);
+                    const lon = parseFloat(row.longitude);
+
+                    if (!station_id || !Number.isFinite(lat) || !Number.isFinite(lon)) {
+                        return null;
+                    }
+
+                    return {
+                        ...row,
+                        station_id,
+                        latitude: lat,
+                        longitude: lon,
+                        forecasts // <-- key difference vs METAR
+                    };
+                })
+                .filter(Boolean);
+        }
+
+        // =========================
         // LOAD STATIONS PLACES
         // =========================
         async function loadStationsPlaces() {
@@ -326,7 +396,6 @@
             return geojson;
         }
 
-        // helper functions
         function parseNode(node) {
             const hasAttributes = node.attributes.length > 0;
 
@@ -533,27 +602,40 @@
         window.SceneController = SceneController;
 
         const Scene1 = {
+            INITIAL_DELAY: 1000,
+            STEP_DELAY: 3000,
+
             map: null,
             timer: null,
             running: false,
             popups: [],
 
+            tafIndex: 0,
+            tafTimer: null,
+            visibleTafStations: [],
+
             start(container, data) {
                 this.running = true;
 
-                const stations = data.stations;
-                const places = data.places.features;
+const metars = data.metars;
+const tafs = data.tafs;
+const places = data.places.features;
 
-                const metarMap = new Map(
-                    stations.map(s => [s.station_id, s])
-                );
+const metarMap = new Map(
+    metars.map(s => [s.station_id, s])
+);
 
-                this.enrichedPlaces = places
-                    .map(p => ({
-                        ...p,
-                        metar: metarMap.get(p.properties.station_code)
-                    }))
-                    .filter(p => p.metar);
+const tafMap = new Map(
+    tafs.map(t => [t.station_id, t])
+);
+
+this.enrichedPlaces = places
+    .map(p => ({
+        ...p,
+        metar: metarMap.get(p.properties.station_code),
+        taf: tafMap.get(p.properties.station_code)
+    }))
+    .filter(p => p.metar || p.taf);
 
                 this.map = new maplibregl.Map({
                     container,
@@ -582,13 +664,168 @@
 
                     this.addSourcesAndLayers();
                     this.addPopups();
-                    this.loop(stations);
+
+                    this.updateVisibleTafStations();
+                    this.startTafSequence();
+
                 });
 
                 this.map.on("moveend", () => {
                     this.clearPopups();
                     this.addPopups();
+
+                    this.updateVisibleTafStations();
+                    this.startTafSequence();
                 });
+            },
+
+            stop() {
+                this.running = false;
+
+                if (this.timer) {
+                    clearTimeout(this.timer);
+                    this.timer = null;
+                }
+
+                if (this.map) {
+                    this.map.stop();
+                    this.map.remove();
+                    this.map = null;
+                }
+            },
+
+            getSafeBounds(pct = 0.1) {
+                const canvas = this.map.getCanvas();
+                const width = canvas.clientWidth;
+                const height = canvas.clientHeight;
+
+                const padX = width * pct;
+                const padY = height * pct;
+
+                return {
+                    contains: (lngLat) => {
+                        const p = this.map.project(lngLat);
+
+                        return (
+                            p.x > padX &&
+                            p.x < (width - padX) &&
+                            p.y > padY &&
+                            p.y < (height - padY)
+                        );
+                    }
+                };
+            },
+
+            addPopups() {
+                const safeBounds = this.getSafeBounds(0.1);
+
+                // 🔴 CRITICAL: clear old popups first
+                this.clearPopups();
+
+                this.popups = [];
+
+                this.enrichedPlaces.forEach(f => {
+                    const m = f.metar;
+                    if (!m) return;
+
+                    const coords = f.geometry.coordinates;
+                    if (!safeBounds.contains(coords)) return;
+
+                    const city = f.properties.city;
+                    const temp = Math.round(parseFloat(m.temp_c));
+                    const skyIcon = decodeSkyConditionSymbol(m.sky_condition);
+                    const wxIcon = decodeWxIcon(m.wx_string);
+
+                    const wxBadgeHTML = wxIcon
+                        ? `<div class="popup-wx-badge">${wxIcon}</div>`
+                        : "";
+
+                    const isLongCity = city.split(" ").some(word => word.length > 10);
+
+                    const popup = new maplibregl.Popup({
+                        closeButton: false,
+                        closeOnClick: false,
+                        anchor: "center",
+                        className: isLongCity ? "popup-long-city" : ""
+                    })
+                        .setLngLat(coords)
+                        .setHTML(`
+                            <div class="popup-places">
+                                ${wxBadgeHTML}
+
+                                <div class="popup-city">
+                                    <h2>${city}</h2>
+                                </div>
+
+                                <div class="popup-data">
+                                    <h1>${temp}°</h1>
+                                    <h1>${skyIcon}</h1>
+                                </div>
+
+                            </div>
+                        `)
+                        .addTo(this.map);
+
+                    // force next-frame animation trigger
+                    requestAnimationFrame(() => {
+                        const el = popup.getElement();
+                        if (el) el.classList.add("popup-visible");
+                    });
+
+                    this.popups.push(popup);
+                });
+            },
+
+            clearPopups() {
+                if (!this.popups) return;
+
+                this.popups.forEach(p => p.remove());
+                this.popups = [];
+            },
+
+            startTafSequence() {
+                if (this.tafTimer) {
+                    clearTimeout(this.tafTimer);
+                    this.tafTimer = null;
+                }
+
+                this.tafIndex = 0;
+
+                const step = () => {
+                    if (!this.running) return;
+
+                    if (!this.visibleTafStations.length) return;
+
+                    const station = this.visibleTafStations[this.tafIndex];
+
+                    if (station) {
+                        console.log(
+                            station.properties.station_code,
+                            station.properties.city
+                        );
+                    }
+
+                    this.tafIndex++;
+
+                    /*
+                    this.tafIndex =
+                        (this.tafIndex + 1) % this.visibleTafStations.length;
+                    */
+
+                    if (this.tafIndex >= this.visibleTafStations.length) return;
+
+                    this.tafTimer = setTimeout(step, this.STEP_DELAY);
+                };
+
+                this.tafTimer = setTimeout(step, this.INITIAL_DELAY);
+            },
+
+            updateVisibleTafStations() {
+                const safeBounds = this.getSafeBounds(0.1);
+
+                this.visibleTafStations = this.enrichedPlaces
+                    .filter(f => f.metar)
+                    .filter(f => safeBounds.contains(f.geometry.coordinates));
             },
 
             addSourcesAndLayers() {
@@ -734,7 +971,7 @@
                     }
                 });
 
-               this.map.addLayer({
+                this.map.addLayer({
                     id: 'elevation',
                     type: 'symbol',
                     source: 'elevation',
@@ -784,115 +1021,6 @@
                 //         "circle-color": "hsl(0, 0%, 40%)"
                 //     }
                 // });
-            },
-
-            getSafeBounds(pct = 0.1) {
-                const canvas = this.map.getCanvas();
-                const width = canvas.clientWidth;
-                const height = canvas.clientHeight;
-
-                const padX = width * pct;
-                const padY = height * pct;
-
-                return {
-                    contains: (lngLat) => {
-                        const p = this.map.project(lngLat);
-
-                        return (
-                            p.x > padX &&
-                            p.x < (width - padX) &&
-                            p.y > padY &&
-                            p.y < (height - padY)
-                        );
-                    }
-                };
-            },
-
-            addPopups() {
-                const safeBounds = this.getSafeBounds(0.1);
-
-                // 🔴 CRITICAL: clear old popups first
-                this.clearPopups();
-
-                this.popups = [];
-
-                this.enrichedPlaces.forEach(f => {
-                    const m = f.metar;
-                    if (!m) return;
-
-                    const coords = f.geometry.coordinates;
-                    if (!safeBounds.contains(coords)) return;
-
-                    const city = f.properties.city;
-                    const temp = Math.round(parseFloat(m.temp_c));
-                    const skyIcon = decodeSkyConditionSymbol(m.sky_condition);
-                    const wxIcon = decodeWxIcon(m.wx_string);
-
-                    const wxBadgeHTML = wxIcon
-                        ? `<div class="popup-wx-badge">${wxIcon}</div>`
-                        : "";
-
-                    const isLongCity = city.split(" ").some(word => word.length > 10);
-
-                    const popup = new maplibregl.Popup({
-                        closeButton: false,
-                        closeOnClick: false,
-                        anchor: "center",
-                        className: isLongCity ? "popup-long-city" : ""
-                    })
-                        .setLngLat(coords)
-                        .setHTML(`
-                            <div class="popup-places">
-                                ${wxBadgeHTML}
-
-                                <div class="popup-city">
-                                    <h2>${city}</h2>
-                                </div>
-
-                                <div class="popup-data">
-                                    <h1>${temp}°</h1>
-                                    <h1>${skyIcon}</h1>
-                                </div>
-
-                            </div>
-                        `)
-                        .addTo(this.map);
-
-                        // force next-frame animation trigger
-                        requestAnimationFrame(() => {
-                            const el = popup.getElement();
-                            if (el) el.classList.add("popup-visible");
-                        });
-
-                    this.popups.push(popup);
-                });
-            },
-
-            clearPopups() {
-                if (!this.popups) return;
-
-                this.popups.forEach(p => p.remove());
-                this.popups = [];
-            },
-
-            loop() {
-                // intentionally empty for now
-                // (Scene2 has animation loop; Scene1 will get one later)
-            },
-
-            stop() {
-                this.running = false;
-
-                if (this.timer) {
-                    clearTimeout(this.timer);
-                    this.timer = null;
-                }
-
-                if (this.map) {
-                    this.map.stop();
-                    this.map.remove();
-                    this.map = null;
-                }
             }
         };
 
@@ -937,13 +1065,13 @@
             start(container, data) {
                 this.running = true;
 
-                const stations = data.stations;
+                const metars = data.metars;
 
                 const globeMap = new Map(
                     this.GLOBE_STATIONS.map(([city, code]) => [code, city])
                 );
 
-                const globeStations = stations
+                const globeStations = metars
                     .filter(s => globeMap.has(s.station_id))
                     .map(s => ({
                         ...s,
@@ -1020,11 +1148,11 @@
                 });
             },
 
-            loop(stations, updateHUD) {
+            loop(metars, updateHUD) {
                 const step = () => {
                     if (!this.running || !this.map) return;
 
-                    const s = stations[Math.floor(Math.random() * stations.length)];
+                    const s = metars[Math.floor(Math.random() * metars.length)];
 
                     this.map.easeTo({
                         center: [s.longitude, s.latitude],
@@ -1060,12 +1188,13 @@
         };
 
         async function start() {
-
-            const stations = await loadMetars();
+            const metars = await loadMetars();
+            const tafs = await loadTafs();
             const places = await loadStationsPlaces();
 
             window.__weatherData = {
-                stations,
+                metars,
+                tafs,
                 places
             };
 
