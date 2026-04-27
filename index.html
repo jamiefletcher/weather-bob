@@ -325,7 +325,7 @@
             return tafNodes
                 .map(node => {
                     const row = {};
-                    const forecasts = [];
+                    const forecast = [];
 
                     Array.from(node.children).forEach(child => {
                         const key = child.tagName;
@@ -351,7 +351,7 @@
                             fcst.wind_speed_kt = parseFloat(fcst.wind_speed_kt);
                             fcst.wind_gust_kt = fcst.wind_gust_kt ? parseFloat(fcst.wind_gust_kt) : null;
 
-                            forecasts.push(fcst);
+                            forecast.push(fcst);
 
                         } else {
                             if (row[key]) {
@@ -376,7 +376,7 @@
                         station_id,
                         latitude: lat,
                         longitude: lon,
-                        forecasts // <-- key difference vs METAR
+                        forecast // <-- key difference vs METAR
                     };
                 })
                 .filter(Boolean);
@@ -617,25 +617,27 @@
             start(container, data) {
                 this.running = true;
 
-const metars = data.metars;
-const tafs = data.tafs;
-const places = data.places.features;
+                const metars = data.metars;
+                const tafs = data.tafs;
+                const places = data.places.features;
 
-const metarMap = new Map(
-    metars.map(s => [s.station_id, s])
-);
+                const metarMap = new Map(
+                    metars.map(s => [s.station_id, s])
+                );
 
-const tafMap = new Map(
-    tafs.map(t => [t.station_id, t])
-);
+                const tafMap = new Map(
+                    tafs.map(t => [t.station_id, t])
+                );
 
-this.enrichedPlaces = places
-    .map(p => ({
-        ...p,
-        metar: metarMap.get(p.properties.station_code),
-        taf: tafMap.get(p.properties.station_code)
-    }))
-    .filter(p => p.metar || p.taf);
+                this.enrichedPlaces = places
+                    .map(p => ({
+                        ...p,
+                        metar: metarMap.get(p.properties.station_code),
+                        taf: tafMap.get(p.properties.station_code)
+                    }))
+                    .filter(p => p.metar || p.taf);
+
+                this.tafStations = this.enrichedPlaces.filter(p => p.taf);
 
                 this.map = new maplibregl.Map({
                     container,
@@ -796,14 +798,15 @@ this.enrichedPlaces = places
 
                     if (!this.visibleTafStations.length) return;
 
-                    const station = this.visibleTafStations[this.tafIndex];
+const station = this.visibleTafStations[this.tafIndex];
 
-                    if (station) {
-                        console.log(
-                            station.properties.station_code,
-                            station.properties.city
-                        );
-                    }
+if (station) {
+    const city = station.properties.city;
+    const taf = station.taf;
+
+console.log(city);
+console.log("FORECAST:", taf.forecast);    
+};
 
                     this.tafIndex++;
 
@@ -824,7 +827,7 @@ this.enrichedPlaces = places
                 const safeBounds = this.getSafeBounds(0.1);
 
                 this.visibleTafStations = this.enrichedPlaces
-                    .filter(f => f.metar)
+                    .filter(f => f.taf)
                     .filter(f => safeBounds.contains(f.geometry.coordinates));
             },
 
