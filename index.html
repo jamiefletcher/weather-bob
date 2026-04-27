@@ -166,7 +166,6 @@
             line-height: 1;
             box-shadow: 1px 1px 4px hsla(0, 0%, 0%, 0.2);
             z-index: 10;
-            pointer-events: none;
         }
 
         .popup-city {
@@ -245,6 +244,7 @@
             font-family: sans-serif;
             max-width: 320px;
 
+            pointer-events: none;
             display: none;
         }
 
@@ -323,17 +323,28 @@
                     const station_id = row.station_id;
                     const lat = parseFloat(row.latitude);
                     const lon = parseFloat(row.longitude);
+                    const temp = parseFloat(row.temp_c);
 
-                    // only reject totally unusable records
-                    if (!station_id || !Number.isFinite(lat) || !Number.isFinite(lon)) {
+                    if (
+                        !station_id ||
+                        !Number.isFinite(lat) ||
+                        !Number.isFinite(lon) ||
+                        !Number.isFinite(temp)
+                    ) {
                         return null;
                     }
+
+                    const m = row; // treat same as popup usage
 
                     return {
                         ...row,
                         station_id,
                         latitude: lat,
-                        longitude: lon
+                        longitude: lon,
+
+                        temp_c: temp,
+                        sky_icon: decodeSkyConditionIcon(m.sky_condition),
+                        wx_icon: decodeWxIcon(m.wx_string)
                     };
                 })
                 .filter(Boolean);
@@ -373,11 +384,6 @@
                                 }
                             });
 
-                            // normalize numbers
-                            fcst.wind_dir_degrees = parseFloat(fcst.wind_dir_degrees);
-                            fcst.wind_speed_kt = parseFloat(fcst.wind_speed_kt);
-                            fcst.wind_gust_kt = fcst.wind_gust_kt ? parseFloat(fcst.wind_gust_kt) : null;
-
                             forecast.push(fcst);
 
                         } else {
@@ -404,19 +410,36 @@
                         latitude: lat,
                         longitude: lon,
 
-                        forecast: forecast.map(f => ({
-                            fcst_time_from: f.fcst_time_from ?? null,
-                            fcst_time_to: f.fcst_time_to ?? null,
+                        forecast: forecast.map(f => {
+                            const wxRaw = f.wx_string;
 
-                            wind_dir_degrees: Number.isFinite(f.wind_dir_degrees) ? f.wind_dir_degrees : null,
-                            wind_speed_kt: Number.isFinite(f.wind_speed_kt) ? f.wind_speed_kt : null,
-                            wind_gust_kt: Number.isFinite(f.wind_gust_kt) ? f.wind_gust_kt : null,
+                            return {
+                                // raw time (if ever needed)
+                                fcst_time_from: f.fcst_time_from ?? null,
+                                fcst_time_to: f.fcst_time_to ?? null,
 
-                            sky_condition: f.sky_condition ?? {
-                                sky_cover: null,
-                                cloud_base_ft_agl: null
-                            }
-                        }))
+                                // formatted time (same pattern as METAR-style UI readiness)
+                                fcst_time_from_hm: formatTime(f.fcst_time_from),
+                                fcst_time_to_hm: formatTime(f.fcst_time_to),
+
+                                // wind (same as METAR-style)
+                                wind_text: formatWind(
+                                    f.wind_dir_degrees,
+                                    f.wind_speed_kt,
+                                    f.wind_gust_kt
+                                ),
+
+                                // weather (METAR parity)
+                                wx_string: wxRaw ?? null,
+                                wx_text: wxRaw ? decodeWx(wxRaw) : "",
+                                wx_icon: wxRaw ? decodeWxIcon(wxRaw) : "",
+
+                                // sky condition (METAR parity)
+                                sky_condition: f.sky_condition ?? null,
+                                sky_text: decodeSkyCondition(f.sky_condition),
+                                sky_icon: decodeSkyConditionIcon(f.sky_condition)
+                            };
+                        })
                     };
                 })
                 .filter(Boolean)
@@ -463,6 +486,28 @@
                 [a[i], a[j]] = [a[j], a[i]];
             }
             return a;
+        }
+
+        function formatTime(t) {
+            if (!t || typeof t !== "string") return null;
+            return t.length >= 16 ? t.slice(11, 16) : null;
+        }
+
+        function formatWind(dir, speed, gust) {
+            if (dir == null && speed == null) return null;
+
+            let d;
+
+            if (dir === "VRB") {
+                d = "VRB";
+            } else if (Number.isFinite(Number(dir))) {
+                d = `${Number(dir).toString().padStart(3, "0")}°`;
+            }
+
+            const s = Number.isFinite(Number(speed)) ? `${Number(speed)}kt` : "";
+            const g = Number.isFinite(Number(gust)) ? `G${Number(gust)}` : "";
+
+            return [d, s + g].filter(Boolean).join(" ");
         }
 
         function decodeWx(wx) {
@@ -594,7 +639,7 @@
             return COVER[top.sky_cover] || "Cloudy";
         }
 
-        function decodeSkyConditionSymbol(sky) {
+        function decodeSkyConditionIcon(sky) {
             if (!sky) return "☀️";
 
             const SYMBOL = {
@@ -724,17 +769,17 @@
                 });
             },
 
-stop() {
-    this.running = false;
+            stop() {
+                this.running = false;
 
-    this.hideTafPanel();
+                this.hideTafPanel();
 
-    if (this.map) {
-        this.map.stop();
-        this.map.remove();
-        this.map = null;
-    }
-},
+                if (this.map) {
+                    this.map.stop();
+                    this.map.remove();
+                    this.map = null;
+                }
+            },
 
             getSafeBounds(pct = 0.1) {
                 const canvas = this.map.getCanvas();
@@ -761,9 +806,7 @@ stop() {
             addPopups() {
                 const safeBounds = this.getSafeBounds(0.1);
 
-                // 🔴 CRITICAL: clear old popups first
                 this.clearPopups();
-
                 this.popups = [];
 
                 this.enrichedPlaces.forEach(f => {
@@ -774,9 +817,10 @@ stop() {
                     if (!safeBounds.contains(coords)) return;
 
                     const city = f.properties.city;
-                    const temp = Math.round(parseFloat(m.temp_c));
-                    const skyIcon = decodeSkyConditionSymbol(m.sky_condition);
-                    const wxIcon = decodeWxIcon(m.wx_string);
+
+                    const temp = Math.round(m.temp_c);
+                    const skyIcon = m.sky_icon;
+                    const wxIcon = m.wx_icon;
 
                     const wxBadgeHTML = wxIcon
                         ? `<div class="popup-wx-badge">${wxIcon}</div>`
@@ -803,12 +847,10 @@ stop() {
                                     <h1>${temp}°</h1>
                                     <h1>${skyIcon}</h1>
                                 </div>
-
                             </div>
                         `)
                         .addTo(this.map);
 
-                    // force next-frame animation trigger
                     requestAnimationFrame(() => {
                         const el = popup.getElement();
                         if (el) el.classList.add("popup-visible");
@@ -835,6 +877,7 @@ stop() {
 
                 const step = () => {
                     if (!this.running) return;
+
                     if (!this.visibleTafStations.length) {
                         this.hideTafPanel();
                         return;
@@ -851,26 +894,24 @@ stop() {
                     const taf = station.taf;
 
                     const html = `
-            <div class="taf-city">${city}</div>
-            <div class="taf-forecast">
-                ${taf.forecast
-                            .map(f => `
-                        <div class="taf-row">
-                            ${f.fcst_time_from?.slice(11, 16)} → ${f.fcst_time_to?.slice(11, 16)}
-                            | wind ${f.wind_dir_degrees}° ${f.wind_speed_kt}kt
-                            | ${f.sky_condition?.sky_cover ?? ""}
+                        <div class="taf-city">${city}</div>
+                        <div class="taf-forecast">
+                            ${taf.forecast.map(f => `
+                                <div class="taf-row">
+                                    ${f.fcst_time_from_hm} → ${f.fcst_time_to_hm}
+                                    ${f.wind_text ?? ""}
+                                    ${f.sky_icon ?? ""}
+                                    ${f.wx_icon ?? ""}
+                                </div>
+                            `).join("")}
                         </div>
-                    `)
-                            .join("")}
-            </div>
-        `;
+                    `;
 
                     this.tafPanel.style.display = "block";
                     this.tafPanel.innerHTML = html;
 
                     this.tafIndex++;
 
-                    // last station reached → wait, then hide
                     if (this.tafIndex >= this.visibleTafStations.length) {
                         this.tafTimer = setTimeout(() => {
                             this.hideTafPanel();
