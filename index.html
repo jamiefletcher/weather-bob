@@ -63,6 +63,16 @@
             position: relative;
         }
 
+        #map>.maplibregl-canvas-container,
+        #map canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .maplibregl-ctrl-bottom-right {
+            display: none;
+        }
+
         #hud-container {
             position: absolute;
             top: 0;
@@ -193,16 +203,6 @@
             border-color: hsla(270, 35%, 100%, 0);
         }
 
-        #map>.maplibregl-canvas-container,
-        #map canvas {
-            width: 100% !important;
-            height: 100% !important;
-        }
-
-        .maplibregl-ctrl-bottom-right {
-            display: none;
-        }
-
         .maplibregl-popup,
         .maplibregl-popup * {
             pointer-events: none;
@@ -229,6 +229,33 @@
         .maplibregl-popup.popup-visible .maplibregl-popup-content {
             opacity: 1;
             transform: translateY(0) scale(1);
+        }
+
+        .taf-panel {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 16px;
+            border-radius: 8px;
+
+            font-family: sans-serif;
+            max-width: 320px;
+
+            display: none;
+        }
+
+        .taf-city {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .taf-row {
+            font-size: 12px;
+            margin-bottom: 4px;
         }
 
         h1 {
@@ -376,10 +403,24 @@
                         station_id,
                         latitude: lat,
                         longitude: lon,
-                        forecast // <-- key difference vs METAR
+
+                        forecast: forecast.map(f => ({
+                            fcst_time_from: f.fcst_time_from ?? null,
+                            fcst_time_to: f.fcst_time_to ?? null,
+
+                            wind_dir_degrees: Number.isFinite(f.wind_dir_degrees) ? f.wind_dir_degrees : null,
+                            wind_speed_kt: Number.isFinite(f.wind_speed_kt) ? f.wind_speed_kt : null,
+                            wind_gust_kt: Number.isFinite(f.wind_gust_kt) ? f.wind_gust_kt : null,
+
+                            sky_condition: f.sky_condition ?? {
+                                sky_cover: null,
+                                cloud_base_ft_agl: null
+                            }
+                        }))
                     };
                 })
-                .filter(Boolean);
+                .filter(Boolean)
+                .filter(t => t.forecast.length > 0);
         }
 
         // =========================
@@ -639,6 +680,11 @@
 
                 this.tafStations = this.enrichedPlaces.filter(p => p.taf);
 
+                this.tafPanel = document.createElement("div");
+                this.tafPanel.className = "taf-panel";
+
+                document.getElementById(container).appendChild(this.tafPanel);
+
                 this.map = new maplibregl.Map({
                     container,
                     style: {
@@ -795,27 +841,49 @@
 
                 const step = () => {
                     if (!this.running) return;
+                    if (!this.visibleTafStations.length) {
+                        this.tafPanel.style.display = "none";
+                        return;
+                    }
 
-                    if (!this.visibleTafStations.length) return;
+                    const station = this.visibleTafStations[this.tafIndex];
 
-const station = this.visibleTafStations[this.tafIndex];
+                    if (!station) {
+                        this.tafPanel.style.display = "none";
+                        return;
+                    }
 
-if (station) {
-    const city = station.properties.city;
-    const taf = station.taf;
+                    const city = station.properties.city;
+                    const taf = station.taf;
 
-console.log(city);
-console.log("FORECAST:", taf.forecast);    
-};
+                    const html = `
+            <div class="taf-city">${city}</div>
+            <div class="taf-forecast">
+                ${taf.forecast
+                            .map(f => `
+                        <div class="taf-row">
+                            ${f.fcst_time_from?.slice(11, 16)} → ${f.fcst_time_to?.slice(11, 16)}
+                            | wind ${f.wind_dir_degrees}° ${f.wind_speed_kt}kt
+                            | ${f.sky_condition?.sky_cover ?? ""}
+                        </div>
+                    `)
+                            .join("")}
+            </div>
+        `;
+
+                    this.tafPanel.style.display = "block";
+                    this.tafPanel.innerHTML = html;
 
                     this.tafIndex++;
 
-                    /*
-                    this.tafIndex =
-                        (this.tafIndex + 1) % this.visibleTafStations.length;
-                    */
+                    // last station reached → wait, then hide
+                    if (this.tafIndex >= this.visibleTafStations.length) {
+                        this.tafTimer = setTimeout(() => {
+                            this.tafPanel.style.display = "none";
+                        }, this.STEP_DELAY);
 
-                    if (this.tafIndex >= this.visibleTafStations.length) return;
+                        return;
+                    }
 
                     this.tafTimer = setTimeout(step, this.STEP_DELAY);
                 };
