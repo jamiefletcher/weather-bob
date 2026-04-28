@@ -1,0 +1,37 @@
+{
+	"version": 8,
+	"name": "globe",
+	"projection": {
+		"type": "globe"
+	},
+	"glyphs": "https://jamiefletcher.github.io/weather-bob/assets/fonts/{fontstack}/{range}.pbf",
+	"sprite": "https://jamiefletcher.github.io/weather-bob/assets/sprites/sprites-trees",
+	"sources": {
+		"naturalearth": {
+			"type": "raster",
+			"tiles": [
+				"data/naturalearth/raster/{z}/{x}/{y}.png"
+			],
+			"tileSize": 256
+		},
+		"gdps": {
+			"type": "raster",
+			"tiles": [
+				"data/gdps/tiles/{z}/{x}/{y}.png"
+			],
+			"tileSize": 256
+		}
+	},
+	"layers": [
+		{
+			"id": "naturalearth",
+			"type": "raster",
+			"source": "naturalearth"
+		},
+		{
+			"id": "gdps",
+			"type": "raster",
+			"source": "gdps"
+		}
+	]
+}

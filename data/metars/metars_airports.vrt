@@ -1,0 +1,11 @@
+<OGRVRTDataSource>
+
+  <OGRVRTLayer name='metars'>
+    <SrcDataSource>data/metars/metars.gpkg</SrcDataSource>
+  </OGRVRTLayer>
+
+  <OGRVRTLayer name="airports_large">
+    <SrcDataSource>data/airports_large.gpkg</SrcDataSource>
+  </OGRVRTLayer>
+
+</OGRVRTDataSource>
