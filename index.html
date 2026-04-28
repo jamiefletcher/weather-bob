@@ -18,6 +18,8 @@
 <body>
     <div class="app">
 
+        <div id="title-container"></div>
+
         <div id="map">
             <div id="hud-container"></div>
         </div>
@@ -94,6 +96,25 @@ async function getMetarsAirports() {
             };
         }
 
+// =========================
+// TITLES
+// =========================
+window.setTitle = (className, label) => {
+    const container = document.getElementById("title-container");
+    if (!container) return;
+
+    let target = container.querySelector(`.${className}`);
+
+    // create if missing
+    if (!target) {
+        target = document.createElement("div");
+        target.className = className;
+        container.appendChild(target);
+    }
+
+    target.textContent = label;
+};
+
         // =========================
         // SCENE: CANADA LOOP
         // =========================
@@ -105,6 +126,8 @@ async function getMetarsAirports() {
             timer: null,
             popups: [],
             timer: createTimerManager(),
+            dataLabel: "",
+            layerLabel: "",
 
             async start(container) {
                 this.running = true;
@@ -123,7 +146,8 @@ async function getMetarsAirports() {
                     center: [lon, lat],
                     zoom: 5.5,
                     minZoom: 3,
-                    maxZoom: 6.9
+                    maxZoom: 6.9,
+                    hash: true
                 });
 
                 this.map.on("load", () => {
@@ -326,7 +350,8 @@ async function getMetarsAirports() {
                     style: "green.json",
                     center: [lon, lat],
                     zoom: 2,
-                    pitch: 0
+                    pitch: 0,
+                    hash: true
                 });
 
                 this.map.on("load", () => {
