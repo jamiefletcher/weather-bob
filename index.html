@@ -258,94 +258,92 @@
             running: false,
             timer: null,
             hud: null,
-            stations: [],
 
-            async start(container) {
-                this.running = true;
+async start(container) {
+    this.running = true;
 
-                const metars = await getMetars();
+    const data = await getMetarsAirports();
+    const features = data.features;
 
-                // already FLATTENED → no geometry access needed
-                this.stations = metars;
+    this.stations = features;
 
-                const first = this.stations[0];
-                const lon = first.longitude;
-                const lat = first.latitude;
+    const first = features[0];
+    const [lon, lat] = first.geometry.coordinates;
 
-                // HUD
-                const hudContainer = document.getElementById("hud-container");
-                this.hud = document.createElement("div");
-                this.hud.className = "hud";
-                hudContainer.appendChild(this.hud);
+    // HUD
+    const hudContainer = document.getElementById("hud-container");
+    this.hud = document.createElement("div");
+    this.hud.className = "hud";
+    hudContainer.appendChild(this.hud);
 
-                // MAP
-                this.map = new maplibregl.Map({
-                    container: "map",
-                    style: "gdps.json",
-                    projection: "globe",
-                    center: [lon, lat],
-                    zoom: 3,
-                    pitch: 0
-                });
+    // MAP
+    this.map = new maplibregl.Map({
+        container: "map",
+        style: "gdps.json",
+        projection: "globe",
+        center: [lon, lat],
+        zoom: 3,
+        pitch: 0
+    });
 
-                this.map.on("load", () => {
-                    this.addLayers();
-                    this.updateHUD(first);
-                    this.loop();
-                });
-            },
+    this.map.on("load", () => {
+        this.addLayers(features);
+        this.updateHUD(first);
+        this.loop(features);
+    });
+},
 
-            addLayers() {
-                this.map.addSource("stations", {
-                    type: "geojson",
-                    data: {
-                        type: "FeatureCollection",
-                        features: this.stations
-                    }
-                });
+addLayers(features) {
+    this.map.addSource("stations", {
+        type: "geojson",
+        data: {
+            type: "FeatureCollection",
+            features: features
+        }
+    });
 
-                this.map.addLayer({
-                    id: "stations",
-                    type: "circle",
-                    source: "stations",
-                    paint: {
-                        "circle-radius": 4,
-                        "circle-color": "black"
-                    }
-                });
-            },
+    this.map.addLayer({
+        id: "stations",
+        type: "circle",
+        source: "stations",
+        paint: {
+            "circle-radius": 4,
+            "circle-color": "black"
+        }
+    });
+},
 
-            updateHUD(f) {
-                this.hud.innerHTML = `
-        <h2>${f.municipality || f.station_id}</h2>
-        <h1>${Math.round(Number(f.temp_c))}°</h1>
+updateHUD(f) {
+    const p = f.properties;
+
+    this.hud.innerHTML = `
+        <h2>${p.municipality || p.station_id}</h2>
+        <h1>${Math.round(Number(p.temp_c))}°</h1>
     `;
-            },
+},
 
-            loop() {
-                const step = () => {
-                    if (!this.running) return;
+loop(features) {
+    const step = () => {
+        if (!this.running) return;
 
-                    const f = this.stations[Math.floor(Math.random() * this.stations.length)];
+        const f = features[Math.floor(Math.random() * features.length)];
+        const [lon, lat] = f.geometry.coordinates;
 
-                    const lon = f.longitude;
-                    const lat = f.latitude;
+        this.map.easeTo({
+            center: [lon, lat],
+            duration: this.PAN_DURATION
+        });
 
-                    this.map.easeTo({
-                        center: [lon, lat],
-                        duration: this.PAN_DURATION
-                    });
+        this.map.once("moveend", () => {
+            if (!this.running) return;
+            this.updateHUD(f);
+        });
 
-                    this.map.once("moveend", () => {
-                        if (!this.running) return;
-                        this.updateHUD(f);
-                    });
+        this.timer = setTimeout(step, this.STEP_DELAY);
+    };
 
-                    this.timer = setTimeout(step, this.STEP_DELAY);
-                };
-
-                this.timer = setTimeout(step, this.INITIAL_DELAY);
-            },
+    this.timer = setTimeout(step, this.INITIAL_DELAY);
+},
 
             stop() {
                 this.running = false;
@@ -366,11 +364,14 @@
         // START
         // =========================
         async function start() {
-            sceneController.switch(sceneCanada);
+            sceneController.switch(sceneGlobe);
         }
 
         start();
 
+        // =========================
+        // HELPER FUNCTIONS
+        // =========================
         function shuffle(a) {
             for (let i = a.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
