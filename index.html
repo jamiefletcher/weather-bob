@@ -69,14 +69,14 @@
                 this.running = true;
 
                 const data = await getMetarsAirports();
-                const features = data.features.filter(f => f.properties.iso_country === "CA");
+                const features = data.features
+                    .filter(f => f.properties.iso_country === "CA");
 
                 const [lon, lat] = features[0].geometry.coordinates;
 
                 this.map = new maplibregl.Map({
                     container: "map",
                     style: "naturalearth.json",
-                    projection: "mercator",
                     center: [lon, lat],
                     zoom: 6,
                     minZoom: 3,
@@ -259,91 +259,91 @@
             timer: null,
             hud: null,
 
-async start(container) {
-    this.running = true;
+            async start(container) {
+                this.running = true;
 
-    const data = await getMetarsAirports();
-    const features = data.features;
+                const data = await getMetarsAirports();
+                const features = data.features
+                    .filter(f => f.properties.type === "large_airport");
 
-    this.stations = features;
+                this.stations = features;
 
-    const first = features[0];
-    const [lon, lat] = first.geometry.coordinates;
+                const first = features[0];
+                const [lon, lat] = first.geometry.coordinates;
 
-    // HUD
-    const hudContainer = document.getElementById("hud-container");
-    this.hud = document.createElement("div");
-    this.hud.className = "hud";
-    hudContainer.appendChild(this.hud);
+                // HUD
+                const hudContainer = document.getElementById("hud-container");
+                this.hud = document.createElement("div");
+                this.hud.className = "hud";
+                hudContainer.appendChild(this.hud);
 
-    // MAP
-    this.map = new maplibregl.Map({
-        container: "map",
-        style: "gdps.json",
-        projection: "globe",
-        center: [lon, lat],
-        zoom: 3,
-        pitch: 0
-    });
+                // MAP
+                this.map = new maplibregl.Map({
+                    container: "map",
+                    style: "green.json",
+                    center: [lon, lat],
+                    zoom: 2,
+                    pitch: 0
+                });
 
-    this.map.on("load", () => {
-        this.addLayers(features);
-        this.updateHUD(first);
-        this.loop(features);
-    });
-},
+                this.map.on("load", () => {
+                    this.addLayers(features);
+                    this.updateHUD(first);
+                    this.loop(features);
+                });
+            },
 
-addLayers(features) {
-    this.map.addSource("stations", {
-        type: "geojson",
-        data: {
-            type: "FeatureCollection",
-            features: features
-        }
-    });
+            addLayers(features) {
+                this.map.addSource("stations", {
+                    type: "geojson",
+                    data: {
+                        type: "FeatureCollection",
+                        features: features
+                    }
+                });
 
-    this.map.addLayer({
-        id: "stations",
-        type: "circle",
-        source: "stations",
-        paint: {
-            "circle-radius": 4,
-            "circle-color": "black"
-        }
-    });
-},
+                this.map.addLayer({
+                    id: "stations",
+                    type: "circle",
+                    source: "stations",
+                    paint: {
+                        "circle-radius": 4,
+                        "circle-color": "black"
+                    }
+                });
+            },
 
-updateHUD(f) {
-    const p = f.properties;
+            updateHUD(f) {
+                const p = f.properties;
 
-    this.hud.innerHTML = `
-        <h2>${p.municipality || p.station_id}</h2>
-        <h1>${Math.round(Number(p.temp_c))}°</h1>
-    `;
-},
+                this.hud.innerHTML = `
+                    <h2>${p.municipality || p.station_id}</h2>
+                    <h1>${Math.round(Number(p.temp_c))}°</h1>
+                `;
+            },
 
-loop(features) {
-    const step = () => {
-        if (!this.running) return;
+            loop(features) {
+                const step = () => {
+                    if (!this.running) return;
 
-        const f = features[Math.floor(Math.random() * features.length)];
-        const [lon, lat] = f.geometry.coordinates;
+                    const f = features[Math.floor(Math.random() * features.length)];
+                    const [lon, lat] = f.geometry.coordinates;
 
-        this.map.easeTo({
-            center: [lon, lat],
-            duration: this.PAN_DURATION
-        });
+                    this.map.easeTo({
+                        center: [lon, lat],
+                        duration: this.PAN_DURATION
+                    });
 
-        this.map.once("moveend", () => {
-            if (!this.running) return;
-            this.updateHUD(f);
-        });
+                    this.map.once("moveend", () => {
+                        if (!this.running) return;
+                        this.updateHUD(f);
+                    });
 
-        this.timer = setTimeout(step, this.STEP_DELAY);
-    };
+                    this.timer = setTimeout(step, this.STEP_DELAY);
+                };
 
-    this.timer = setTimeout(step, this.INITIAL_DELAY);
-},
+                this.timer = setTimeout(step, this.INITIAL_DELAY);
+            },
 
             stop() {
                 this.running = false;
@@ -577,7 +577,7 @@ loop(features) {
             return SYMBOL[top.sky_cover] || "☁️";
         }
 
-</script>
+    </script>
 </body>
 
 </html>
