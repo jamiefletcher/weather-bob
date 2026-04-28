@@ -126,7 +126,6 @@
             overflow: visible;
             border: 2px solid hsl(0, 0%, 100%);
             border-radius: 5px;
-            line-height: 1;
             background-color: hsl(0, 0%, 100%);
             color: hsl(270, 35%, 20%);
             box-shadow: 1px 1px 2px hsla(0, 0%, 0%, 0.1);
@@ -135,18 +134,20 @@
         .popup-wx-badge {
             position: absolute;
             bottom: -0.5rem;
-            right: -0.5rem;
+            right: 1rem;
+            transform: translateX(100%);
             display: flex;
             align-items: center;
             justify-content: center;
             background: hsla(0, 0%, 100%, 1);
             border-radius: 5px;
-            padding: 2px;
-            aspect-ratio: 1 / 1;
+            padding: 0.3em 0.2em 0.3em 0.18em;
             font-size: 1rem;
             line-height: 1;
             box-shadow: 1px 1px 4px hsla(0, 0%, 0%, 0.2);
             z-index: 10;
+            gap: 0;
+            letter-spacing: -0.1em;
         }
 
         .popup-city {
@@ -203,6 +204,7 @@
             padding: 0 !important;
             background: transparent;
             box-shadow: none;
+            line-height: 1;
         }
 
         .maplibregl-popup-content {

@@ -30,14 +30,24 @@
 
     <script>
         let METARS_AIRPORTS = null;
-        async function getMetarsAirports() {
-            if (METARS_AIRPORTS) return METARS_AIRPORTS;
+async function getMetarsAirports() {
+    if (METARS_AIRPORTS) return METARS_AIRPORTS;
 
-            const res = await fetch("data/metars/metars_airports.geojson");
-            METARS_AIRPORTS = await res.json();
+    const res = await fetch("data/metars/metars_airports.geojson");
+    const data = await res.json();
 
-            return METARS_AIRPORTS;
-        }
+    const seen = new Set();
+
+    data.features = data.features.filter(f => {
+        const m = f.properties?.municipality;
+        if (!m || seen.has(m)) return false;
+        seen.add(m);
+        return true;
+    });
+
+    METARS_AIRPORTS = data;
+    return METARS_AIRPORTS;
+}
 
         // =========================
         // SCENE CONTROLLER
@@ -88,8 +98,8 @@
         // SCENE: CANADA LOOP
         // =========================
         const sceneCanada = {
-            INITIAL_DELAY: 3000,
-            STEP_DELAY: 3000,
+            INITIAL_DELAY: 5000,
+            STEP_DELAY: 5000,
             map: null,
             running: false,
             timer: null,
@@ -100,8 +110,10 @@
                 this.running = true;
 
                 const data = await getMetarsAirports();
+                
                 const features = data.features
-                    .filter(f => f.properties.iso_country === "CA");
+                    .filter(f => f.properties.iso_country === "CA")
+                    .filter(f => ["large_airport", "medium_airport"].includes(f.properties.type));
 
                 const [lon, lat] = features[0].geometry.coordinates;
 
@@ -109,7 +121,7 @@
                     container: "map",
                     style: "naturalearth.json",
                     center: [lon, lat],
-                    zoom: 6,
+                    zoom: 5.5,
                     minZoom: 3,
                     maxZoom: 6.9
                 });
@@ -233,7 +245,7 @@
                         el.classList.add("popup-hidden");
                     }
 
-                    setTimeout(() => {
+                    this.timer.set(() => {
                         p.remove();
                     }, EXIT_TIME);
                 });
