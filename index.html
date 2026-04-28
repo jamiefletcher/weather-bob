@@ -94,30 +94,33 @@
                 });
 
                 this.map.on("load", () => {
-                    this.map.addSource("stations", {
-                        type: "geojson",
-                        data: {
-                            type: "FeatureCollection",
-                            features: this.stations
-                        }
-                    });
-
-                    this.map.addLayer({
-                        id: "stations",
-                        type: "circle",
-                        source: "stations",
-                        paint: {
-                            "circle-radius": 4,
-                            "circle-color": "black"
-                        }
-                    });
-
+                    this.addLayers();
                     this.addPopups();
                     this.loop();
                 });
 
                 this.map.on("moveend", () => {
                     this.addPopups();
+                });
+            },
+
+            addLayers() {
+                this.map.addSource("stations", {
+                    type: "geojson",
+                    data: {
+                        type: "FeatureCollection",
+                        features: this.stations
+                    }
+                });
+
+                this.map.addLayer({
+                    id: "stations",
+                    type: "circle",
+                    source: "stations",
+                    paint: {
+                        "circle-radius": 4,
+                        "circle-color": "black"
+                    }
                 });
             },
 
@@ -143,38 +146,38 @@
                 };
             },
 
-addPopups() {
-    const safeBounds = this.getSafeBounds(0.1);
+            addPopups() {
+                const safeBounds = this.getSafeBounds(0.1);
 
-    this.clearPopups();
-    this.popups = [];
+                this.clearPopups();
+                this.popups = [];
 
-    this.stations.forEach(f => {
-        const coords = f.geometry.coordinates;
-        const p = f.properties;
+                this.stations.forEach(f => {
+                    const coords = f.geometry.coordinates;
+                    const p = f.properties;
 
-        if (!coords) return;
-        if (!safeBounds.contains(coords)) return;
+                    if (!coords) return;
+                    if (!safeBounds.contains(coords)) return;
 
-        const temp = Math.round(Number(p.temp_c));
-        const city = p.municipality || p.station_id || "";
-        const skyIcon = p.sky_condition || "";
-        const wxIcon = p.wx_string || "";
+                    const temp = Math.round(Number(p.temp_c));
+                    const city = p.municipality || p.station_id || "";
+                    const skyIcon = p.sky_condition || "";
+                    const wxIcon = p.wx_string || "";
 
-        const wxBadgeHTML = wxIcon
-            ? `<div class="popup-wx-badge">${wxIcon}</div>`
-            : "";
+                    const wxBadgeHTML = wxIcon
+                        ? `<div class="popup-wx-badge">${wxIcon}</div>`
+                        : "";
 
-        const isLongCity = city.split(" ").some(w => w.length > 10);
+                    const isLongCity = city.split(" ").some(w => w.length > 10);
 
-        const popup = new maplibregl.Popup({
-            closeButton: false,
-            closeOnClick: false,
-            anchor: "center",
-            className: isLongCity ? "popup-long-city" : ""
-        })
-            .setLngLat(coords)
-            .setHTML(`
+                    const popup = new maplibregl.Popup({
+                        closeButton: false,
+                        closeOnClick: false,
+                        anchor: "center",
+                        className: isLongCity ? "popup-long-city" : ""
+                    })
+                        .setLngLat(coords)
+                        .setHTML(`
                 <div class="popup-places">
                     ${wxBadgeHTML}
 
@@ -188,16 +191,16 @@ addPopups() {
                     </div>
                 </div>
             `)
-            .addTo(this.map);
+                        .addTo(this.map);
 
-        requestAnimationFrame(() => {
-            const el = popup.getElement();
-            if (el) el.classList.add("popup-visible");
-        });
+                    requestAnimationFrame(() => {
+                        const el = popup.getElement();
+                        if (el) el.classList.add("popup-visible");
+                    });
 
-        this.popups.push(popup);
-    });
-},
+                    this.popups.push(popup);
+                });
+            },
 
             clearPopups() {
                 if (!this.popups) return;
