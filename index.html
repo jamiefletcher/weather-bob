@@ -29,18 +29,14 @@
     </div>
 
     <script>
-        // =========================
-        // GLOBAL METAR LOADER (GEOJSON)
-        // =========================
-        let METARS = null;
+        let METARS_AIRPORTS = null;
+        async function getMetarsAirports() {
+            if (METARS_AIRPORTS) return METARS_AIRPORTS;
 
-        async function getMetars() {
-            if (!METARS) {
-                const res = await fetch("data/metars/metars.geojson");
-                const geojson = await res.json();
-                METARS = geojson.features;
-            }
-            return METARS;
+            const res = await fetch("data/metars/metars_airports.geojson");
+            METARS_AIRPORTS = await res.json();
+
+            return METARS_AIRPORTS;
         }
 
         // =========================
@@ -61,55 +57,48 @@
         // SCENE: CANADA LOOP
         // =========================
         const sceneCanada = {
-            PAN_DURATION: 4000,
-            INITIAL_DELAY: 1000,
-            STEP_DELAY: 5000,
+            PAN_DURATION: 10000,
+            INITIAL_DELAY: 2000,
+            STEP_DELAY: 12000,
             map: null,
             running: false,
             timer: null,
-            stations: [],
             popups: [],
 
             async start(container) {
                 this.running = true;
 
-                const metars = await getMetars();
+                const data = await getMetarsAirports();
+                const features = data.features.filter(f => f.properties.iso_country === "CA");
 
-                this.stations = metars.filter(f =>
-                    f.properties?.iso_country === "CA" &&
-                    f.geometry?.coordinates?.length === 2
-                );
+                const [lon, lat] = features[0].geometry.coordinates;
 
-                const first = this.stations[0];
-                const [lon, lat] = first.geometry.coordinates;
-
-                // MAP
                 this.map = new maplibregl.Map({
                     container: "map",
-                    style: "green.json",
-                    center: [-79.3832, 43.6532],
-                    zoom: 4,
+                    style: "naturalearth.json",
+                    center: [lon, lat],
+                    zoom: 6,
                     minZoom: 3,
                     maxZoom: 6.9
                 });
 
                 this.map.on("load", () => {
-                    this.addLayers();
-                    this.addPopups();
-                    this.loop();
+                    this.addLayers(features);
+                    this.addPopups(features);
+                    this.loop(features);
                 });
 
                 this.map.on("moveend", () => {
-                    this.addPopups();
+                    this.addPopups(features);
                 });
             },
 
-            addLayers() {
+            addLayers(features) {
                 this.map.addSource("stations", {
                     type: "geojson",
                     data: {
                         type: "FeatureCollection",
-                        features: this.stations
+                        features: features
                     }
                 });
 
@@ -146,23 +135,22 @@
                 };
             },
 
-            addPopups() {
+            addPopups(features) {
                 const safeBounds = this.getSafeBounds(0.1);
 
                 this.clearPopups();
                 this.popups = [];
 
-                this.stations.forEach(f => {
+                features.forEach(f => {
                     const coords = f.geometry.coordinates;
                     const p = f.properties;
 
-                    if (!coords) return;
                     if (!safeBounds.contains(coords)) return;
 
                     const temp = Math.round(Number(p.temp_c));
                     const city = p.municipality || p.station_id || "";
-                    const skyIcon = p.sky_condition || "";
-                    const wxIcon = p.wx_string || "";
+                    const skyIcon = decodeSkyConditionIcon(p.sky_condition);
+                    const wxIcon = decodeWxIcon(p.wx_string);
 
                     const wxBadgeHTML = wxIcon
                         ? `<div class="popup-wx-badge">${wxIcon}</div>`
@@ -178,19 +166,17 @@
                     })
                         .setLngLat(coords)
                         .setHTML(`
-                <div class="popup-places">
-                    ${wxBadgeHTML}
-
-                    <div class="popup-city">
-                        <h2>${city}</h2>
-                    </div>
-
-                    <div class="popup-data">
-                        <h1>${temp}°</h1>
-                        <h1>${skyIcon}</h1>
-                    </div>
-                </div>
-            `)
+                            <div class="popup-places">
+                                ${wxBadgeHTML}
+                                <div class="popup-city">
+                                    <h2>${city}</h2>
+                                </div>
+                                <div class="popup-data">
+                                    <h1>${temp}°</h1>
+                                    <h1>${skyIcon}</h1>
+                                </div>
+                            </div>
+                        `)
                         .addTo(this.map);
 
                     requestAnimationFrame(() => {
@@ -205,16 +191,32 @@
             clearPopups() {
                 if (!this.popups) return;
 
-                this.popups.forEach(p => p.remove());
+                const EXIT_TIME = 280;
+
+                this.popups.forEach(p => {
+                    const el = p.getElement();
+
+                    if (el) {
+                        el.classList.remove("popup-visible");
+                        el.classList.add("popup-hidden");
+                    }
+
+                    setTimeout(() => {
+                        p.remove();
+                    }, EXIT_TIME);
+                });
+
                 this.popups = [];
             },
 
-            loop() {
+            loop(features) {
                 const step = () => {
                     if (!this.running) return;
 
-                    const f = this.stations[Math.floor(Math.random() * this.stations.length)];
+                    const f = features[Math.floor(Math.random() * features.length)];
                     const [lon, lat] = f.geometry.coordinates;
+
+                    this.clearPopups();
 
                     this.map.easeTo({
                         center: [lon, lat],
@@ -223,7 +225,7 @@
 
                     this.map.once("moveend", () => {
                         if (!this.running) return;
-                        this.addPopups();
+                        this.addPopups(features);
                     });
 
                     this.timer = setTimeout(step, this.STEP_DELAY);
@@ -262,12 +264,12 @@
 
                 const metars = await getMetars();
 
-                this.stations = metars.filter(f =>
-                    f.geometry?.coordinates?.length === 2
-                );
+                // already FLATTENED → no geometry access needed
+                this.stations = metars;
 
                 const first = this.stations[0];
-                const [lon, lat] = first.geometry.coordinates;
+                const lon = first.longitude;
+                const lat = first.latitude;
 
                 // HUD
                 const hudContainer = document.getElementById("hud-container");
@@ -285,36 +287,37 @@
                 });
 
                 this.map.on("load", () => {
-                    this.map.addSource("stations", {
-                        type: "geojson",
-                        data: {
-                            type: "FeatureCollection",
-                            features: this.stations
-                        }
-                    });
-
-                    this.map.addLayer({
-                        id: "stations",
-                        type: "circle",
-                        source: "stations",
-                        paint: {
-                            "circle-radius": 4,
-                            "circle-color": "black"
-                        }
-                    });
-
+                    this.addLayers();
                     this.updateHUD(first);
                     this.loop();
                 });
             },
 
-            updateHUD(f) {
-                const p = f.properties;
+            addLayers() {
+                this.map.addSource("stations", {
+                    type: "geojson",
+                    data: {
+                        type: "FeatureCollection",
+                        features: this.stations
+                    }
+                });
 
+                this.map.addLayer({
+                    id: "stations",
+                    type: "circle",
+                    source: "stations",
+                    paint: {
+                        "circle-radius": 4,
+                        "circle-color": "black"
+                    }
+                });
+            },
+
+            updateHUD(f) {
                 this.hud.innerHTML = `
-                    <h2>${p.municipality}</h2>
-                    <h1>${Math.round(Number(p.temp_c))}°</h1>
-                `;
+        <h2>${f.municipality || f.station_id}</h2>
+        <h1>${Math.round(Number(f.temp_c))}°</h1>
+    `;
             },
 
             loop() {
@@ -322,7 +325,9 @@
                     if (!this.running) return;
 
                     const f = this.stations[Math.floor(Math.random() * this.stations.length)];
-                    const [lon, lat] = f.geometry.coordinates;
+
+                    const lon = f.longitude;
+                    const lat = f.latitude;
 
                     this.map.easeTo({
                         center: [lon, lat],
@@ -359,12 +364,217 @@
         // START
         // =========================
         async function start() {
-            //await loadMetars();
             sceneController.switch(sceneCanada);
         }
 
         start();
-    </script>
+
+        function shuffle(a) {
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function formatTime(t) {
+            if (!t || typeof t !== "string") return null;
+            return t.length >= 16 ? t.slice(11, 16) : null;
+        }
+
+        function formatWind(dir, speed, gust) {
+            if (dir == null && speed == null) return null;
+
+            let d;
+
+            if (dir === "VRB") {
+                d = "VRB";
+            } else if (Number.isFinite(Number(dir))) {
+                d = `${Number(dir).toString().padStart(3, "0")}°`;
+            }
+
+            const s = Number.isFinite(Number(speed)) ? `${Number(speed)}kt` : "";
+            const g = Number.isFinite(Number(gust)) ? `G${Number(gust)}` : "";
+
+            return [d, s + g].filter(Boolean).join(" ");
+        }
+
+        function decodeWindIcon(dir) {
+            if (!dir) return "";
+
+            if (dir === "VRB") return "🔀"; // variable wind
+
+            const d = Number(dir);
+            if (!Number.isFinite(d)) return "";
+
+            // 8-point compass
+            const sectors = [
+                { max: 22.5, icon: "⬆️" },   // N
+                { max: 67.5, icon: "↗️" },   // NE
+                { max: 112.5, icon: "➡️" },  // E
+                { max: 157.5, icon: "↘️" },  // SE
+                { max: 202.5, icon: "⬇️" },  // S
+                { max: 247.5, icon: "↙️" },  // SW
+                { max: 292.5, icon: "⬅️" },  // W
+                { max: 337.5, icon: "↖️" },  // NW
+                { max: 360, icon: "⬆️" }     // N wrap
+            ];
+
+            return sectors.find(s => d <= s.max)?.icon || "";
+        }
+
+        function decodeWx(wx) {
+            if (!wx) return "";
+
+            const INTENSITY = {
+                "-": "Light",
+                "+": "Heavy",
+                "VC": "Nearby"
+            };
+
+            const DESCRIPTOR = {
+                "MI": "Shallow",
+                "PR": "Partial",
+                "BC": "Patches",
+                "DR": "Drifting",
+                "BL": "Blowing",
+                "SH": "Showers",
+                "TS": "Thunderstorm",
+                "FZ": "Freezing"
+            };
+
+            const PHENOMENA = {
+                "RA": "Rain",
+                "DZ": "Drizzle",
+                "SN": "Snow",
+                "SG": "Snow Grains",
+                "IC": "Ice Crystals",
+                "PL": "Ice Pellets",
+                "GR": "Hail",
+                "GS": "Graupel",
+                "UP": "Unknown Precip",
+                "FG": "Fog",
+                "VA": "Ash",
+                "BR": "Mist",
+                "HZ": "Haze",
+                "DU": "Dust",
+                "FU": "Smoke",
+                "SA": "Sand",
+                "PY": "Spray",
+                "SQ": "Squall",
+                "PO": "Dust Whirls",
+                "DS": "Duststorm",
+                "SS": "Sandstorm",
+                "FC": "Funnel Cloud"
+            };
+
+            return wx.trim().split(/\s+/).map(token => {
+                let intensity = "";
+                let descriptor = "";
+                let phenomenon = "";
+
+                // intensity
+                if (token.startsWith("VC")) {
+                    intensity = INTENSITY["VC"];
+                    token = token.slice(2);
+                } else if (token.startsWith("-") || token.startsWith("+")) {
+                    intensity = INTENSITY[token[0]];
+                    token = token.slice(1);
+                }
+
+                // descriptor (2-letter prefix)
+                const desc = token.slice(0, 2);
+                if (DESCRIPTOR[desc]) {
+                    descriptor = DESCRIPTOR[desc];
+                    token = token.slice(2);
+                }
+
+                // remaining = phenomenon
+                phenomenon = PHENOMENA[token] || token;
+
+                return [intensity, descriptor, phenomenon]
+                    .filter(Boolean)
+                    .join(" ");
+            }).join(", ");
+        }
+
+        function decodeWxIcon(wx) {
+            if (!wx) return "";
+
+            const RAIN = new Set(["RA", "DZ"]);
+            const SNOW = new Set(["SN", "SG", "GR", "GS", "PL"]);
+            const STORM = new Set(["TS"]);
+
+            const seen = new Set();
+
+            return wx.trim()
+                .split(/\s+/)
+                .map(token => {
+                    token = token.replace(/^[-+]/, "");
+                    const code = token.slice(0, 2);
+
+                    let icon = ""; // default fallback (no clouds)
+
+                    if (STORM.has(code)) icon = "⚡";
+                    else if (RAIN.has(code)) icon = "💧";
+                    else if (SNOW.has(code)) icon = "❄️";
+
+                    return icon;
+                })
+                .filter(icon => {
+                    if (!icon) return false;
+                    if (seen.has(icon)) return false;
+                    seen.add(icon);
+                    return true;
+                })
+                .join(" ");
+        }
+
+        function decodeSkyCondition(sky) {
+            if (!sky) return "";
+
+            const COVER = {
+                "SKC": "Clear",
+                "CLR": "Clear",
+                "NSC": "Clear",
+                "FEW": "Partly Cloudy",
+                "SCT": "Partly Cloudy",
+                "BKN": "Mostly Cloudy",
+                "OVC": "Overcast",
+                "VV": "Obscured"
+            };
+
+            const layers = Array.isArray(sky) ? sky : [sky];
+            const top = layers[0]; // dominant / lowest layer is most relevant visually
+
+            if (!top || !top.sky_cover) return "Clear";
+
+            return COVER[top.sky_cover] || "Cloudy";
+        }
+
+        function decodeSkyConditionIcon(sky) {
+            if (!sky) return "☀️";
+
+            const SYMBOL = {
+                "SKC": "☀️",
+                "CLR": "☀️",
+                "NSC": "🌤️",
+                "FEW": "🌤️",
+                "SCT": "⛅",
+                "BKN": "☁️",
+                "OVC": "☁️",
+                "VV": "🌫️"
+            };
+
+            const layers = Array.isArray(sky) ? sky : [sky];
+            const top = layers[0];
+
+            if (!top || !top.sky_cover) return "☀️";
+
+            return SYMBOL[top.sky_cover] || "☁️";
+        }
+
+</script>
 </body>
 
 </html>

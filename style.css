@@ -219,6 +219,11 @@
             transform: translateY(0) scale(1);
         }
 
+        .maplibregl-popup.popup-hidden .maplibregl-popup-content {
+            opacity: 0;
+            transform: translateY(8px) scale(0.95);
+        }
+
         .taf-panel {
             position: absolute;
             top: 50%;

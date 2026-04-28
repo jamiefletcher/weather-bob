@@ -4,8 +4,8 @@
     <SrcDataSource>data/metars/metars.gpkg</SrcDataSource>
   </OGRVRTLayer>
 
-  <OGRVRTLayer name="airports_large">
-    <SrcDataSource>data/airports_large.gpkg</SrcDataSource>
+  <OGRVRTLayer name="airports">
+    <SrcDataSource>data/airports.gpkg</SrcDataSource>
   </OGRVRTLayer>
 
 </OGRVRTDataSource>
