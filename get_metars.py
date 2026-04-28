@@ -19,7 +19,10 @@ with open("data/airports.geojson") as f:
     airports = json.load(f)["features"]
 
 airport_map = {
-    a["properties"]["icao_code"]: a["properties"]
+    a["properties"]["icao_code"]: {
+        **a["properties"],
+        "coordinates": a["geometry"]["coordinates"]
+    }
     for a in airports
     if "icao_code" in a.get("properties", {})
 }

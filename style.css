@@ -76,9 +76,6 @@
         }
 
         .hud {
-            background: rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(8px);
-
             padding: 1.2rem 1.4rem;
             border-radius: 14px;
 

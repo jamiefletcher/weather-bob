@@ -54,16 +54,47 @@
         };
 
         // =========================
+        // TIMER CONTROLLER
+        // =========================
+        function createTimerManager() {
+            const timers = new Set();
+
+            return {
+                set(fn, delay) {
+                    const id = setTimeout(() => {
+                        timers.delete(id);
+                        fn();
+                    }, delay);
+
+                    timers.add(id);
+                    return id;
+                },
+
+                clear(id) {
+                    clearTimeout(id);
+                    timers.delete(id);
+                },
+
+                clearAll() {
+                    for (const id of timers) {
+                        clearTimeout(id);
+                    }
+                    timers.clear();
+                }
+            };
+        }
+
+        // =========================
         // SCENE: CANADA LOOP
         // =========================
         const sceneCanada = {
-            PAN_DURATION: 10000,
-            INITIAL_DELAY: 2000,
-            STEP_DELAY: 12000,
+            INITIAL_DELAY: 3000,
+            STEP_DELAY: 3000,
             map: null,
             running: false,
             timer: null,
             popups: [],
+            timer: createTimerManager(),
 
             async start(container) {
                 this.running = true;
@@ -219,9 +250,8 @@
 
                     this.clearPopups();
 
-                    this.map.easeTo({
-                        center: [lon, lat],
-                        duration: this.PAN_DURATION
+                    this.map.jumpTo({
+                        center: [lon, lat]
                     });
 
                     this.map.once("moveend", () => {
@@ -229,16 +259,16 @@
                         this.addPopups(features);
                     });
 
-                    this.timer = setTimeout(step, this.STEP_DELAY);
+                    this.timer.set(step, this.STEP_DELAY);
                 };
 
-                this.timer = setTimeout(step, this.INITIAL_DELAY);
+                this.timer.set(step, this.INITIAL_DELAY);
             },
 
             stop() {
                 this.running = false;
 
-                if (this.timer) clearTimeout(this.timer);
+                this.timer.clearAll();
 
                 if (this.map) {
                     this.map.remove();
@@ -258,6 +288,7 @@
             running: false,
             timer: null,
             hud: null,
+            timer: createTimerManager(),
 
             async start(container) {
                 this.running = true;
@@ -317,8 +348,10 @@
                 const p = f.properties;
 
                 this.hud.innerHTML = `
-                    <h2>${p.municipality || p.station_id}</h2>
-                    <h1>${Math.round(Number(p.temp_c))}°</h1>
+                    <div class="hud-item">
+                        <h2>${p.municipality || p.station_id}</h2>
+                        <h1>${Math.round(Number(p.temp_c))}°</h1>
+                    </div>
                 `;
             },
 
@@ -339,16 +372,16 @@
                         this.updateHUD(f);
                     });
 
-                    this.timer = setTimeout(step, this.STEP_DELAY);
+                    this.timer.set(step, this.STEP_DELAY);
                 };
 
-                this.timer = setTimeout(step, this.INITIAL_DELAY);
+                this.timer.set(step, this.INITIAL_DELAY);
             },
 
             stop() {
                 this.running = false;
 
-                if (this.timer) clearTimeout(this.timer);
+                this.timer.clearAll();
 
                 if (this.map) {
                     this.map.remove();
