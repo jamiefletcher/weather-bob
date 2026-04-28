@@ -1,4 +1,5 @@
 import json
+import re
 import xml.etree.ElementTree as ET
 from urllib.request import urlopen
 
@@ -42,20 +43,21 @@ for _, elem in context:
     station_id = elem.findtext("station_id")
     airport = airport_map.get(station_id)
 
+    if airport is not None and airport.get("municipality") is not None:
+        airport["municipality"] = re.sub(r"\s*\(.*?\)", "", airport["municipality"]).strip()
+
     if not airport:
         elem.clear()
         continue
 
-    lon = elem.findtext("longitude")
-    lat = elem.findtext("latitude")
+    lon, lat = airport["coordinates"]
+
     temp_c = elem.findtext("temp_c")
 
-    if lon is None or lat is None or temp_c is None:
+    if temp_c is None:
         elem.clear()
         continue
 
-    lon = float(lon)
-    lat = float(lat)
     temp_c = float(temp_c)
 
     wx_string = elem.findtext("wx_string")

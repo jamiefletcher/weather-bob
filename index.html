@@ -211,10 +211,10 @@
                         `)
                         .addTo(this.map);
 
-                    requestAnimationFrame(() => {
+                    this.timer.set(() => {
                         const el = popup.getElement();
                         if (el) el.classList.add("popup-visible");
-                    });
+                    }, 0);
 
                     this.popups.push(popup);
                 });
@@ -397,7 +397,7 @@
         // START
         // =========================
         async function start() {
-            sceneController.switch(sceneGlobe);
+            sceneController.switch(sceneCanada);
         }
 
         start();
