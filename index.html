@@ -32,143 +32,333 @@
         // =========================
         // GLOBAL METAR LOADER (GEOJSON)
         // =========================
-        async function loadMetars() {
-            const res = await fetch("data/metars/metars.geojson");
-            const geojson = await res.json();
+        let METARS = null;
 
-            return geojson.features;
+        async function getMetars() {
+            if (!METARS) {
+                const res = await fetch("data/metars/metars.geojson");
+                const geojson = await res.json();
+                METARS = geojson.features;
+            }
+            return METARS;
         }
 
         // =========================
         // SCENE CONTROLLER
         // =========================
-const sceneController = {
-    current: null,
+        const sceneController = {
+            current: null,
 
-    switch(scene) {
-        if (this.current) this.current.stop();
+            switch(scene) {
+                if (this.current) this.current.stop();
 
-        this.current = scene;
-        this.current.start();
-    }
-};
+                this.current = scene;
+                this.current.start();
+            }
+        };
 
         // =========================
         // SCENE: CANADA LOOP
         // =========================
-const sceneGlobe = {
-    map: null,
-    running: false,
-    timer: null,
-    hud: null,
-    stations: [],
+        const sceneCanada = {
+            PAN_DURATION: 4000,
+            INITIAL_DELAY: 1000,
+            STEP_DELAY: 5000,
+            map: null,
+            running: false,
+            timer: null,
+            stations: [],
+            popups: [],
 
-    async start(container) {
-        this.running = true;
+            async start(container) {
+                this.running = true;
 
-        // scene owns its data
-        const metars = await loadMetars();
+                const metars = await getMetars();
 
-        this.stations = metars.filter(f =>
-            f.properties?.iso_country === "CA" &&
-            f.geometry?.coordinates?.length === 2
-        );
+                this.stations = metars.filter(f =>
+                    f.properties?.iso_country === "CA" &&
+                    f.geometry?.coordinates?.length === 2
+                );
 
-        const first = this.stations[0];
-        const [lon, lat] = first.geometry.coordinates;
+                const first = this.stations[0];
+                const [lon, lat] = first.geometry.coordinates;
 
-        // HUD
-        const hudContainer = document.getElementById("hud-container");
-        this.hud = document.createElement("div");
-        this.hud.className = "hud";
-        hudContainer.appendChild(this.hud);
+                // MAP
+                this.map = new maplibregl.Map({
+                    container: "map",
+                    style: "green.json",
+                    center: [-79.3832, 43.6532],
+                    zoom: 4,
+                    minZoom: 3,
+                    maxZoom: 6.9
+                });
 
-        // MAP
-        this.map = new maplibregl.Map({
-            container: "map",
-            style: "green.json",
-            center: [lon, lat],
-            zoom: 2
-        });
+                this.map.on("load", () => {
+                    this.map.addSource("stations", {
+                        type: "geojson",
+                        data: {
+                            type: "FeatureCollection",
+                            features: this.stations
+                        }
+                    });
 
-        this.map.on("load", () => {
-            this.map.addSource("stations", {
-                type: "geojson",
-                data: {
-                    type: "FeatureCollection",
-                    features: this.stations
-                }
-            });
+                    this.map.addLayer({
+                        id: "stations",
+                        type: "circle",
+                        source: "stations",
+                        paint: {
+                            "circle-radius": 4,
+                            "circle-color": "black"
+                        }
+                    });
 
-            this.map.addLayer({
-                id: "stations",
-                type: "circle",
-                source: "stations",
-                paint: {
-                    "circle-radius": 4,
-                    "circle-color": "black"
-                }
-            });
+                    this.addPopups();
+                    this.loop();
+                });
 
-            this.updateHUD(first);
-            this.loop();
-        });
-    },
+                this.map.on("moveend", () => {
+                    this.addPopups();
+                });
+            },
 
-    updateHUD(f) {
+            getSafeBounds(pct = 0.1) {
+                const canvas = this.map.getCanvas();
+                const width = canvas.clientWidth;
+                const height = canvas.clientHeight;
+
+                const padX = width * pct;
+                const padY = height * pct;
+
+                return {
+                    contains: (lngLat) => {
+                        const p = this.map.project(lngLat);
+
+                        return (
+                            p.x > padX &&
+                            p.x < (width - padX) &&
+                            p.y > padY &&
+                            p.y < (height - padY)
+                        );
+                    }
+                };
+            },
+
+addPopups() {
+    const safeBounds = this.getSafeBounds(0.1);
+
+    this.clearPopups();
+    this.popups = [];
+
+    this.stations.forEach(f => {
+        const coords = f.geometry.coordinates;
         const p = f.properties;
 
-        this.hud.innerHTML = `
-            <h2>${p.station_id}</h2>
-            <h1>${Math.round(Number(p.temp_c))}°</h1>
-        `;
-    },
+        if (!coords) return;
+        if (!safeBounds.contains(coords)) return;
 
-    loop() {
-        const step = () => {
-            if (!this.running) return;
+        const temp = Math.round(Number(p.temp_c));
+        const city = p.municipality || p.station_id || "";
+        const skyIcon = p.sky_condition || "";
+        const wxIcon = p.wx_string || "";
 
-            const f = this.stations[Math.floor(Math.random() * this.stations.length)];
-            const [lon, lat] = f.geometry.coordinates;
+        const wxBadgeHTML = wxIcon
+            ? `<div class="popup-wx-badge">${wxIcon}</div>`
+            : "";
 
-            this.map.easeTo({
-                center: [lon, lat],
-                duration: 4000
-            });
+        const isLongCity = city.split(" ").some(w => w.length > 10);
 
-            this.map.once("moveend", () => {
-                if (!this.running) return;
-                this.updateHUD(f);
-            });
+        const popup = new maplibregl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            anchor: "center",
+            className: isLongCity ? "popup-long-city" : ""
+        })
+            .setLngLat(coords)
+            .setHTML(`
+                <div class="popup-places">
+                    ${wxBadgeHTML}
 
-            this.timer = setTimeout(step, 5000);
+                    <div class="popup-city">
+                        <h2>${city}</h2>
+                    </div>
+
+                    <div class="popup-data">
+                        <h1>${temp}°</h1>
+                        <h1>${skyIcon}</h1>
+                    </div>
+                </div>
+            `)
+            .addTo(this.map);
+
+        requestAnimationFrame(() => {
+            const el = popup.getElement();
+            if (el) el.classList.add("popup-visible");
+        });
+
+        this.popups.push(popup);
+    });
+},
+
+            clearPopups() {
+                if (!this.popups) return;
+
+                this.popups.forEach(p => p.remove());
+                this.popups = [];
+            },
+
+            loop() {
+                const step = () => {
+                    if (!this.running) return;
+
+                    const f = this.stations[Math.floor(Math.random() * this.stations.length)];
+                    const [lon, lat] = f.geometry.coordinates;
+
+                    this.map.easeTo({
+                        center: [lon, lat],
+                        duration: this.PAN_DURATION
+                    });
+
+                    this.map.once("moveend", () => {
+                        if (!this.running) return;
+                        this.addPopups();
+                    });
+
+                    this.timer = setTimeout(step, this.STEP_DELAY);
+                };
+
+                this.timer = setTimeout(step, this.INITIAL_DELAY);
+            },
+
+            stop() {
+                this.running = false;
+
+                if (this.timer) clearTimeout(this.timer);
+
+                if (this.map) {
+                    this.map.remove();
+                    this.map = null;
+                }
+            }
         };
 
-        this.timer = setTimeout(step, 1500);
-    },
+        // =========================
+        // SCENE: GLOBE LOOP
+        // =========================
+        const sceneGlobe = {
+            PAN_DURATION: 4000,
+            INITIAL_DELAY: 1000,
+            STEP_DELAY: 5000,
+            map: null,
+            running: false,
+            timer: null,
+            hud: null,
+            stations: [],
 
-    stop() {
-        this.running = false;
+            async start(container) {
+                this.running = true;
 
-        if (this.timer) clearTimeout(this.timer);
+                const metars = await getMetars();
 
-        if (this.map) {
-            this.map.remove();
-            this.map = null;
-        }
+                this.stations = metars.filter(f =>
+                    f.geometry?.coordinates?.length === 2
+                );
 
-        if (this.hud) this.hud.remove();
-        this.hud = null;
-    }
-};
+                const first = this.stations[0];
+                const [lon, lat] = first.geometry.coordinates;
+
+                // HUD
+                const hudContainer = document.getElementById("hud-container");
+                this.hud = document.createElement("div");
+                this.hud.className = "hud";
+                hudContainer.appendChild(this.hud);
+
+                // MAP
+                this.map = new maplibregl.Map({
+                    container: "map",
+                    style: "green.json",
+                    center: [lon, lat],
+                    zoom: 3,
+                    pitch: 0
+                });
+
+                this.map.on("load", () => {
+                    this.map.addSource("stations", {
+                        type: "geojson",
+                        data: {
+                            type: "FeatureCollection",
+                            features: this.stations
+                        }
+                    });
+
+                    this.map.addLayer({
+                        id: "stations",
+                        type: "circle",
+                        source: "stations",
+                        paint: {
+                            "circle-radius": 4,
+                            "circle-color": "black"
+                        }
+                    });
+
+                    this.updateHUD(first);
+                    this.loop();
+                });
+            },
+
+            updateHUD(f) {
+                const p = f.properties;
+
+                this.hud.innerHTML = `
+                    <h2>${p.municipality}</h2>
+                    <h1>${Math.round(Number(p.temp_c))}°</h1>
+                `;
+            },
+
+            loop() {
+                const step = () => {
+                    if (!this.running) return;
+
+                    const f = this.stations[Math.floor(Math.random() * this.stations.length)];
+                    const [lon, lat] = f.geometry.coordinates;
+
+                    this.map.easeTo({
+                        center: [lon, lat],
+                        duration: this.PAN_DURATION
+                    });
+
+                    this.map.once("moveend", () => {
+                        if (!this.running) return;
+                        this.updateHUD(f);
+                    });
+
+                    this.timer = setTimeout(step, this.STEP_DELAY);
+                };
+
+                this.timer = setTimeout(step, this.INITIAL_DELAY);
+            },
+
+            stop() {
+                this.running = false;
+
+                if (this.timer) clearTimeout(this.timer);
+
+                if (this.map) {
+                    this.map.remove();
+                    this.map = null;
+                }
+
+                if (this.hud) this.hud.remove();
+                this.hud = null;
+            }
+        };
 
         // =========================
         // START
         // =========================
-async function start() {
-    await loadMetars();
-    sceneController.switch(sceneGlobe);
-}
+        async function start() {
+            //await loadMetars();
+            sceneController.switch(sceneCanada);
+        }
 
         start();
     </script>
