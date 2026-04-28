@@ -1,5 +1,15 @@
 import json
 import xml.etree.ElementTree as ET
+from urllib.request import urlopen
+
+url = "https://aviationweather.gov/data/cache/metars.cache.xml"
+path = "data/metars/metars.cache.xml"
+
+with urlopen(url, timeout=30) as response:
+    data = response.read()
+
+with open(path, "wb") as f:
+    f.write(data)
 
 # -------------------------
 # LOAD AIRPORTS (index)
@@ -14,12 +24,12 @@ airport_map = {
 }
 
 # -------------------------
-# STREAM METARS XML (memory-safe)
+# STREAM METARS XML
 # -------------------------
 joined = []
 
 context = ET.iterparse("data/metars/metars.cache.xml", events=("end",))
-_, root = next(context)  # important: get root for clearing
+_, root = next(context)
 
 for event, elem in context:
     if elem.tag != "METAR":
@@ -84,6 +94,27 @@ for event, elem in context:
         continue
 
     # -------------------------
+    # WX STRING (raw, JS decodes it)
+    # -------------------------
+    wx_string = elem.findtext("wx_string")
+
+    # -------------------------
+    # SKY CONDITIONS (multi-layer)
+    # -------------------------
+    sky_conditions = []
+
+    for sc in elem.findall("sky_condition"):
+        sky_conditions.append({
+            "sky_cover": sc.get("sky_cover"),
+            "cloud_base_ft_agl": sc.get("cloud_base_ft_agl")
+        })
+
+    # sort by altitude (important for JS "top layer" logic)
+    sky_conditions.sort(
+        key=lambda x: int(x["cloud_base_ft_agl"] or 999999)
+    )
+
+    # -------------------------
     # BUILD FEATURE
     # -------------------------
     joined.append({
@@ -95,14 +126,18 @@ for event, elem in context:
         "properties": {
             "station_id": station_id,
             "temp_c": temp_c,
+
             "icao_code": airport.get("icao_code"),
             "municipality": municipality,
             "iso_country": airport.get("iso_country"),
-            "iso_region": airport.get("iso_region")
+            "iso_region": airport.get("iso_region"),
+
+            # RAW DATA (your JS decodes everything)
+            "wx_string": wx_string,
+            "sky_condition": sky_conditions
         }
     })
 
-    # IMPORTANT: free memory
     elem.clear()
     root.clear()
 

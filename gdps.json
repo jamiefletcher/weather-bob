@@ -1,9 +1,6 @@
 {
 	"version": 8,
-	"name": "globe",
-	"projection": {
-		"type": "globe"
-	},
+	"name": "gdps",
 	"glyphs": "https://jamiefletcher.github.io/weather-bob/assets/fonts/{fontstack}/{range}.pbf",
 	"sprite": "https://jamiefletcher.github.io/weather-bob/assets/sprites/sprites-trees",
 	"sources": {

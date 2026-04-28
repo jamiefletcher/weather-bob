@@ -76,6 +76,7 @@
                 this.map = new maplibregl.Map({
                     container: "map",
                     style: "naturalearth.json",
+                    projection: "mercator",
                     center: [lon, lat],
                     zoom: 6,
                     minZoom: 3,
@@ -280,7 +281,8 @@
                 // MAP
                 this.map = new maplibregl.Map({
                     container: "map",
-                    style: "green.json",
+                    style: "gdps.json",
+                    projection: "globe",
                     center: [lon, lat],
                     zoom: 3,
                     pitch: 0
