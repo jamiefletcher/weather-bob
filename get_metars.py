@@ -45,13 +45,32 @@ for _, elem in context:
 
     lon, lat = place_feature["geometry"]["coordinates"]
 
-    temp_c = elem.findtext("temp_c")
+    # -------------------------
+    # FULL METAR FIELD DUMP
+    # -------------------------
+    metar_fields = {}
+
+    for child in elem:
+        # skip structured repeats handled separately
+        if child.tag == "sky_condition":
+            continue
+
+        if child.text is not None:
+            metar_fields[child.tag] = child.text
+
+    # -------------------------
+    # REQUIRED FIELDS (cleaned)
+    # -------------------------
+    temp_c = metar_fields.get("temp_c")
     if temp_c is None:
         elem.clear()
         continue
 
-    wx_string = elem.findtext("wx_string")
+    wx_string = metar_fields.get("wx_string")
 
+    # -------------------------
+    # SKY CONDITIONS (structured)
+    # -------------------------
     sky_conditions = [
         {
             "sky_cover": sc.get("sky_cover"),
@@ -68,6 +87,9 @@ for _, elem in context:
 
     sky_conditions.sort(key=safe_alt)
 
+    # -------------------------
+    # BUILD FEATURE
+    # -------------------------
     joined.append({
         "type": "Feature",
         "geometry": {
@@ -77,7 +99,10 @@ for _, elem in context:
         "properties": {
             **place_feature["properties"],
 
-            # METAR data
+            # FULL METAR RAW FIELDS
+            **metar_fields,
+
+            # OVERRIDES / NORMALIZED FIELDS
             "temp_c": float(temp_c),
             "wx_string": wx_string,
             "sky_condition": sky_conditions
@@ -87,17 +112,11 @@ for _, elem in context:
     elem.clear()
 
 # -------------------------
-# FINAL GEOJSON WRAPPER (CORRECT)
+# FINAL GEOJSON WRAPPER
 # -------------------------
 geojson = {
     "type": "FeatureCollection",
     "name": "metars_places_airports",
-    "features": joined
-}
-
-geojson = {
-    "type": "FeatureCollection",
-    "name": "places_airports",
     "crs": {
         "type": "name",
         "properties": {

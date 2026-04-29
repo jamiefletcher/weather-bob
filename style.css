@@ -209,6 +209,22 @@ body {
 
 }
 
+.bottom-right {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    padding: 0.5rem;
+
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(199, 90%, 24%);
+    box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
+
+    text-align: right;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+
 #hud-container {
     position: absolute;
     top: 0;
@@ -302,7 +318,7 @@ body {
             hsl(190, 40%, 58%));
     color: hsl(270, 35%, 100%);
     border-radius: 5px 5px 0 0;
-    padding: 0.5rem;
+    padding: 0.3rem;
 }
 
 .popup-data {
@@ -311,7 +327,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.3rem;
 }
 
 .maplibregl-popup-content .popup-places h2 {

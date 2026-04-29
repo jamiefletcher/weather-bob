@@ -127,6 +127,17 @@
             };
         }
 
+function getMetarDate(features) {
+    for (const f of features) {
+        const t = f.properties?.observation_time || f.properties?.time_obs;
+        if (!t) continue;
+
+        return new Date(t);
+    }
+
+    return null;
+}
+
         // =========================
         // TITLES
         // =========================
@@ -168,6 +179,16 @@
                 setTitle("top-left", `${d.weekdayName}, ${d.monthName} ${d.day}`);
                 setTitle("top-right", "<b>Canada</b> <i>Coast-to-Coast</i> Weather");
                 setTitle("top-right-sub", "Up-to-the-minute conditions");
+
+const latest = getMetarDate(data.features);
+console.log(latest)
+if (latest) {
+    setTitle("bottom-right", `<h1>LAST UPDATED ${latest.toLocaleTimeString("en-US", {
+        timeZone: "America/Toronto",
+        hour: "2-digit",
+        minute: "2-digit"
+    })}</h1>`);
+}
 
                 const features = data.features
                     .filter(f => f.properties.iso_country === "CA")
