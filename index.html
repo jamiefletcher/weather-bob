@@ -244,7 +244,9 @@
                 this.clearPopups();
                 this.popups = [];
 
-                features.forEach(f => {
+                const filtered = removeOverlappingPopups(this.map, features);
+
+                filtered.forEach(f => {
                     const coords = f.geometry.coordinates;
                     const p = f.properties;
 
@@ -784,6 +786,65 @@
 
             return SYMBOL[top.sky_cover] || "☁️";
         }
+
+function removeOverlappingPopups(map, features) {
+
+    const BOX_W = 50;
+    const BOX_H = 50;
+
+    const projected = [];
+
+    for (const f of features) {
+        const coords = f.geometry.coordinates;
+        const p = f.properties;
+
+        const scalerank = Number(p?.scalerank ?? 999);
+        const point = map.project(coords);
+
+        projected.push({
+            feature: f,     // keep original intact
+            point,
+            scalerank
+        });
+    }
+
+    projected.sort((a, b) => a.scalerank - b.scalerank);
+
+    const rects = [];
+    const result = [];
+
+    const intersects = (a, b) =>
+        !(a.x + a.w < b.x ||
+          a.x > b.x + b.w ||
+          a.y + a.h < b.y ||
+          a.y > b.y + b.h);
+
+    for (const item of projected) {
+
+        const rect = {
+            x: item.point.x - BOX_W / 2,
+            y: item.point.y - BOX_H / 2,
+            w: BOX_W,
+            h: BOX_H
+        };
+
+        let collide = false;
+
+        for (const r of rects) {
+            if (intersects(rect, r)) {
+                collide = true;
+                break;
+            }
+        }
+
+        if (!collide) {
+            rects.push(rect);
+            result.push(item.feature); // 🔥 return ORIGINAL feature
+        }
+    }
+
+    return result;
+}
 
     </script>
 </body>
