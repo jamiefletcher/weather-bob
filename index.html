@@ -26,9 +26,8 @@
             </div>
         </div>
 
-        <div id="title-container"></div>
-
         <div id="map">
+            <div id="title-container"></div>
             <div id="hud-container"></div>
         </div>
 
@@ -519,27 +518,32 @@
         let tickerSpeed = 0.6; // px per frame (control here)
         let tickerWidth = 0;
 
-        function startTickerAnimation() {
-            const track = document.getElementById("ticker-track");
-            if (!track) return;
+let tickerRunning = false;
+let tickerRAF = null;
 
-            // measure ONCE only (important)
-            tickerWidth = track.scrollWidth / 2;
+function startTickerAnimation() {
+    if (tickerRunning) return; // prevent duplicates
 
-            function animate() {
-                tickerX -= tickerSpeed;
+    const track = document.getElementById("ticker-track");
+    if (!track) return;
 
-                if (Math.abs(tickerX) >= tickerWidth) {
-                    tickerX = 0;
-                }
+    tickerRunning = true;
+    tickerWidth = track.scrollWidth / 2;
 
-                track.style.transform = `translate3d(${tickerX}px, 0, 0)`;
+    function animate() {
+        tickerX -= tickerSpeed;
 
-                requestAnimationFrame(animate);
-            }
-
-            requestAnimationFrame(animate);
+        if (Math.abs(tickerX) >= tickerWidth) {
+            tickerX = 0;
         }
+
+        track.style.transform = `translate3d(${tickerX}px, 0, 0)`;
+
+        tickerRAF = requestAnimationFrame(animate);
+    }
+
+    tickerRAF = requestAnimationFrame(animate);
+}
 
         async function initTicker() {
             const data = await getMetars();
@@ -552,24 +556,24 @@
             });
         }
 
-function loadingScreen() {
-    const el = document.getElementById("loading-screen");
-    if (!el) return;
+        function loadingScreen() {
+            const el = document.getElementById("loading-screen");
+            if (!el) return;
 
-    el.classList.add("hidden");
-}
+            el.classList.add("hidden");
+        }
 
         // =========================
         // START
         // =========================
-async function start() {
-    sceneController.switch(sceneCanada);
-    initTicker();
+        async function start() {
+            sceneController.switch(sceneCanada);
+            initTicker();
 
-    setTimeout(() => {
-        loadingScreen();
-    }, 400);
-}
+            setTimeout(() => {
+                loadingScreen();
+            }, 400);
+        }
 
         start();
 
