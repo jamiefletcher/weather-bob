@@ -29,7 +29,7 @@ body {
 
     grid-template-areas:
         "map side"
-        "ticker ticker"
+        "ticker side"
         "bottom bottom";
 }
 
@@ -38,26 +38,59 @@ body {
     position: relative;
 }
 
-#map>.maplibregl-canvas-container,
-#map canvas {
-    width: 100% !important;
-    height: 100% !important;
+#side-panel {
+    grid-area: side;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    background: hsl(0, 0%, 40%);
 }
 
-.maplibregl-ctrl-bottom-right {
-    display: none;
+#bottom-panel {
+    grid-area: bottom;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: row;
+
+    background: hsl(0, 0%, 100%);
+}
+
+#ticker-panel {
+    grid-area: ticker;
+    overflow: hidden;
+}
+
+#ticker-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+}
+
+.ticker-item {
+    flex: 0 0 auto;
+    padding: 1rem 1rem;
+    font-size: 1.3rem;
+
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
 }
 
 #title-container {
     position: absolute;
     inset: 0;
     z-index: 100;
-    padding: 1%;
+    padding: 1rem;
     pointer-events: none;
     user-select: none;
 
     font-family: 'Montserrat';
     text-transform: uppercase;
+    line-height: 1;
 }
 
 .top-left {
@@ -71,7 +104,7 @@ body {
     color: hsl(199, 90%, 24%);
     box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
 
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 600;
 }
 
@@ -106,27 +139,13 @@ body {
     font-weight: 600;
     text-align: right;
 
-    clip-path: polygon(4% 0%,
-            100% 0%,
-            96% 100%,
-            0% 100%);
+    clip-path: polygon(
+        4% 0%,
+        100% 0%,
+        96% 100%,
+        0% 100%
+    );
 
-}
-
-/* BOTTOM LEFT */
-.bottom-left {
-    position: absolute;
-    bottom: 1%;
-    left: 1%;
-}
-
-/* BOTTOM RIGHT */
-.bottom-right {
-    position: absolute;
-    bottom: 1%;
-    right: 1%;
-
-    text-align: right;
 }
 
 #hud-container {
@@ -184,20 +203,6 @@ body {
 .hud-item h4 {
     font-size: 1rem;
     font-weight: 300;
-}
-
-
-#side-panel {
-    grid-area: side;
-    overflow: hidden;
-    background: hsl(0, 0%, 30%);
-    color: white;
-}
-
-#bottom-panel {
-    grid-area: bottom;
-    overflow: hidden;
-    background: hsl(0, 0%, 98%);
 }
 
 .popup-places {
@@ -300,6 +305,16 @@ body {
     transform: translateY(8px) scale(0.95);
 }
 
+#map>.maplibregl-canvas-container,
+#map canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.maplibregl-ctrl-bottom-right {
+    display: none;
+}
+
 .taf-panel {
     position: absolute;
     top: 50%;
@@ -327,34 +342,6 @@ body {
 .taf-row {
     font-size: 12px;
     margin-bottom: 4px;
-}
-
-#ticker-panel {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 34px;
-    overflow: hidden;
-    background: rgba(10, 10, 10, 0.75);
-    backdrop-filter: blur(8px);
-}
-
-#ticker-track {
-    display: flex;
-    width: max-content;
-    will-change: transform;
-    transform: translate3d(0, 0, 0);
-}
-
-.ticker-item {
-    flex: 0 0 auto;
-    padding: 0 18px;
-    font-size: 13px;
-    color: white;
-    display: flex;
-    gap: 6px;
-    align-items: center;
 }
 
 #loading-screen {
@@ -419,4 +406,23 @@ h4 {
     font-weight: 300;
 }
 
-@media (min-width: 1024px) {}
+@media (max-width: 1024px) {
+    .app {
+        height: 100%;
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns: 1fr;
+
+        grid-template-rows:
+            1fr
+            5%
+            20%;
+
+        grid-template-areas:
+            "map"
+            "ticker"
+            "bottom";
+    }
+}

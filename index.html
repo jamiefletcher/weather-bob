@@ -32,12 +32,10 @@
         </div>
 
         <div id="side-panel"></div>
-        <div id="bottom-panel"></div>
-
         <div id="ticker-panel">
             <div id="ticker-track"></div>
         </div>
-
+        <div id="bottom-panel"></div>
     </div>
 
     <script>
@@ -518,42 +516,44 @@
         let tickerSpeed = 0.6; // px per frame (control here)
         let tickerWidth = 0;
 
-let tickerRunning = false;
-let tickerRAF = null;
+        let tickerRunning = false;
+        let tickerRAF = null;
 
-function startTickerAnimation() {
-    if (tickerRunning) return; // prevent duplicates
+        function startTickerAnimation() {
+            if (tickerRunning) return; // prevent duplicates
 
-    const track = document.getElementById("ticker-track");
-    if (!track) return;
+            const track = document.getElementById("ticker-track");
+            if (!track) return;
 
-    tickerRunning = true;
-    tickerWidth = track.scrollWidth / 2;
+            tickerRunning = true;
+            tickerWidth = track.scrollWidth / 2;
 
-    function animate() {
-        tickerX -= tickerSpeed;
+            function animate() {
+                tickerX -= tickerSpeed;
 
-        if (Math.abs(tickerX) >= tickerWidth) {
-            tickerX = 0;
+                if (Math.abs(tickerX) >= tickerWidth) {
+                    tickerX = 0;
+                }
+
+                track.style.transform = `translate3d(${tickerX}px, 0, 0)`;
+
+                tickerRAF = requestAnimationFrame(animate);
+            }
+
+            tickerRAF = requestAnimationFrame(animate);
         }
-
-        track.style.transform = `translate3d(${tickerX}px, 0, 0)`;
-
-        tickerRAF = requestAnimationFrame(animate);
-    }
-
-    tickerRAF = requestAnimationFrame(animate);
-}
 
         async function initTicker() {
             const data = await getMetars();
             const features = data.features || [];
 
             buildTicker(features);
+            startTickerAnimation();
+        }
 
-            requestAnimationFrame(() => {
-                startTickerAnimation();
-            });
+        function stopTicker() {
+            tickerRunning = false;
+            if (tickerRAF) cancelAnimationFrame(tickerRAF);
         }
 
         function loadingScreen() {
@@ -572,7 +572,7 @@ function startTickerAnimation() {
 
             setTimeout(() => {
                 loadingScreen();
-            }, 400);
+            }, 200);
         }
 
         start();
