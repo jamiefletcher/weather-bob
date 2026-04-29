@@ -20,11 +20,17 @@
     <div class="app">
 
         <div id="title-container"></div>
+
         <div id="map">
             <div id="hud-container"></div>
         </div>
+
         <div id="side-panel"></div>
         <div id="bottom-panel"></div>
+
+        <div id="ticker-panel">
+            <div id="ticker-track"></div>
+        </div>
 
     </div>
 
@@ -88,51 +94,51 @@
             };
         }
 
-function getDateParts(date = new Date()) {
-    return {
-        // raw
-        date,
+        function getDateParts(date = new Date()) {
+            return {
+                // raw
+                date,
 
-        // core components
-        year: date.getFullYear(),
-        month: date.getMonth() + 1, // 1–12
-        day: date.getDate(),
-        weekday: date.getDay(), // 0–6 (Sun–Sat)
+                // core components
+                year: date.getFullYear(),
+                month: date.getMonth() + 1, // 1–12
+                day: date.getDate(),
+                weekday: date.getDay(), // 0–6 (Sun–Sat)
 
-        // names (useful for UI)
-        weekdayName: date.toLocaleDateString("en-US", { weekday: "long" }),
-        weekdayShort: date.toLocaleDateString("en-US", { weekday: "short" }),
+                // names (useful for UI)
+                weekdayName: date.toLocaleDateString("en-US", { weekday: "long" }),
+                weekdayShort: date.toLocaleDateString("en-US", { weekday: "short" }),
 
-        monthName: date.toLocaleDateString("en-US", { month: "long" }),
-        monthShort: date.toLocaleDateString("en-US", { month: "short" }),
+                monthName: date.toLocaleDateString("en-US", { month: "long" }),
+                monthShort: date.toLocaleDateString("en-US", { month: "short" }),
 
-        // formatted helpers (optional convenience)
-        isoDate: date.toISOString().split("T")[0], // YYYY-MM-DD
-        time: date.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        })
-    };
-}
+                // formatted helpers (optional convenience)
+                isoDate: date.toISOString().split("T")[0], // YYYY-MM-DD
+                time: date.toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit"
+                })
+            };
+        }
 
         // =========================
         // TITLES
         // =========================
-window.setTitle = (className, html) => {
-    const container = document.getElementById("title-container");
-    if (!container) return;
+        window.setTitle = (className, html) => {
+            const container = document.getElementById("title-container");
+            if (!container) return;
 
-    let target = container.querySelector(`.${className}`);
+            let target = container.querySelector(`.${className}`);
 
-    if (!target) {
-        target = document.createElement("div");
-        target.className = className;
-        container.appendChild(target);
-    }
+            if (!target) {
+                target = document.createElement("div");
+                target.className = className;
+                container.appendChild(target);
+            }
 
-    target.innerHTML = html;
-};
+            target.innerHTML = html;
+        };
 
         // =========================
         // SCENE: CANADA LOOP
@@ -409,35 +415,35 @@ window.setTitle = (className, html) => {
                 });
             },
 
-updateHUD(f) {
-    const hud = this.hud || document.querySelector(".hud-bottom");
-    if (!hud) return;
+            updateHUD(f) {
+                const hud = this.hud || document.querySelector(".hud-bottom");
+                if (!hud) return;
 
-    const p = f.properties;
+                const p = f.properties;
 
-    const skyText = decodeSkyCondition(p.sky_condition);
-    const wxText = decodeWx(p.wx_string);
+                const skyText = decodeSkyCondition(p.sky_condition);
+                const wxText = decodeWx(p.wx_string);
 
-    const temp = Number(p.temp_c);
-    const tempDisplay = Number.isFinite(temp)
-        ? `${Math.round(temp)}°`
-        : "--";
+                const temp = Number(p.temp_c);
+                const tempDisplay = Number.isFinite(temp)
+                    ? `${Math.round(temp)}°`
+                    : "--";
 
-    hud.innerHTML = `
-        <div class="hud-item">
-            <h2>${p.name || p.icao_code}</h2>
-        </div>
-        <div class="hud-item">
-            <h1>${tempDisplay}</h1>
-        </div>
-        <div class="hud-item">
-            <h3>${skyText || ""}</h3>
-        </div>
-        <div class="hud-item">
-            <h3>${wxText || ""}</h3>
-        </div>
-    `;
-},
+                hud.innerHTML = `
+                    <div class="hud-item">
+                        <h2>${p.name || p.icao_code}</h2>
+                    </div>
+                    <div class="hud-item">
+                        <h1>${tempDisplay}</h1>
+                    </div>
+                    <div class="hud-item">
+                        <h3>${skyText || ""}</h3>
+                    </div>
+                    <div class="hud-item">
+                        <h3>${wxText || ""}</h3>
+                    </div>
+                `;
+            },
 
             loop(features) {
                 let i = 1;
@@ -481,13 +487,74 @@ updateHUD(f) {
             }
         };
 
+        function buildTicker(features) {
+            const track = document.getElementById("ticker-track");
+            if (!track) return;
+
+            let html = "";
+
+            for (let i = 0; i < features.length; i++) {
+                const p = features[i].properties;
+
+                html += `
+            <div class="ticker-item">
+                <span>${p.name || p.icao_code}</span>
+                <span>•</span>
+                <span>${Math.round(p.temp_c)}°</span>
+            </div>
+        `;
+            }
+
+            track.innerHTML = html + html; // duplicate for loop
+        }
+
+        let tickerX = 0;
+        let tickerSpeed = 0.6; // px per frame (control here)
+        let tickerWidth = 0;
+
+        function startTickerAnimation() {
+            const track = document.getElementById("ticker-track");
+            if (!track) return;
+
+            // measure ONCE only (important)
+            tickerWidth = track.scrollWidth / 2;
+
+            function animate() {
+                tickerX -= tickerSpeed;
+
+                if (Math.abs(tickerX) >= tickerWidth) {
+                    tickerX = 0;
+                }
+
+                track.style.transform = `translate3d(${tickerX}px, 0, 0)`;
+
+                requestAnimationFrame(animate);
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        async function initTicker() {
+            const data = await getMetars();
+            const features = data.features || [];
+
+            buildTicker(features);
+
+            requestAnimationFrame(() => {
+                startTickerAnimation();
+            });
+        }
+
         // =========================
         // START
         // =========================
         async function start() {
             sceneController.switch(sceneCanada);
-        }
 
+            requestAnimationFrame(() => {
+                initTicker();
+            });
+        }
         start();
 
         // =========================
