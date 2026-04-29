@@ -1,5 +1,4 @@
 import json
-import re
 import xml.etree.ElementTree as ET
 from urllib.request import urlopen
 
@@ -14,18 +13,15 @@ with urlopen(url, timeout=30) as response:
         f.write(response.read())
 
 # -------------------------
-# LOAD AIRPORTS (index)
+# LOAD PLACES
 # -------------------------
-with open("data/airports.geojson") as f:
-    airports = json.load(f)["features"]
+with open("data/places_airports.geojson") as f:
+    places = json.load(f)["features"]
 
-airport_map = {
-    a["properties"]["icao_code"]: {
-        **a["properties"],
-        "coordinates": a["geometry"]["coordinates"]
-    }
-    for a in airports
-    if "icao_code" in a.get("properties", {})
+places_map = {
+    f["properties"]["icao_code"]: f
+    for f in places
+    if f.get("properties", {}).get("icao_code")
 }
 
 # -------------------------
@@ -40,25 +36,19 @@ for _, elem in context:
     if elem.tag != "METAR":
         continue
 
-    station_id = elem.findtext("station_id")
-    airport = airport_map.get(station_id)
+    station_id = (elem.findtext("station_id") or "").strip().upper()
+    place_feature = places_map.get(station_id)
 
-    if airport is not None and airport.get("municipality") is not None:
-        airport["municipality"] = re.sub(r"\s*\(.*?\)", "", airport["municipality"]).strip()
-
-    if not airport:
+    if not place_feature:
         elem.clear()
         continue
 
-    lon, lat = airport["coordinates"]
+    lon, lat = place_feature["geometry"]["coordinates"]
 
     temp_c = elem.findtext("temp_c")
-
     if temp_c is None:
         elem.clear()
         continue
-
-    temp_c = float(temp_c)
 
     wx_string = elem.findtext("wx_string")
 
@@ -70,9 +60,13 @@ for _, elem in context:
         for sc in elem.findall("sky_condition")
     ]
 
-    sky_conditions.sort(
-        key=lambda x: int(x["cloud_base_ft_agl"] or 999999)
-    )
+    def safe_alt(x):
+        try:
+            return int(x["cloud_base_ft_agl"] or 999999)
+        except:
+            return 999999
+
+    sky_conditions.sort(key=safe_alt)
 
     joined.append({
         "type": "Feature",
@@ -81,24 +75,37 @@ for _, elem in context:
             "coordinates": [lon, lat]
         },
         "properties": {
-            # METAR
-            "station_id": station_id,
-            "temp_c": temp_c,
-            "wx_string": wx_string,
-            "sky_condition": sky_conditions,
+            **place_feature["properties"],
 
-            # AIRPORT (STRICT PASS-THROUGH)
-            **airport
+            # METAR data
+            "temp_c": float(temp_c),
+            "wx_string": wx_string,
+            "sky_condition": sky_conditions
         }
     })
 
     elem.clear()
 
 # -------------------------
-# WRITE OUTPUT
+# FINAL GEOJSON WRAPPER (CORRECT)
 # -------------------------
-with open("data/metars/metars_airports.geojson", "w") as f:
-    json.dump(
-        {"type": "FeatureCollection", "features": joined},
-        f
-    )
+geojson = {
+    "type": "FeatureCollection",
+    "name": "metars_places_airports",
+    "features": joined
+}
+
+geojson = {
+    "type": "FeatureCollection",
+    "name": "places_airports",
+    "crs": {
+        "type": "name",
+        "properties": {
+            "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+        }
+    },
+    "features": joined
+}
+
+with open("data/metars/metars_places_airports.geojson", "w") as f:
+    json.dump(geojson, f)

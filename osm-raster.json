@@ -1,6 +1,6 @@
 {
     "version": 8,
-    "name": "weather-bob",
+    "name": "osm-raster",
     "projection": {
         "type": "globe"
     },

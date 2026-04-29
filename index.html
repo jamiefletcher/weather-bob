@@ -31,25 +31,19 @@
     </div>
 
     <script>
-        let METARS_AIRPORTS = null;
-async function getMetarsAirports() {
-    if (METARS_AIRPORTS) return METARS_AIRPORTS;
+        // =========================
+        // LOAD METARS
+        // =========================
+        let METARS = null;
 
-    const res = await fetch("data/metars/metars_airports.geojson");
-    const data = await res.json();
+        async function getMetars() {
+            if (METARS) return METARS;
 
-    const seen = new Set();
+            const res = await fetch("data/metars/metars_places_airports.geojson");
+            METARS = await res.json();
 
-    data.features = data.features.filter(f => {
-        const m = f.properties?.municipality;
-        if (!m || seen.has(m)) return false;
-        seen.add(m);
-        return true;
-    });
-
-    METARS_AIRPORTS = data;
-    return METARS_AIRPORTS;
-}
+            return METARS;
+        }
 
         // =========================
         // SCENE CONTROLLER
@@ -132,11 +126,11 @@ window.setTitle = (className, label) => {
             async start(container) {
                 this.running = true;
 
-                const data = await getMetarsAirports();
+                const data = await getMetars();
                 
                 const features = data.features
                     .filter(f => f.properties.iso_country === "CA")
-                    .filter(f => ["large_airport", "medium_airport"].includes(f.properties.type));
+                    .filter(f => ["large_airport", "medium_airport"].includes(f.properties.airport_type));
 
                 const [lon, lat] = features[0].geometry.coordinates;
 
@@ -216,7 +210,7 @@ window.setTitle = (className, label) => {
                     if (!safeBounds.contains(coords)) return;
 
                     const temp = Math.round(Number(p.temp_c));
-                    const city = p.municipality || p.station_id || "";
+                    const city = p.name || p.icao_code || "";
                     const skyIcon = decodeSkyConditionIcon(p.sky_condition);
                     const wxIcon = decodeWxIcon(p.wx_string);
 
@@ -327,16 +321,18 @@ window.setTitle = (className, label) => {
             timer: createTimerManager(),
 
             async start(container) {
-                this.running = true;
+this.running = true;
 
-                const data = await getMetarsAirports();
-                const features = data.features
-                    .filter(f => f.properties.type === "large_airport");
+const data = await getMetars();
 
-                this.stations = features;
+const features = data.features
+    .filter(f => f.properties.adm0cap === 1)
+    .sort((a, b) =>
+        a.geometry.coordinates[0] - b.geometry.coordinates[0]
+    );
 
-                const first = features[0];
-                const [lon, lat] = first.geometry.coordinates;
+const first = features[0];
+const [lon, lat] = first.geometry.coordinates;
 
                 // HUD
                 const hudContainer = document.getElementById("hud-container");
@@ -351,7 +347,7 @@ window.setTitle = (className, label) => {
                     center: [lon, lat],
                     zoom: 2,
                     pitch: 0,
-                    hash: true
+                    hash: false
                 });
 
                 this.map.on("load", () => {
@@ -386,34 +382,38 @@ window.setTitle = (className, label) => {
 
                 this.hud.innerHTML = `
                     <div class="hud-item">
-                        <h2>${p.municipality || p.station_id}</h2>
+                        <h2>${p.name || p.icao_code}</h2>
                         <h1>${Math.round(Number(p.temp_c))}°</h1>
                     </div>
                 `;
             },
 
-            loop(features) {
-                const step = () => {
-                    if (!this.running) return;
+loop(features) {
+    let i = 1;
 
-                    const f = features[Math.floor(Math.random() * features.length)];
-                    const [lon, lat] = f.geometry.coordinates;
+    const step = () => {
+        if (!this.running) return;
 
-                    this.map.easeTo({
-                        center: [lon, lat],
-                        duration: this.PAN_DURATION
-                    });
+        const f = features[i % features.length];
+        i++;
 
-                    this.map.once("moveend", () => {
-                        if (!this.running) return;
-                        this.updateHUD(f);
-                    });
+        const [lon, lat] = f.geometry.coordinates;
 
-                    this.timer.set(step, this.STEP_DELAY);
-                };
+        this.map.easeTo({
+            center: [lon, lat],
+            duration: this.PAN_DURATION
+        });
 
-                this.timer.set(step, this.INITIAL_DELAY);
-            },
+        this.map.once("moveend", () => {
+            if (!this.running) return;
+            this.updateHUD(f);
+        });
+
+        this.timer.set(step, this.STEP_DELAY);
+    };
+
+    this.timer.set(step, this.INITIAL_DELAY);
+},
 
             stop() {
                 this.running = false;
@@ -434,7 +434,7 @@ window.setTitle = (className, label) => {
         // START
         // =========================
         async function start() {
-            sceneController.switch(sceneCanada);
+            sceneController.switch(sceneGlobe);
         }
 
         start();
