@@ -12,6 +12,7 @@
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,600,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:wght@400,700" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -334,10 +335,10 @@ const features = data.features
 const first = features[0];
 const [lon, lat] = first.geometry.coordinates;
 
-                // HUD
+                // HUD-LEFT
                 const hudContainer = document.getElementById("hud-container");
                 this.hud = document.createElement("div");
-                this.hud.className = "hud";
+                this.hud.className = "hud-left";
                 hudContainer.appendChild(this.hud);
 
                 // MAP
@@ -377,16 +378,34 @@ const [lon, lat] = first.geometry.coordinates;
                 });
             },
 
-            updateHUD(f) {
-                const p = f.properties;
+updateHUD(f) {
+    const p = f.properties;
 
-                this.hud.innerHTML = `
-                    <div class="hud-item">
-                        <h2>${p.name || p.icao_code}</h2>
-                        <h1>${Math.round(Number(p.temp_c))}°</h1>
-                    </div>
-                `;
-            },
+    const skyText = decodeSkyCondition(p.sky_condition);
+    const wxText = decodeWx(p.wx_string);
+
+    const temp = Number(p.temp_c);
+    const tempDisplay = Number.isFinite(temp)
+        ? `${Math.round(temp)}°`
+        : "--";
+
+    this.hud.innerHTML = `
+        <div class="hud-item">
+            <h2>${p.name || p.icao_code}</h2>
+            ${p.adm1name ? `<h2>${p.adm1name}</h2>` : ""}
+            ${p.adm0name ? `<h2>${p.adm0name}</h2>` : ""}
+        </div>
+        <div class="hud-item">
+            <h1>${tempDisplay}</h1>
+        </div>
+        <div class="hud-item">
+            <h1>${skyText || ""}</h1>
+        </div>
+        <div class="hud-item">
+            <h2>${wxText || ""}</h2>
+        </div>
+    `;
+},
 
 loop(features) {
     let i = 1;

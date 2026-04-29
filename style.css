@@ -57,56 +57,41 @@
             display: none;
         }
 
-        #hud-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 10;
+#hud-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
 
-            width: 100%;
-            height: 100%;
+    width: 100%;
+    height: 100%;
 
-            pointer-events: none;
+    pointer-events: none;
 
-            display: flex;
-            align-items: flex-start;
-            justify-content: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
 
-            padding: 2rem;
-        }
+.hud-left {
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 1rem;
+    line-height: 1;
 
-        .hud {
-            padding: 1.2rem 1.4rem;
-            border-radius: 14px;
+    margin-left: 15%;
+    transform: translateX(-50%);
+    text-align: center;
+}
 
-            max-width: 320px;
-
-            color: white;
-
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-        }
-
-        .hud-item {
-            background: rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(8px);
-
-            padding: 1.2rem 1.4rem;
-            border-radius: 14px;
-
-            max-width: 320px;
-
-            color: white;
-
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-        }
+.hud-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    font-family: 'Libre Baskerville';
+}
 
         #side-panel {
             grid-area: side;
@@ -252,13 +237,14 @@
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 300;
         }
 
         h2 {
             font-size: 1.6rem;
             font-weight: 400;
+            margin-bottom: 5px;
         }
 
         h3 {
