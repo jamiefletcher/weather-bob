@@ -33,7 +33,7 @@
 
         <div id="side-panel"></div>
         <div id="ticker-panel">
-            <div class="ticker-title">WORLD TICKER</div>
+            <div class="ticker-title">WORLD CITIES</div>
             <div id="ticker-track"></div>
         </div>
         <div id="bottom-panel"></div>
@@ -166,7 +166,7 @@
 
                 const d = getDateParts();
                 setTitle("top-left", `${d.weekdayName}, ${d.monthName} ${d.day}`);
-                setTitle("top-right", "<b>Canada</b> Coast-to-Coast <i>Weather</i>");
+                setTitle("top-right", "<b>Canada</b> <i>Coast-to-Coast</i> Weather");
                 setTitle("top-right-sub", "Up-to-the-minute conditions");
 
                 const features = data.features
@@ -504,7 +504,6 @@
                 html += `
             <div class="ticker-item">
                 <span>${p.name || p.icao_code}</span>
-                <span>•</span>
                 <span>${Math.round(p.temp_c)}°</span>
             </div>
         `;

@@ -74,6 +74,24 @@ body {
     position: relative;
 }
 
+#ticker-panel::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    width: 4rem;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+
+    background: linear-gradient(
+        to left,
+        hsl(0, 0%, 100%),
+        transparent
+    );
+}
+
 .ticker-title {
     position: absolute;
     left: 0;
@@ -119,7 +137,7 @@ body {
     flex: 0 0 auto;
     padding: 0 1rem;
     display: flex;
-    gap: 0.2rem;
+    gap: 0.5rem;
     align-items: center;
 }
 
