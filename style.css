@@ -24,7 +24,7 @@ body {
 
     grid-template-rows:
         1fr
-        5%
+        2rem
         20%;
 
     grid-template-areas:
@@ -51,6 +51,8 @@ body {
 #bottom-panel {
     grid-area: bottom;
     overflow: hidden;
+    pointer-events: none;
+    user-select: none;
 
     display: flex;
     flex-direction: row;
@@ -61,20 +63,61 @@ body {
 #ticker-panel {
     grid-area: ticker;
     overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+
+    font-family: 'Montserrat';
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    position: relative;
+}
+
+.ticker-title {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    padding: 0 1rem 0 0.5rem;
+    background: hsl(0, 0%, 40%);
+    color: hsl(0, 0%, 100%);
+
+    z-index: 2;
+}
+
+.ticker-title::after {
+    content: "";
+    position: absolute;
+    right: -4rem;
+    top: 0;
+    width: 4rem;
+    height: 100%;
+
+    background: linear-gradient(
+        to right,
+        hsl(0, 0%, 100%),
+        transparent
+    );
 }
 
 #ticker-track {
     display: flex;
     width: max-content;
+    height: 100%;
     will-change: transform;
     transform: translate3d(0, 0, 0);
+
+    margin-left: 8rem;
 }
 
 .ticker-item {
     flex: 0 0 auto;
-    padding: 1rem 1rem;
-    font-size: 1.3rem;
-
+    padding: 0 1rem;
     display: flex;
     gap: 0.2rem;
     align-items: center;
@@ -417,7 +460,7 @@ h4 {
 
         grid-template-rows:
             1fr
-            5%
+            2rem
             20%;
 
         grid-template-areas:
