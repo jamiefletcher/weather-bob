@@ -27,21 +27,6 @@
                 "bottom";
         }
 
-        /*
-        .app {
-            height: 100%;
-            width: 100%;
-
-            display: grid;
-            grid-template-columns: 1fr clamp(240px, 25vw, 400px);
-            grid-template-rows: 1fr clamp(140px, 20vh, 260px);
-
-            grid-template-areas:
-                "map side"
-                "bottom bottom";
-        }
-*/
-
         #map {
             grid-area: map;
             position: relative;
@@ -342,32 +327,72 @@
             margin-bottom: 4px;
         }
 
-#ticker-panel {
+        #ticker-panel {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 34px;
+            overflow: hidden;
+            background: rgba(10,10,10,0.75);
+            backdrop-filter: blur(8px);
+        }
+
+        #ticker-track {
+            display: flex;
+            width: max-content;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .ticker-item {
+            flex: 0 0 auto;
+            padding: 0 18px;
+            font-size: 13px;
+            color: white;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+#loading-screen {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 34px;
-    overflow: hidden;
-    background: rgba(10,10,10,0.75);
-    backdrop-filter: blur(8px);
-}
+    inset: 0;
+    z-index: 99999;
 
-#ticker-track {
     display: flex;
-    width: max-content;
-    will-change: transform;
-    transform: translate3d(0, 0, 0);
-}
-
-.ticker-item {
-    flex: 0 0 auto;
-    padding: 0 18px;
-    font-size: 13px;
-    color: white;
-    display: flex;
-    gap: 6px;
     align-items: center;
+    justify-content: center;
+    pointer-events: none;
+
+    background: hsla(0, 0%, 40%, 1);
+
+    opacity: 1;
+    transition: opacity 400ms ease;
+    will-change: opacity;
+}
+
+#loading-screen.hidden {
+    opacity: 0;
+}
+
+.loading-content {
+    text-align: center;
+    color: hsl(0, 0%, 100%);
+}
+
+.spinner {
+    width: 28px;
+    height: 28px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: hsl(0, 0%, 100%);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
         h1 {
