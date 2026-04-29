@@ -10,7 +10,7 @@
             width: 100%;
             line-height: 1;
             font-family: 'Lato', sans-serif;
-            font-size: clamp(12px, 1vw, 90px);
+            font-size: clamp(6px, 1vw, 140px);
             color: hsl(0, 0%, 40%);
         }
 
@@ -57,6 +57,89 @@
             display: none;
         }
 
+#title-container {
+    position: absolute;
+    inset: 0;
+    z-index: 100;
+    padding: 1%;
+    pointer-events: none;
+    user-select: none;
+
+    font-family: 'Montserrat';
+    text-transform: uppercase;
+}
+
+.top-left {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    padding: 0.5rem 1rem;
+
+    border-radius: 50vh;
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(199, 90%, 24%);
+    box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
+
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.top-right {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.5rem;    
+
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(199, 90%, 24%);
+    box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
+
+    text-align: right;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.top-right-sub {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 2;
+    transform: translateX(-0.5rem) translateY(2rem);
+    padding: 0.3rem 1rem;
+
+    background-color: hsl(0, 0%, 40%);
+    color: hsl(0, 0%, 100%);
+    box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
+
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: right;
+
+    clip-path: polygon(
+        4% 0%,
+        100% 0%,
+        96% 100%,
+        0% 100%
+    );
+
+}
+
+/* BOTTOM LEFT */
+.bottom-left {
+    position: absolute;
+    bottom: 1%;
+    left: 1%;
+}
+
+/* BOTTOM RIGHT */
+.bottom-right {
+    position: absolute;
+    bottom: 1%;
+    right: 1%;
+
+    text-align: right;
+}
+
 #hud-container {
     position: absolute;
     top: 0;
@@ -67,22 +150,22 @@
     height: 100%;
 
     pointer-events: none;
+    user-select: none;
 
     display: flex;
     align-items: center;
     justify-content: flex-start;
 }
 
-.hud-left {
+.hud-bottom {
     max-width: 250px;
     display: flex;
     flex-direction: column;
     gap: 5px;
     padding: 1rem;
     line-height: 1;
-
-    margin-left: 15%;
-    transform: translateX(-50%);
+    background-color: hsla(0, 0%, 0%, 0.7);
+    color: hsl(0, 0%, 100%);
     text-align: center;
 }
 
@@ -92,6 +175,28 @@
     gap: 0;
     font-family: 'Libre Baskerville';
 }
+
+.hud-item h1 {
+    font-size: 3rem;
+    font-weight: 300;
+}
+
+.hud-item h2 {
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+.hud-item h3 {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.hud-item h4 {
+    font-size: 1rem;
+    font-weight: 300;
+}
+
 
         #side-panel {
             grid-area: side;
@@ -223,6 +328,7 @@
             max-width: 320px;
 
             pointer-events: none;
+            user-select: none;
             display: none;
         }
 
@@ -244,7 +350,6 @@
         h2 {
             font-size: 1.6rem;
             font-weight: 400;
-            margin-bottom: 5px;
         }
 
         h3 {

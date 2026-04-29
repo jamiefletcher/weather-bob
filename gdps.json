@@ -26,12 +26,20 @@
 		{
 			"id": "naturalearth",
 			"type": "raster",
-			"source": "naturalearth"
+			"source": "naturalearth",
+			"paint": {
+				"raster-saturation": 0.2
+			}
 		},
 		{
 			"id": "gdps",
 			"type": "raster",
-			"source": "gdps"
+			"source": "gdps",
+			"paint": {
+				"raster-opacity": 0.4,
+				"raster-contrast": 0.7,
+		        "raster-brightness-max": 1
+			}
 		}
 	]
 }

@@ -20,13 +20,10 @@
     <div class="app">
 
         <div id="title-container"></div>
-
         <div id="map">
             <div id="hud-container"></div>
         </div>
-
         <div id="side-panel"></div>
-
         <div id="bottom-panel"></div>
 
     </div>
@@ -91,23 +88,50 @@
             };
         }
 
-// =========================
-// TITLES
-// =========================
-window.setTitle = (className, label) => {
+function getDateParts(date = new Date()) {
+    return {
+        // raw
+        date,
+
+        // core components
+        year: date.getFullYear(),
+        month: date.getMonth() + 1, // 1–12
+        day: date.getDate(),
+        weekday: date.getDay(), // 0–6 (Sun–Sat)
+
+        // names (useful for UI)
+        weekdayName: date.toLocaleDateString("en-US", { weekday: "long" }),
+        weekdayShort: date.toLocaleDateString("en-US", { weekday: "short" }),
+
+        monthName: date.toLocaleDateString("en-US", { month: "long" }),
+        monthShort: date.toLocaleDateString("en-US", { month: "short" }),
+
+        // formatted helpers (optional convenience)
+        isoDate: date.toISOString().split("T")[0], // YYYY-MM-DD
+        time: date.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        })
+    };
+}
+
+        // =========================
+        // TITLES
+        // =========================
+window.setTitle = (className, html) => {
     const container = document.getElementById("title-container");
     if (!container) return;
 
     let target = container.querySelector(`.${className}`);
 
-    // create if missing
     if (!target) {
         target = document.createElement("div");
         target.className = className;
         container.appendChild(target);
     }
 
-    target.textContent = label;
+    target.innerHTML = html;
 };
 
         // =========================
@@ -128,7 +152,12 @@ window.setTitle = (className, label) => {
                 this.running = true;
 
                 const data = await getMetars();
-                
+
+                const d = getDateParts();
+                setTitle("top-left", `${d.weekdayName}, ${d.monthName} ${d.day}`);
+                setTitle("top-right", "<b>Canada</b> Coast-to-Coast <i>Weather</i>");
+                setTitle("top-right-sub", "Up-to-the-minute conditions");
+
                 const features = data.features
                     .filter(f => f.properties.iso_country === "CA")
                     .filter(f => ["large_airport", "medium_airport"].includes(f.properties.airport_type));
@@ -322,23 +351,23 @@ window.setTitle = (className, label) => {
             timer: createTimerManager(),
 
             async start(container) {
-this.running = true;
+                this.running = true;
 
-const data = await getMetars();
+                const data = await getMetars();
 
-const features = data.features
-    .filter(f => f.properties.adm0cap === 1)
-    .sort((a, b) =>
-        a.geometry.coordinates[0] - b.geometry.coordinates[0]
-    );
+                const features = data.features
+                    .filter(f => f.properties.scalerank <= 2)
+                    .sort((a, b) =>
+                        a.geometry.coordinates[0] - b.geometry.coordinates[0]
+                    );
 
-const first = features[0];
-const [lon, lat] = first.geometry.coordinates;
+                const first = features[0];
+                const [lon, lat] = first.geometry.coordinates;
 
-                // HUD-LEFT
+                // HUD
                 const hudContainer = document.getElementById("hud-container");
                 this.hud = document.createElement("div");
-                this.hud.className = "hud-left";
+                this.hud.className = "hud-bottom";
                 hudContainer.appendChild(this.hud);
 
                 // MAP
@@ -346,7 +375,9 @@ const [lon, lat] = first.geometry.coordinates;
                     container: "map",
                     style: "gdps.json",
                     center: [lon, lat],
-                    zoom: 2,
+                    zoom: 0.5,
+                    minZoom: 0,
+                    maxZoom: 3.9,
                     pitch: 0,
                     hash: false
                 });
@@ -379,6 +410,9 @@ const [lon, lat] = first.geometry.coordinates;
             },
 
 updateHUD(f) {
+    const hud = this.hud || document.querySelector(".hud-bottom");
+    if (!hud) return;
+
     const p = f.properties;
 
     const skyText = decodeSkyCondition(p.sky_condition);
@@ -389,50 +423,48 @@ updateHUD(f) {
         ? `${Math.round(temp)}°`
         : "--";
 
-    this.hud.innerHTML = `
+    hud.innerHTML = `
         <div class="hud-item">
             <h2>${p.name || p.icao_code}</h2>
-            ${p.adm1name ? `<h2>${p.adm1name}</h2>` : ""}
-            ${p.adm0name ? `<h2>${p.adm0name}</h2>` : ""}
         </div>
         <div class="hud-item">
             <h1>${tempDisplay}</h1>
         </div>
         <div class="hud-item">
-            <h1>${skyText || ""}</h1>
+            <h3>${skyText || ""}</h3>
         </div>
         <div class="hud-item">
-            <h2>${wxText || ""}</h2>
+            <h3>${wxText || ""}</h3>
         </div>
     `;
 },
 
-loop(features) {
-    let i = 1;
+            loop(features) {
+                let i = 1;
 
-    const step = () => {
-        if (!this.running) return;
+                const step = () => {
+                    if (!this.running) return;
 
-        const f = features[i % features.length];
-        i++;
+                    const f = features[i % features.length];
+                    i++;
 
-        const [lon, lat] = f.geometry.coordinates;
+                    const [lon, lat] = f.geometry.coordinates;
 
-        this.map.easeTo({
-            center: [lon, lat],
-            duration: this.PAN_DURATION
-        });
+                    this.map.easeTo({
+                        center: [lon, lat],
+                        duration: this.PAN_DURATION
+                    });
 
-        this.map.once("moveend", () => {
-            if (!this.running) return;
-            this.updateHUD(f);
-        });
+                    this.map.once("moveend", () => {
+                        if (!this.running) return;
+                        this.updateHUD(f);
+                    });
 
-        this.timer.set(step, this.STEP_DELAY);
-    };
+                    this.timer.set(step, this.STEP_DELAY);
+                };
 
-    this.timer.set(step, this.INITIAL_DELAY);
-},
+                this.timer.set(step, this.INITIAL_DELAY);
+            },
 
             stop() {
                 this.running = false;
@@ -453,7 +485,7 @@ loop(features) {
         // START
         // =========================
         async function start() {
-            sceneController.switch(sceneGlobe);
+            sceneController.switch(sceneCanada);
         }
 
         start();
