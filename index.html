@@ -33,7 +33,7 @@
 
         <div id="side-panel"></div>
         <div id="ticker-panel">
-            <div class="ticker-title">WORLD TEMP</div>
+            <div class="ticker-title">WORLD CITIES</div>
             <div id="ticker-track"></div>
         </div>
         <div id="bottom-panel"></div>
@@ -127,51 +127,16 @@
             };
         }
 
-function getMetarDate(features) {
-    for (const f of features) {
-        const t = f.properties?.observation_time || f.properties?.time_obs;
-        if (!t) continue;
+        function getMetarDate(features) {
+            for (const f of features) {
+                const t = f.properties?.observation_time || f.properties?.time_obs;
+                if (!t) continue;
 
-        return new Date(t);
-    }
+                return new Date(t);
+            }
 
-    return null;
-}
-
-function haversine(a, b) {
-    const R = 6371000;
-    const toRad = d => (d * Math.PI) / 180;
-
-    const dLat = toRad(b[1] - a[1]);
-    const dLon = toRad(b[0] - a[0]);
-
-    const lat1 = toRad(a[1]);
-    const lat2 = toRad(b[1]);
-
-    const x =
-        Math.sin(dLat / 2) ** 2 +
-        Math.cos(lat1) * Math.cos(lat2) *
-        Math.sin(dLon / 2) ** 2;
-
-    return 2 * R * Math.asin(Math.sqrt(x));
-}
-
-function getMinDistance(zoom) {
-
-    if (zoom <= 3) return 350000;
-    if (zoom <= 4) return 200000;
-    if (zoom <= 5) return 100000;
-    if (zoom <= 6) return 70000;
-
-    return 50000; // zoom 7+
-}
-
-function getMinDistanceContinuous(zoom) {
-    const A = 1000000;
-    const k = 1.2;
-
-    return A / Math.pow(zoom, k);
-}
+            return null;
+        }
 
         // =========================
         // TITLES
@@ -199,13 +164,10 @@ function getMinDistanceContinuous(zoom) {
             STEP_DELAY: 5000,
             map: null,
             running: false,
-            timer: null,
             popups: [],
             timer: createTimerManager(),
-            dataLabel: "",
-            layerLabel: "",
 
-            async start(container) {
+            async start() {
                 this.running = true;
 
                 const data = await getMetars();
@@ -216,8 +178,9 @@ function getMinDistanceContinuous(zoom) {
                 setTitle("top-right-sub", "Up-to-the-minute conditions");
 
                 const latest = getMetarDate(data.features);
+
                 if (latest) {
-                    setTitle("bottom-right", `<h4>UPDATED ${latest.toLocaleTimeString("en-US", {
+                    setTitle("bottom-right", `<h4>LAST UPDATED ${latest.toLocaleTimeString("en-US", {
                         timeZone: "America/Toronto",
                         hour: "2-digit",
                         minute: "2-digit"
@@ -225,8 +188,10 @@ function getMinDistanceContinuous(zoom) {
                 }
 
                 const features = data.features
-                    .filter(f => f.properties.iso_country === "CA")
-                    .filter(f => ["large_airport", "medium_airport", "small_airport"].includes(f.properties.airport_type));
+                    .filter(f =>
+                        f.properties.iso_country === "CA" &&
+                        ["large_airport", "medium_airport", "small_airport"].includes(f.properties.airport_type)
+                    )
 
                 const [lon, lat] = features[0].geometry.coordinates;
 
@@ -299,89 +264,90 @@ function getMinDistanceContinuous(zoom) {
                 this.clearPopups();
                 this.popups = [];
 
-                const zoom = this.map.getZoom();
-                this.minDistanceMeters = getMinDistance(zoom);
+                const overlaps = (a, b) => {
+                    return !(
+                        a.right < b.left ||
+                        a.left > b.right ||
+                        a.bottom < b.top ||
+                        a.top > b.bottom
+                    );
+                };
 
-features.forEach(f => {
-    const coords = f.geometry.coordinates;
-    const p = f.properties;
+                // priority: lowest scalerank first
+                const sorted = [...features].sort((a, b) => {
+                    return (a.properties.scalerank ?? 999) - (b.properties.scalerank ?? 999);
+                });
 
-    if (!safeBounds.contains(coords)) return;
+                const pending = [];
 
-    const rank = Number(p?.scalerank ?? 999);
+                // PHASE 1 — create all popups (no collision yet)
+                for (const f of sorted) {
+                    const coords = f.geometry.coordinates;
+                    const p = f.properties;
 
-    const temp = Math.round(Number(p.temp_c));
-    const city = p.name || p.icao_code || "";
-    const skyIcon = decodeSkyConditionIcon(p.sky_condition);
-    const wxIcon = decodeWxIcon(p.wx_string);
+                    if (!safeBounds.contains(coords)) continue;
 
-    const wxBadgeHTML = wxIcon
-        ? `<div class="popup-wx-badge">${wxIcon}</div>`
-        : "";
+                    const temp = Math.round(Number(p.temp_c));
+                    const city = p.name || p.icao_code || "";
+                    const skyIcon = decodeSkyConditionIcon(p.sky_condition);
+                    const wxIcon = decodeWxIcon(p.wx_string);
 
-    const isLongCity = city.split(" ").some(w => w.length > 10);
+                    const isLongCity = city.split(" ").some(w => w.length > 10);
 
-    // --- COLLISION CHECK (geographic) ---
-    let shouldPlace = true;
-
-    for (let i = 0; i < this.popups.length; i++) {
-        const existing = this.popups[i];
-
-        const exCoords = existing._coords;
-        const exRank = existing._rank;
-
-        if (!exCoords) continue;
-
-        const dist = haversine(coords, exCoords);
-
-        if (dist < this.minDistanceMeters) {
-
-            // ✔ scalerank ALWAYS wins
-            if (rank < exRank) {
-                existing.remove();
-                this.popups.splice(i, 1);
-                i--;
-            } else {
-                shouldPlace = false;
-                break;
-            }
-        }
-    }
-
-    if (!shouldPlace) return;
-
-    const popup = new maplibregl.Popup({
-        closeButton: false,
-        closeOnClick: false,
-        anchor: "center",
-        className: isLongCity ? "popup-long-city" : ""
-    })
-        .setLngLat(coords)
-        .setHTML(`
+                    const popup = new maplibregl.Popup({
+                        closeButton: false,
+                        closeOnClick: false,
+                        anchor: "center",
+                        className: isLongCity ? "popup-long-city" : ""
+                    })
+                        .setLngLat(coords)
+                        .setHTML(`
             <div class="popup-places">
-                ${wxBadgeHTML}
-                <div class="popup-city">
-                    <h2>${city}</h2>
-                </div>
+                ${wxIcon ? `<div class="popup-wx-badge">${wxIcon}</div>` : ""}
+                <div class="popup-city"><h2>${city}</h2></div>
                 <div class="popup-data">
                     <h1>${temp}°</h1>
                     <h1>${skyIcon}</h1>
                 </div>
             </div>
         `)
-        .addTo(this.map);
+                        .addTo(this.map);
 
-    // store metadata for future collisions
-    popup._coords = coords;
-    popup._rank = rank;
+                    pending.push(popup);
+                }
 
-    this.timer.set(() => {
-        const el = popup.getElement();
-        if (el) el.classList.add("popup-visible");
-    }, 0);
+                // PHASE 2 — measure + resolve collisions (next frame)
+                requestAnimationFrame(() => {
+                    const acceptedRects = [];
 
-    this.popups.push(popup);
-});
+                    for (const popup of pending) {
+                        const el = popup.getElement();
+                        if (!el) {
+                            popup.remove();
+                            continue;
+                        }
+
+                        const rect = el.getBoundingClientRect();
+
+                        let collide = false;
+                        for (const r of acceptedRects) {
+                            if (overlaps(rect, r)) {
+                                collide = true;
+                                break;
+                            }
+                        }
+
+                        if (collide) {
+                            popup.remove();
+                            continue;
+                        }
+
+                        acceptedRects.push(rect);
+                        this.popups.push(popup);
+
+                        el.classList.add("popup-visible");
+                    }
+                });
             },
 
             clearPopups() {
@@ -450,11 +416,10 @@ features.forEach(f => {
             STEP_DELAY: 5000,
             map: null,
             running: false,
-            timer: null,
             hud: null,
             timer: createTimerManager(),
 
-            async start(container) {
+            async start() {
                 this.running = true;
 
                 const data = await getMetars();
