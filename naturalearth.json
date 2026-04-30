@@ -34,6 +34,18 @@
 				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/boundaries/{z}/{x}/{y}.pbf"
 			]
 		},
+		"railroads": {
+			"type": "vector",
+			"tiles": [
+				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/railroads/{z}/{x}/{y}.pbf"
+			]
+		},
+		"railroads_north_america": {
+			"type": "vector",
+			"tiles": [
+				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/railroads_north_america/{z}/{x}/{y}.pbf"
+			]
+		},
 		"roads": {
 			"type": "vector",
 			"tiles": [
@@ -102,6 +114,36 @@
 				"line-width": 1
 			}
 		},
+		{
+			"id": "railroads",
+			"type": "line",
+			"source": "railroads",
+			"source-layer": "railroads",
+			"filter": [
+				"in",
+				"featurecla",
+				"Road"
+			],
+			"paint": {
+				"line-color": "hsl(210, 15%, 89%)",
+				"line-width": 2
+			}
+		},
+		{
+			"id": "railroads_north_america",
+			"type": "line",
+			"source": "railroads_north_america",
+			"source-layer": "railroads_north_america",
+			"filter": [
+				"in",
+				"featurecla",
+				"Road"
+			],
+			"paint": {
+				"line-color": "hsl(210, 15%, 89%)",
+				"line-width": 1
+			}
+		},		
 		{
 			"id": "roads",
 			"type": "line",

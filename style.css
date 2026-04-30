@@ -301,9 +301,8 @@ body {
     align-items: center;
     justify-content: center;
     background: hsla(0, 0%, 100%, 1);
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    padding: 0.4em;
+    border-radius: 5px;
+    padding: 0.5em;
     font-size: 1rem;
     line-height: 1;
     box-shadow: 1px 1px 4px hsla(0, 0%, 0%, 0.2);
