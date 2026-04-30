@@ -40,6 +40,12 @@
 				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/roads/{z}/{x}/{y}.pbf"
 			]
 		},
+		"roads_north_america": {
+			"type": "vector",
+			"tiles": [
+				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/roads_north_america/{z}/{x}/{y}.pbf"
+			]
+		},
 		"rivers": {
 			"type": "vector",
 			"tiles": [
@@ -109,6 +115,21 @@
 			"paint": {
 				"line-color": "hsl(210, 15%, 99%)",
 				"line-width": 2
+			}
+		},
+		{
+			"id": "roads_north_america",
+			"type": "line",
+			"source": "roads_north_america",
+			"source-layer": "roads_north_america",
+			"filter": [
+				"in",
+				"featurecla",
+				"Road"
+			],
+			"paint": {
+				"line-color": "hsl(210, 15%, 99%)",
+				"line-width": 1
 			}
 		},
 		{
