@@ -119,29 +119,41 @@
 			"type": "line",
 			"source": "railroads",
 			"source-layer": "railroads",
-			"filter": [
-				"in",
-				"featurecla",
-				"Road"
-			],
 			"paint": {
 				"line-color": "hsl(210, 15%, 89%)",
-				"line-width": 2
+				"line-width": 4
 			}
 		},
+				{
+			"id": "railroads-dash",
+			"type": "line",
+			"source": "railroads",
+			"source-layer": "railroads",
+			"paint": {
+				"line-color": "hsl(210, 15%, 99%)",
+				"line-width": 2,
+				"line-dasharray": [1.5,1.5]
+			}
+		},	
 		{
 			"id": "railroads_north_america",
 			"type": "line",
 			"source": "railroads_north_america",
 			"source-layer": "railroads_north_america",
-			"filter": [
-				"in",
-				"featurecla",
-				"Road"
-			],
 			"paint": {
 				"line-color": "hsl(210, 15%, 89%)",
-				"line-width": 1
+				"line-width": 4
+			}
+		},
+		{
+			"id": "railroads_north_america-dash",
+			"type": "line",
+			"source": "railroads_north_america",
+			"source-layer": "railroads_north_america",
+			"paint": {
+				"line-color": "hsl(210, 15%, 99%)",
+				"line-width": 2,
+				"line-dasharray": [1.5,1.5]
 			}
 		},		
 		{
@@ -182,10 +194,7 @@
 			"paint": {
 				"line-color": "hsl(210, 15%, 72%)",
 				"line-width": 2,
-				"line-dasharray": [
-					1,
-					1
-				]
+				"line-dasharray": [2, 1]
 			}
 		},
 		{
@@ -196,10 +205,7 @@
 			"paint": {
 				"line-color": "hsl(210, 15%, 72%)",
 				"line-width": 2,
-				"line-dasharray": [
-					2,
-					1
-				]
+				"line-dasharray": [2, 1, 1, 1]
 			}
 		},
 		{

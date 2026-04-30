@@ -180,11 +180,11 @@
                 const latest = getMetarDate(data.features);
 
                 if (latest) {
-                    setTitle("bottom-right", `<h4>LAST UPDATED ${latest.toLocaleTimeString("en-US", {
+                    setTitle("bottom-right", `<h4>LAST UPDATED</h4><h1>${latest.toLocaleTimeString("en-US", {
                         timeZone: "America/Toronto",
                         hour: "2-digit",
                         minute: "2-digit"
-                    })}</h4>`);
+                    })}</h1>`);
                 }
 
                 const features = data.features
@@ -202,13 +202,13 @@
                     zoom: 5.5,
                     minZoom: 3,
                     maxZoom: 6.9,
-                    hash: false
+                    hash: true
                 });
 
                 this.map.on("load", () => {
                     this.addLayers(features);
                     this.addPopups(features);
-                    this.loop(features);
+                    //this.loop(features);
                 });
 
                 this.map.on("moveend", () => {
