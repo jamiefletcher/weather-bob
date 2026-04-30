@@ -326,22 +326,22 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.3rem 0 0.3rem;
+    gap: 0rem;
+    padding: 0.5rem 0.5rem 0.3rem 0.5rem;
 }
 
 .maplibregl-popup-content .popup-places h2 {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 700;
 }
 
 .maplibregl-popup.popup-long-city .popup-places h2 {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
 }
 
 .maplibregl-popup-content .popup-places .popup-data h1 {
-    font-size: 1.6rem;
-    font-weight: 500;
+    font-size: 2rem;
+    font-weight: 400;
 }
 
 .maplibregl-popup-tip .popup-places {
