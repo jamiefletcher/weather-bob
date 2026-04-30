@@ -194,7 +194,7 @@
 			"paint": {
 				"line-color": "hsl(210, 15%, 72%)",
 				"line-width": 2,
-				"line-dasharray": [2, 1]
+				"line-dasharray": [2, 2]
 			}
 		},
 		{
@@ -205,7 +205,7 @@
 			"paint": {
 				"line-color": "hsl(210, 15%, 72%)",
 				"line-width": 2,
-				"line-dasharray": [2, 1, 1, 1]
+				"line-dasharray": [2, 2, 1, 2]
 			}
 		},
 		{

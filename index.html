@@ -303,7 +303,7 @@
                         .setLngLat(coords)
                         .setHTML(`
             <div class="popup-places">
-                ${wxIcon ? `<div class="popup-wx-badge">${wxIcon}</div>` : ""}
+                ${wxIcon ? `<div class="popup-wx-badge"><span class="icon">${wxIcon}</span></div>` : ""}
                 <div class="popup-city"><h2>${city}</h2></div>
                 <div class="popup-data">
                     <h1>${temp}°</h1>
@@ -472,7 +472,7 @@
                     type: "circle",
                     source: "stations",
                     paint: {
-                        "circle-radius": 4,
+                        "circle-radius": 2,
                         "circle-color": "black"
                     }
                 });
