@@ -221,7 +221,7 @@
 				"text-size": 12,
 				"text-max-width": 6,
 				"text-font": [
-					"montserrat-semibold"
+					"libre-baskerville"
 				],
 				"text-anchor": "center",
 				"text-allow-overlap": false,
