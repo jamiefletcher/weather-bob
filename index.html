@@ -226,7 +226,7 @@ function getMinDistanceContinuous(zoom) {
 
                 const features = data.features
                     .filter(f => f.properties.iso_country === "CA")
-                    .filter(f => ["large_airport", "medium_airport"].includes(f.properties.airport_type));
+                    .filter(f => ["large_airport", "medium_airport", "small_airport"].includes(f.properties.airport_type));
 
                 const [lon, lat] = features[0].geometry.coordinates;
 
