@@ -180,11 +180,11 @@
                 const latest = getMetarDate(data.features);
 
                 if (latest) {
-                    setTitle("bottom-right", `<h4>LAST UPDATED</h4><h1>${latest.toLocaleTimeString("en-US", {
+                    setTitle("bottom-right", `<h4>LAST UPDATED</h4><h2>${latest.toLocaleTimeString("en-US", {
                         timeZone: "America/Toronto",
                         hour: "2-digit",
                         minute: "2-digit"
-                    })}</h1>`);
+                    })}</h2>`);
                 }
 
                 const features = data.features

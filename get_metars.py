@@ -1,6 +1,7 @@
 import json
 import xml.etree.ElementTree as ET
 from urllib.request import urlopen
+from collections import defaultdict
 
 # -------------------------
 # DOWNLOAD METAR CACHE
@@ -18,11 +19,12 @@ with urlopen(url, timeout=30) as response:
 with open("data/places_airports.geojson") as f:
     places = json.load(f)["features"]
 
-places_map = {
-    f["properties"]["icao_code"]: f
-    for f in places
-    if f.get("properties", {}).get("icao_code")
-}
+places_map = defaultdict(list)
+
+for f in places:
+    icao = f.get("properties", {}).get("icao_code")
+    if icao:
+        places_map[icao].append(f)
 
 # -------------------------
 # STREAM METARS XML
@@ -37,77 +39,78 @@ for _, elem in context:
         continue
 
     station_id = (elem.findtext("station_id") or "").strip().upper()
-    place_feature = places_map.get(station_id)
+    place_features = places_map.get(station_id, [])
 
-    if not place_feature:
+    if not place_features:
         elem.clear()
         continue
 
-    lon, lat = place_feature["geometry"]["coordinates"]
+    for place_feature in place_features:
 
-    # -------------------------
-    # FULL METAR FIELD DUMP
-    # -------------------------
-    metar_fields = {}
+        lon, lat = place_feature["geometry"]["coordinates"]
 
-    for child in elem:
-        # skip structured repeats handled separately
-        if child.tag == "sky_condition":
+        # -------------------------
+        # FULL METAR FIELD DUMP
+        # -------------------------
+        metar_fields = {}
+
+        for child in elem:
+            # skip structured repeats handled separately
+            if child.tag == "sky_condition":
+                continue
+
+            if child.text is not None:
+                metar_fields[child.tag] = child.text
+
+        # -------------------------
+        # REQUIRED FIELDS (cleaned)
+        # -------------------------
+        temp_c = metar_fields.get("temp_c")
+        if temp_c is None:
             continue
 
-        if child.text is not None:
-            metar_fields[child.tag] = child.text
+        wx_string = metar_fields.get("wx_string")
 
-    # -------------------------
-    # REQUIRED FIELDS (cleaned)
-    # -------------------------
-    temp_c = metar_fields.get("temp_c")
-    if temp_c is None:
-        elem.clear()
-        continue
+        # -------------------------
+        # SKY CONDITIONS (structured)
+        # -------------------------
+        sky_conditions = [
+            {
+                "sky_cover": sc.get("sky_cover"),
+                "cloud_base_ft_agl": sc.get("cloud_base_ft_agl")
+            }
+            for sc in elem.findall("sky_condition")
+        ]
 
-    wx_string = metar_fields.get("wx_string")
+        def safe_alt(x):
+            try:
+                return int(x["cloud_base_ft_agl"] or 999999)
+            except:
+                return 999999
 
-    # -------------------------
-    # SKY CONDITIONS (structured)
-    # -------------------------
-    sky_conditions = [
-        {
-            "sky_cover": sc.get("sky_cover"),
-            "cloud_base_ft_agl": sc.get("cloud_base_ft_agl")
-        }
-        for sc in elem.findall("sky_condition")
-    ]
+        sky_conditions.sort(key=safe_alt)
 
-    def safe_alt(x):
-        try:
-            return int(x["cloud_base_ft_agl"] or 999999)
-        except:
-            return 999999
+        # -------------------------
+        # BUILD FEATURE
+        # -------------------------
+        joined.append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [lon, lat]
+            },
+            "properties": {
+                **place_feature["properties"],
 
-    sky_conditions.sort(key=safe_alt)
+                # FULL METAR RAW FIELDS
+                **metar_fields,
 
-    # -------------------------
-    # BUILD FEATURE
-    # -------------------------
-    joined.append({
-        "type": "Feature",
-        "geometry": {
-            "type": "Point",
-            "coordinates": [lon, lat]
-        },
-        "properties": {
-            **place_feature["properties"],
-
-            # FULL METAR RAW FIELDS
-            **metar_fields,
-
-            # OVERRIDES / NORMALIZED FIELDS
-            "temp_c": float(temp_c),
-            "wx_string": wx_string,
-            "sky_condition": sky_conditions
-        }
-    })
+                # OVERRIDES / NORMALIZED FIELDS
+                "temp_c": float(temp_c),
+                "wx_string": wx_string,
+                "sky_condition": sky_conditions
+            }
+        })
 
     elem.clear()
 
