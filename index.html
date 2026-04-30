@@ -138,6 +138,41 @@ function getMetarDate(features) {
     return null;
 }
 
+function haversine(a, b) {
+    const R = 6371000;
+    const toRad = d => (d * Math.PI) / 180;
+
+    const dLat = toRad(b[1] - a[1]);
+    const dLon = toRad(b[0] - a[0]);
+
+    const lat1 = toRad(a[1]);
+    const lat2 = toRad(b[1]);
+
+    const x =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(lat1) * Math.cos(lat2) *
+        Math.sin(dLon / 2) ** 2;
+
+    return 2 * R * Math.asin(Math.sqrt(x));
+}
+
+function getMinDistance(zoom) {
+
+    if (zoom <= 3) return 350000;
+    if (zoom <= 4) return 200000;
+    if (zoom <= 5) return 100000;
+    if (zoom <= 6) return 70000;
+
+    return 50000; // zoom 7+
+}
+
+function getMinDistanceContinuous(zoom) {
+    const A = 1000000;
+    const k = 1.2;
+
+    return A / Math.pow(zoom, k);
+}
+
         // =========================
         // TITLES
         // =========================
@@ -180,15 +215,14 @@ function getMetarDate(features) {
                 setTitle("top-right", "<b>Canada</b> <i>Coast-to-Coast</i> Weather");
                 setTitle("top-right-sub", "Up-to-the-minute conditions");
 
-const latest = getMetarDate(data.features);
-console.log(latest)
-if (latest) {
-    setTitle("bottom-right", `<h4>LAST UPDATED ${latest.toLocaleTimeString("en-US", {
-        timeZone: "America/Toronto",
-        hour: "2-digit",
-        minute: "2-digit"
-    })}</h4>`);
-}
+                const latest = getMetarDate(data.features);
+                if (latest) {
+                    setTitle("bottom-right", `<h4>UPDATED ${latest.toLocaleTimeString("en-US", {
+                        timeZone: "America/Toronto",
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    })}</h4>`);
+                }
 
                 const features = data.features
                     .filter(f => f.properties.iso_country === "CA")
@@ -265,53 +299,89 @@ if (latest) {
                 this.clearPopups();
                 this.popups = [];
 
-                const filtered = removeOverlappingPopups(this.map, features);
+                const zoom = this.map.getZoom();
+                this.minDistanceMeters = getMinDistance(zoom);
 
-                filtered.forEach(f => {
-                    const coords = f.geometry.coordinates;
-                    const p = f.properties;
+features.forEach(f => {
+    const coords = f.geometry.coordinates;
+    const p = f.properties;
 
-                    if (!safeBounds.contains(coords)) return;
+    if (!safeBounds.contains(coords)) return;
 
-                    const temp = Math.round(Number(p.temp_c));
-                    const city = p.name || p.icao_code || "";
-                    const skyIcon = decodeSkyConditionIcon(p.sky_condition);
-                    const wxIcon = decodeWxIcon(p.wx_string);
+    const rank = Number(p?.scalerank ?? 999);
 
-                    const wxBadgeHTML = wxIcon
-                        ? `<div class="popup-wx-badge">${wxIcon}</div>`
-                        : "";
+    const temp = Math.round(Number(p.temp_c));
+    const city = p.name || p.icao_code || "";
+    const skyIcon = decodeSkyConditionIcon(p.sky_condition);
+    const wxIcon = decodeWxIcon(p.wx_string);
 
-                    const isLongCity = city.split(" ").some(w => w.length > 10);
+    const wxBadgeHTML = wxIcon
+        ? `<div class="popup-wx-badge">${wxIcon}</div>`
+        : "";
 
-                    const popup = new maplibregl.Popup({
-                        closeButton: false,
-                        closeOnClick: false,
-                        anchor: "center",
-                        className: isLongCity ? "popup-long-city" : ""
-                    })
-                        .setLngLat(coords)
-                        .setHTML(`
-                            <div class="popup-places">
-                                ${wxBadgeHTML}
-                                <div class="popup-city">
-                                    <h2>${city}</h2>
-                                </div>
-                                <div class="popup-data">
-                                    <h1>${temp}°</h1>
-                                    <h1>${skyIcon}</h1>
-                                </div>
-                            </div>
-                        `)
-                        .addTo(this.map);
+    const isLongCity = city.split(" ").some(w => w.length > 10);
 
-                    this.timer.set(() => {
-                        const el = popup.getElement();
-                        if (el) el.classList.add("popup-visible");
-                    }, 0);
+    // --- COLLISION CHECK (geographic) ---
+    let shouldPlace = true;
 
-                    this.popups.push(popup);
-                });
+    for (let i = 0; i < this.popups.length; i++) {
+        const existing = this.popups[i];
+
+        const exCoords = existing._coords;
+        const exRank = existing._rank;
+
+        if (!exCoords) continue;
+
+        const dist = haversine(coords, exCoords);
+
+        if (dist < this.minDistanceMeters) {
+
+            // ✔ scalerank ALWAYS wins
+            if (rank < exRank) {
+                existing.remove();
+                this.popups.splice(i, 1);
+                i--;
+            } else {
+                shouldPlace = false;
+                break;
+            }
+        }
+    }
+
+    if (!shouldPlace) return;
+
+    const popup = new maplibregl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+        anchor: "center",
+        className: isLongCity ? "popup-long-city" : ""
+    })
+        .setLngLat(coords)
+        .setHTML(`
+            <div class="popup-places">
+                ${wxBadgeHTML}
+                <div class="popup-city">
+                    <h2>${city}</h2>
+                </div>
+                <div class="popup-data">
+                    <h1>${temp}°</h1>
+                    <h1>${skyIcon}</h1>
+                </div>
+            </div>
+        `)
+        .addTo(this.map);
+
+    // store metadata for future collisions
+    popup._coords = coords;
+    popup._rank = rank;
+
+    this.timer.set(() => {
+        const el = popup.getElement();
+        if (el) el.classList.add("popup-visible");
+    }, 0);
+
+    this.popups.push(popup);
+});
             },
 
             clearPopups() {
@@ -807,65 +877,6 @@ if (latest) {
 
             return SYMBOL[top.sky_cover] || "☁️";
         }
-
-function removeOverlappingPopups(map, features) {
-
-    const BOX_W = 50;
-    const BOX_H = 50;
-
-    const projected = [];
-
-    for (const f of features) {
-        const coords = f.geometry.coordinates;
-        const p = f.properties;
-
-        const scalerank = Number(p?.scalerank ?? 999);
-        const point = map.project(coords);
-
-        projected.push({
-            feature: f,     // keep original intact
-            point,
-            scalerank
-        });
-    }
-
-    projected.sort((a, b) => a.scalerank - b.scalerank);
-
-    const rects = [];
-    const result = [];
-
-    const intersects = (a, b) =>
-        !(a.x + a.w < b.x ||
-          a.x > b.x + b.w ||
-          a.y + a.h < b.y ||
-          a.y > b.y + b.h);
-
-    for (const item of projected) {
-
-        const rect = {
-            x: item.point.x - BOX_W / 2,
-            y: item.point.y - BOX_H / 2,
-            w: BOX_W,
-            h: BOX_H
-        };
-
-        let collide = false;
-
-        for (const r of rects) {
-            if (intersects(rect, r)) {
-                collide = true;
-                break;
-            }
-        }
-
-        if (!collide) {
-            rects.push(rect);
-            result.push(item.feature); // 🔥 return ORIGINAL feature
-        }
-    }
-
-    return result;
-}
 
     </script>
 </body>
