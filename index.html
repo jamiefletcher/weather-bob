@@ -32,11 +32,15 @@
         </div>
 
         <div id="side-panel"></div>
+
         <div id="ticker-panel">
             <div class="ticker-title">WORLD TEMPS</div>
             <div id="ticker-track"></div>
         </div>
-        <div id="bottom-panel"></div>
+
+        <div id="bottom-panel">
+            <div class="bottom-inner"></div>
+        </div>
     </div>
 
     <script>
@@ -626,12 +630,71 @@
             el.classList.add("hidden");
         }
 
+async function initCityForecast() {
+    const station = "s0000458";
+
+    const url = `data/citypage/citypage_${station}_latest.xml`;
+
+    const res = await fetch(url);
+    const xmlText = await res.text();
+
+    renderCityForecast(xmlText);
+}
+
+function renderCityForecast(xmlText) {
+    const xml = new DOMParser().parseFromString(xmlText, "text/xml");
+    const panel = document.querySelector(".bottom-inner");
+
+    panel.innerHTML = "";
+
+    // ---------------- CURRENT ----------------
+    const current = xml.querySelector("currentConditions");
+
+    const currentBox = document.createElement("div");
+    currentBox.className = "bottom-box current";
+
+    const temp = current?.querySelector("temperature")?.textContent;
+    const condition = current?.querySelector("condition")?.textContent;
+    const icon = current?.querySelector("iconCode")?.textContent;
+
+    currentBox.innerHTML = `
+        <div>${decodeCurrentIcon(icon)}</div>
+        <div>${temp ? Math.round(temp) + "°" : "--"}</div>
+        <div>${condition || ""}</div>
+    `;
+
+    panel.appendChild(currentBox);
+
+    // ---------------- FORECAST ----------------
+    const forecasts = Array.from(xml.querySelectorAll("forecast")).slice(0, 7);
+
+    forecasts.forEach(f => {
+        const box = document.createElement("div");
+        box.className = "bottom-box forecast";
+
+        const period = f.querySelector("period")?.textContent;
+        const icon = f.querySelector("abbreviatedForecast iconCode")?.textContent;
+        const temp =
+            f.querySelector("temperatures temperature[class='high']")?.textContent ||
+            f.querySelector("temperatures temperature[class='low']")?.textContent;
+
+        box.innerHTML = `
+            <div>${period || ""}</div>
+            <div>${decodeCurrentIcon(icon)}</div>
+            <div>${temp ? Math.round(temp) + "°" : ""}</div>
+        `;
+
+        panel.appendChild(box);
+    });
+}
+
         // =========================
         // START
         // =========================
         async function start() {
             sceneController.switch(sceneCanada);
             initTicker();
+            initCityForecast();
 
             setTimeout(() => {
                 loadingScreen();
@@ -846,6 +909,34 @@
             if (!top || !top.sky_cover) return "☀️";
 
             return SYMBOL[top.sky_cover] || "☁️";
+        }
+
+        function decodeCurrentIcon(code) {
+            const map = {
+                "00": "☀️",
+                "01": "🌤️",
+                "02": "⛅",
+                "03": "☁️",
+                "06": "🌦️",
+                "10": "☁️",
+                "11": "🌧️",
+                "12": "🌧️",
+                "13": "🌧️",
+                "14": "🌧️",
+                "15": "🌧️",
+                "16": "❄️",
+                "17": "🌨️",
+                "18": "❄️",
+                "19": "⛈️",
+                "23": "🌫️",
+                "24": "🌫️",
+                "30": "🌙",
+                "31": "🌙",
+                "32": "🌙",
+                "33": "☁️"
+            };
+
+            return map[code] || "—";
         }
 
     </script>
