@@ -10,7 +10,7 @@ body {
     width: 100%;
     line-height: 1;
     font-family: 'Lato', sans-serif;
-    font-size: clamp(9px, 1vw, 140px);
+    font-size: clamp(8px, 1vw, 140px);
     color: hsl(0, 0%, 40%);
 }
 
@@ -57,7 +57,7 @@ body {
     display: flex;
     flex-direction: row;
 
-    background: hsl(0, 0%, 100%);
+    background: hsl(0, 0%, 40%);
 }
 
 .bottom-inner {
@@ -72,11 +72,20 @@ body {
 }
 
 .bottom-box {
-    flex: 1;
+    flex: 1 1 0;   /* key change */
+    min-width: 0;  /* critical for flex overflow behavior */
     padding: 0.5rem;
-    text-align: center;
 
-    background-color:antiquewhite;
+    display: flex;
+    flex-direction: column;
+
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+
+    background-color:hsl(0, 0%, 100%);
+    border-radius: 0.5rem;
 }
 
 .bottom-box.current {
@@ -123,6 +132,7 @@ body {
     height: 100%;
     display: flex;
     align-items: center;
+    line-height: 1;
 
     padding: 0rem 1rem 0 0.5rem;
     background: hsl(0, 0%, 40%);
