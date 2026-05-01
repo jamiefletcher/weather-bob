@@ -34,18 +34,6 @@
 				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/boundaries/{z}/{x}/{y}.pbf"
 			]
 		},
-		"railroads": {
-			"type": "vector",
-			"tiles": [
-				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/railroads/{z}/{x}/{y}.pbf"
-			]
-		},
-		"railroads_north_america": {
-			"type": "vector",
-			"tiles": [
-				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/railroads_north_america/{z}/{x}/{y}.pbf"
-			]
-		},
 		"roads": {
 			"type": "vector",
 			"tiles": [
@@ -115,76 +103,6 @@
 			}
 		},
 		{
-			"id": "railroads_north_america",
-			"type": "line",
-			"source": "railroads_north_america",
-			"source-layer": "railroads_north_america",
-			"paint": {
-				"line-color": "hsl(210, 15%, 89%)",
-				"line-width": 4,
-				"line-opacity": [
-					"interpolate",
-					["linear"],
-					["zoom"],
-					5, 0,
-					6, 1
-				]					
-			}
-		},
-		{
-			"id": "railroads_north_america-dash",
-			"type": "line",
-			"source": "railroads_north_america",
-			"source-layer": "railroads_north_america",
-			"paint": {
-				"line-color": "hsl(210, 15%, 99%)",
-				"line-width": 2,
-				"line-dasharray": [1.5, 1.5],
-				"line-opacity": [
-					"interpolate",
-					["linear"],
-					["zoom"],
-					5, 0,
-					6, 1
-				]				
-			}
-		},		
-		{
-			"id": "railroads",
-			"type": "line",
-			"source": "railroads",
-			"source-layer": "railroads",
-			"paint": {
-				"line-color": "hsl(210, 15%, 89%)",
-				"line-width": 4,
-				"line-opacity": [
-					"interpolate",
-					["linear"],
-					["zoom"],
-					4, 0,
-					5, 1
-				]					
-			}
-		},
-		{
-			"id": "railroads-dash",
-			"type": "line",
-			"source": "railroads",
-			"source-layer": "railroads",
-			"paint": {
-				"line-color": "hsl(210, 15%, 99%)",
-				"line-width": 2,
-				"line-dasharray": [1.5, 1.5],
-				"line-opacity": [
-					"interpolate",
-					["linear"],
-					["zoom"],
-					4, 0,
-					5, 1
-				]				
-			}
-		},
-		{
 			"id": "roads_north_america",
 			"type": "line",
 			"source": "roads_north_america",
@@ -196,7 +114,7 @@
 			],
 			"paint": {
 				"line-color": "hsl(210, 15%, 99%)",
-				"line-width": 0.5,
+				"line-width": 1,
 				"line-opacity": [
 					"interpolate",
 					["linear"],
@@ -218,7 +136,7 @@
 			],
 			"paint": {
 				"line-color": "hsl(210, 15%, 99%)",
-				"line-width": 1,
+				"line-width": 2,
 				"line-opacity": [
 					"interpolate",
 					["linear"],
@@ -235,7 +153,7 @@
 			"source-layer": "provinces_lines",
 			"paint": {
 				"line-color": "hsl(210, 15%, 72%)",
-				"line-width": 1.5,
+				"line-width": 2,
 				"line-dasharray": [2, 2],
 				"line-opacity": [
 					"interpolate",

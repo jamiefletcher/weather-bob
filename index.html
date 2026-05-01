@@ -22,7 +22,7 @@
         <div id="loading-screen">
             <div class="loading-content">
                 <div class="spinner"></div>
-                <div class="loading-text">Loading weather map…</div>
+                <div class="loading-text">Loading map</div>
             </div>
         </div>
 
@@ -202,8 +202,13 @@
                     zoom: 5.5,
                     minZoom: 3,
                     maxZoom: 6.9,
+                    pitch: 0,
+                    rotate: 0,
                     hash: true
                 });
+
+                //this.map.dragRotate.disable();
+                //this.map.touchZoomRotate.disableRotation();
 
                 this.map.on("load", () => {
                     this.addLayers(features);
@@ -302,15 +307,15 @@
                     })
                         .setLngLat(coords)
                         .setHTML(`
-            <div class="popup-places">
-                ${wxIcon ? `<div class="popup-wx-badge"><span class="icon">${wxIcon}</span></div>` : ""}
-                <div class="popup-city"><h2>${city}</h2></div>
-                <div class="popup-data">
-                    <h1>${temp}°</h1>
-                    <h1>${skyIcon}</h1>
-                </div>
-            </div>
-        `)
+                            <div class="popup-places">
+                                ${wxIcon ? `<div class="popup-wx-badge"><span class="icon">${wxIcon}</span></div>` : ""}
+                                <div class="popup-city"><h2>${city}</h2></div>
+                                <div class="popup-data">
+                                    <h1>${temp}°</h1>
+                                    <h1>${skyIcon}</h1>
+                                </div>
+                            </div>
+                        `)
                         .addTo(this.map);
 
                     pending.push(popup);
