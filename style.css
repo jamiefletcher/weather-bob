@@ -72,24 +72,19 @@ body {
 }
 
 .bottom-box {
-    flex: 1 1 0;   /* key change */
-    min-width: 0;  /* critical for flex overflow behavior */
+    flex: 1 1 0;
+    min-width: 0;
     padding: 0.5rem;
 
     display: flex;
     flex-direction: column;
-
+    justify-content: space-between;
     text-align: center;
     align-items: center;
-    justify-content: center;
     line-height: 1;
 
     background-color:hsl(0, 0%, 100%);
     border-radius: 0.5rem;
-}
-
-.bottom-box.current {
-    flex: 2;
 }
 
 #ticker-panel {

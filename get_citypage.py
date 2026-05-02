@@ -33,7 +33,5 @@ if latest_file:
 
     with open(path, "wb") as f:
         f.write(res.content)
-
-    print(path)
 else:
     print("not found")

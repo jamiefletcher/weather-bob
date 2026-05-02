@@ -647,7 +647,7 @@ function renderCityForecast(xmlText) {
 
     panel.innerHTML = "";
 
-    // ---------------- CURRENT (BOX 1) ----------------
+    // ---------------- CURRENT ----------------
     const current = xml.querySelector("currentConditions");
 
     const currentBox = document.createElement("div");
@@ -665,7 +665,6 @@ function renderCityForecast(xmlText) {
 
     panel.appendChild(currentBox);
 
-    // ---------------- FORECAST (NEXT 3 DAYS ONLY) ----------------
 // ---------------- FORECAST ----------------
 const forecasts = Array.from(xml.querySelectorAll("forecast"));
 
@@ -713,8 +712,8 @@ for (const f of forecasts) {
     if (condition) d.conditions.push(condition);
 }
 
-// ---------------- RENDER D1–D3 ----------------
-const days = Array.from(dayMap.values()).slice(1, 4);
+// ---------------- RENDER ----------------
+const days = Array.from(dayMap.values()).slice(1, 6);
 
 for (const d of days) {
     const box = document.createElement("div");
