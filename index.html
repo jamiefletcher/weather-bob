@@ -193,8 +193,7 @@
 
                 const features = data.features
                     .filter(f =>
-                        f.properties.iso_country === "CA" &&
-                        ["large_airport", "medium_airport", "small_airport"].includes(f.properties.airport_type)
+                        f.properties.iso_country === "CA"
                     )
 
                 const [lon, lat] = features[0].geometry.coordinates;
