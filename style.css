@@ -10,7 +10,7 @@ body {
     width: 100%;
     line-height: 1;
     font-family: 'Lato', sans-serif;
-    font-size: clamp(8px, 1vw, 140px);
+    font-size: clamp(12px, 1.5vw, 40px);
     color: hsl(0, 0%, 40%);
 }
 
@@ -68,7 +68,7 @@ body {
     flex-direction: row;
     gap: 1rem;
 
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
 .bottom-box {
@@ -94,8 +94,7 @@ body {
     user-select: none;
 
     font-family: 'Montserrat';
-    font-size: 1.3rem;
-    font-weight: 500;
+    font-size: 1rem;
     text-transform: uppercase;
 
     position: relative;
@@ -193,8 +192,7 @@ body {
     color: hsl(199, 90%, 24%);
     box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
 
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 0.8rem;
 }
 
 .top-right {
@@ -208,8 +206,7 @@ body {
     box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
 
     text-align: right;
-    font-size: 1.3rem;
-    font-weight: 600;
+    font-size: 1rem;
 }
 
 .top-right-sub {
@@ -218,14 +215,13 @@ body {
     right: 0.5rem;
     z-index: 2;
     transform: translateX(-0.5rem) translateY(2rem);
-    padding: 0.3rem 1rem;
+    padding: 0.5rem 1rem;
 
     background-color: hsl(0, 0%, 40%);
     color: hsl(0, 0%, 100%);
     box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
 
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 0.7rem;
     text-align: right;
 
     clip-path: polygon(
@@ -248,12 +244,7 @@ body {
     box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
 
     text-align: right;
-    font-size: 1.3rem;
-    font-weight: 600;
-}
-
-.bottom-right h1 {
-    font-weight: 900;
+    font-size: 0.7rem;
 }
 
 #hud-container {
@@ -293,23 +284,23 @@ body {
 }
 
 .hud-item h1 {
-    font-size: 3rem;
+    font-size: 1rem;
     font-weight: 300;
 }
 
 .hud-item h2 {
-    font-size: 1.6rem;
+    font-size: 0.9rem;
     font-weight: 400;
     margin-bottom: 5px;
 }
 
 .hud-item h3 {
-    font-size: 1.2rem;
+    font-size: 0.8rem;
     font-weight: 400;
 }
 
 .hud-item h4 {
-    font-size: 1rem;
+    font-size: 0.7rem;
     font-weight: 300;
 }
 
@@ -333,7 +324,7 @@ body {
     background: hsla(0, 0%, 100%, 1);
     border-radius: 0.5rem;
     padding: 0.5rem;
-    font-size: 1rem;
+    font-size: 0.6rem;
     box-shadow: 1px 1px 4px hsla(0, 0%, 0%, 0.2);
     z-index: 10;
     gap: 0;
@@ -364,18 +355,18 @@ body {
     padding: 0.5rem 0.5rem 0.3rem 0.5rem;
 }
 
-.maplibregl-popup-content .popup-places h2 {
-    font-size: 1rem;
+.popup-places h2 {
+    font-size: 0.7rem;
     font-weight: 700;
 }
 
-.maplibregl-popup.popup-long-city .popup-places h2 {
-    font-size: 0.8rem;
+.popup-long-city h2 {
+    font-size: 0.6rem;
 }
 
-.maplibregl-popup-content .popup-places .popup-data h1 {
-    font-size: 2rem;
-    font-weight: 400;
+.popup-data h1 {
+    font-size: 1rem;
+    font-weight: 500;
 }
 
 .maplibregl-popup-tip .popup-places {
@@ -498,22 +489,22 @@ body {
 }
 
 h1 {
-    font-size: 2.5rem;
+    font-size: 1rem;
     font-weight: 300;
 }
 
 h2 {
-    font-size: 1.6rem;
+    font-size: 0.9rem;
     font-weight: 400;
 }
 
 h3 {
-    font-size: 1.2rem;
+    font-size: 0.8rem;
     font-weight: 400;
 }
 
 h4 {
-    font-size: 1rem;
+    font-size: 0.7rem;
     font-weight: 300;
 }
 

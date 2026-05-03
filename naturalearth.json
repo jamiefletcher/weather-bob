@@ -206,11 +206,10 @@
 				"text-halo-color": "hsl(0, 0%, 100%)",
 				"text-halo-width": 1,
 				"text-opacity": [
-					"interpolate",
-					["linear"],
+					"step",
 					["zoom"],
-					3, 0,
-					4, 1
+					0,
+					6, 1
 				]
 			}
 		}

@@ -629,105 +629,110 @@
             el.classList.add("hidden");
         }
 
-async function initCityForecast() {
-    const station = "s0000458";
+        async function initCityForecast() {
+            const station = "s0000458";
 
-    const url = `data/citypage/citypage_${station}_latest.xml`;
+            const url = `data/citypage/citypage_${station}_latest.xml`;
 
-    const res = await fetch(url);
-    const xmlText = await res.text();
+            const res = await fetch(url);
+            const xmlText = await res.text();
 
-    renderCityForecast(xmlText);
-}
+            renderCityForecast(xmlText);
+        }
 
-function renderCityForecast(xmlText) {
-    const xml = new DOMParser().parseFromString(xmlText, "text/xml");
-    const panel = document.querySelector(".bottom-inner");
+        function renderCityForecast(xmlText) {
+            const xml = new DOMParser().parseFromString(xmlText, "text/xml");
+            const panel = document.querySelector(".bottom-inner");
 
-    panel.innerHTML = "";
+            panel.innerHTML = "";
 
-    // ---------------- CURRENT ----------------
-    const current = xml.querySelector("currentConditions");
+            // ---------------- CURRENT ----------------
+            const current = xml.querySelector("currentConditions");
 
-    const currentBox = document.createElement("div");
-    currentBox.className = "bottom-box current";
+            const temp = current?.querySelector("temperature")?.textContent;
+            const condition = current?.querySelector("condition")?.textContent;
+            const icon = current?.querySelector("iconCode")?.textContent;
 
-    const temp = current?.querySelector("temperature")?.textContent;
-    const condition = current?.querySelector("condition")?.textContent;
-    const icon = current?.querySelector("iconCode")?.textContent;
+            const currentBox = document.createElement("div");
+            currentBox.className = "bottom-box current";
 
-    currentBox.innerHTML = `
-        <div>${decodeCurrentIcon(icon)}</div>
-        <div>${temp ? Math.round(temp) + "°" : "--"}</div>
-        <div>${condition || ""}</div>
-    `;
+currentBox.innerHTML = `
+    <div class="period">Now</div>
+    <div class="icon">${decodeCurrentIcon(icon)}</div>
+    <div class="temp">${temp ? Math.round(temp) + "°" : "--"}</div>
+    <div class="condition">${condition || ""}</div>
 
-    panel.appendChild(currentBox);
+`;
 
-// ---------------- FORECAST ----------------
-const forecasts = Array.from(xml.querySelectorAll("forecast"));
+            panel.appendChild(currentBox);
 
-const dayMap = new Map();
+            // ---------------- FORECAST ----------------
+            const forecasts = Array.from(xml.querySelectorAll("forecast"));
 
-for (const f of forecasts) {
-    const period = f.querySelector("period")?.textContent?.trim();
-    if (!period) continue;
+            const dayMap = new Map();
 
-    const day = period.replace(/night/i, "").trim();
+            for (const f of forecasts) {
+                const period = f.querySelector("period")?.textContent?.trim();
+                if (!period) continue;
 
-    const high = f.querySelector("temperatures temperature[class='high']")?.textContent;
-    const low = f.querySelector("temperatures temperature[class='low']")?.textContent;
+                const day = period
+                    .replace(/night/i, "")
+                    .trim()
+                    .slice(0, 3);
 
-    const icon = f.querySelector("abbreviatedForecast iconCode")?.textContent;
+                const high = f.querySelector("temperatures temperature[class='high']")?.textContent;
+                const low = f.querySelector("temperatures temperature[class='low']")?.textContent;
 
-    const condition =
-        f.querySelector("abbreviatedForecast textSummary")?.textContent ||
-        f.querySelector("cloudPrecip textSummary")?.textContent ||
-        f.querySelector("textSummary")?.textContent;
+                const icon = f.querySelector("abbreviatedForecast iconCode")?.textContent;
 
-    if (!dayMap.has(day)) {
-        dayMap.set(day, {
-            day,
-            high: null,
-            low: null,
-            icons: [],
-            conditions: []
-        });
-    }
+                const condition =
+                    f.querySelector("abbreviatedForecast textSummary")?.textContent ||
+                    f.querySelector("cloudPrecip textSummary")?.textContent ||
+                    f.querySelector("textSummary")?.textContent;
 
-    const d = dayMap.get(day);
+                if (!dayMap.has(day)) {
+                    dayMap.set(day, {
+                        day,
+                        high: null,
+                        low: null,
+                        icons: [],
+                        conditions: []
+                    });
+                }
 
-    if (high != null) {
-        const h = Number(high);
-        d.high = d.high == null ? h : Math.max(d.high, h);
-    }
+                const d = dayMap.get(day);
 
-    if (low != null) {
-        const l = Number(low);
-        d.low = d.low == null ? l : Math.min(d.low, l);
-    }
+                if (high != null) {
+                    const h = Number(high);
+                    d.high = d.high == null ? h : Math.max(d.high, h);
+                }
 
-    if (icon) d.icons.push(icon);
-    if (condition) d.conditions.push(condition);
-}
+                if (low != null) {
+                    const l = Number(low);
+                    d.low = d.low == null ? l : Math.min(d.low, l);
+                }
 
-// ---------------- RENDER ----------------
-const days = Array.from(dayMap.values()).slice(1, 6);
+                if (icon) d.icons.push(icon);
+                if (condition) d.conditions.push(condition);
+            }
 
-for (const d of days) {
-    const box = document.createElement("div");
-    box.className = "bottom-box forecast";
+            // ---------------- RENDER ----------------
+            const days = Array.from(dayMap.values()).slice(1, 6);
 
-    box.innerHTML = `
-        <div>${d.day}</div>
-        <div>${decodeCurrentIcon(d.icons[0])}</div>
-        <div>${d.high ?? "--"}° / ${d.low ?? "--"}°</div>
-        <div>${d.conditions[0] || ""}</div>
-    `;
+            for (const d of days) {
+                const box = document.createElement("div");
+                box.className = "bottom-box forecast";
 
-    panel.appendChild(box);
-}
-}
+box.innerHTML = `
+    <div class="period">${d.day}</div>
+    <div class="icon">${decodeCurrentIcon(d.icons[0])}</div>
+    <div class="temp">${d.high ?? "--"}° / ${d.low ?? "--"}°</div>
+    <div class="condition">${d.conditions[0] || ""}</div>
+`;
+
+                panel.appendChild(box);
+            }
+        }
 
         // =========================
         // START
