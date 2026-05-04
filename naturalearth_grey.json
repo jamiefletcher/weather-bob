@@ -55,6 +55,13 @@
 	},
 	"layers": [
 		{
+			"id": "background",
+			"type": "background",
+			"paint": {
+				"background-color": "hsl(205, 45%, 78%)"
+			}
+		},		
+		{
 			"id": "countries",
 			"type": "fill",
 			"source": "countries",

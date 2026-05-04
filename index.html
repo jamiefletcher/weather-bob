@@ -177,19 +177,18 @@
                 const data = await getMetars();
 
                 const d = getDateParts();
-                setTitle("top-left", `${d.weekdayName}, ${d.monthName} ${d.day}`);
-                setTitle("top-right", "<b>Canada</b> <i>Coast-to-Coast</i> Weather");
-                setTitle("top-right-sub", "Up-to-the-minute conditions");
+                setTitle("top-left", `<h4>${d.weekdayName}, ${d.monthName} ${d.day}</h4>`);
+                setTitle("top-right", "<h3><b>Canada</b> <i>Coast-to-Coast</i> Weather</h3>");
+                setTitle("top-right-sub", "<h4>Up-to-the-minute</h4>");
 
-                const latest = getMetarDate(data.features);
-
-                if (latest) {
-                    setTitle("bottom-right", `<h4>LAST UPDATED</h4><h2>${latest.toLocaleTimeString("en-US", {
-                        timeZone: "America/Toronto",
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    })}</h2>`);
-                }
+                // const latest = getMetarDate(data.features);
+                // if (latest) {
+                //     setTitle("bottom-right", `<h4>LAST UPDATED</h4><h2>${latest.toLocaleTimeString("en-US", {
+                //         timeZone: "America/Toronto",
+                //         hour: "2-digit",
+                //         minute: "2-digit"
+                //     })}</h2>`);
+                // }
 
                 const features = data.features
                     .filter(f =>
@@ -200,7 +199,7 @@
 
                 this.map = new maplibregl.Map({
                     container: "map",
-                    style: "naturalearth.json",
+                    style: "naturalearth_grey.json",
                     center: [lon, lat],
                     zoom: 5.5,
                     minZoom: 3,
@@ -657,11 +656,9 @@
             currentBox.className = "bottom-box current";
 
 currentBox.innerHTML = `
-    <div class="period">Now</div>
+    <div class="period"><h2>Now</h2></div>
     <div class="icon">${decodeCurrentIcon(icon)}</div>
-    <div class="temp">${temp ? Math.round(temp) + "°" : "--"}</div>
-    <div class="condition">${condition || ""}</div>
-
+    <div class="temp"><h1>${temp ? Math.round(temp) + "°" : "--"}</h1></div>
 `;
 
             panel.appendChild(currentBox);
@@ -724,10 +721,11 @@ currentBox.innerHTML = `
                 box.className = "bottom-box forecast";
 
 box.innerHTML = `
-    <div class="period">${d.day}</div>
+    <div class="period"><h2>${d.day}</h2></div>
     <div class="icon">${decodeCurrentIcon(d.icons[0])}</div>
-    <div class="temp">${d.high ?? "--"}° / ${d.low ?? "--"}°</div>
-    <div class="condition">${d.conditions[0] || ""}</div>
+    <div class="temp">
+        <h2>${d.high ?? "--"}° | ${d.low ?? "--"}°</h2>
+    </div>
 `;
 
                 panel.appendChild(box);
@@ -884,33 +882,27 @@ box.innerHTML = `
         function decodeWxIcon(wx) {
             if (!wx) return "";
 
-            const RAIN = new Set(["RA", "DZ"]);
-            const SNOW = new Set(["SN", "SG", "GR", "GS", "PL"]);
-            const STORM = new Set(["TS"]);
-
             const seen = new Set();
 
             return wx.trim()
                 .split(/\s+/)
                 .map(token => {
                     token = token.replace(/^[-+]/, "");
-                    const code = token.slice(0, 2);
 
-                    let icon = ""; // default fallback (no clouds)
+                    let icon = "";
 
-                    if (STORM.has(code)) icon = "⚡";
-                    else if (RAIN.has(code)) icon = "💧";
-                    else if (SNOW.has(code)) icon = "❄️";
+                    if (token.includes("TS")) icon = "⚡";
+                    else if (token.includes("RA") || token.includes("DZ")) icon = "💧";
+                    else if (token.includes("SN") || token.includes("SG") || token.includes("GR") || token.includes("GS") || token.includes("PL")) icon = "❄️";
 
                     return icon;
                 })
                 .filter(icon => {
-                    if (!icon) return false;
-                    if (seen.has(icon)) return false;
+                    if (!icon || seen.has(icon)) return false;
                     seen.add(icon);
                     return true;
                 })
-                .join(" ");
+                .join("");
         }
 
         function decodeSkyCondition(sky) {
