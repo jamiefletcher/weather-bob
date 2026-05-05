@@ -8,11 +8,7 @@
 
     <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,600,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:wght@400,700" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -181,6 +177,7 @@
                 setTitle("top-right", "<h2><b>Canada</b> <i>Coast-to-Coast</i> Weather</h2>");
                 setTitle("top-right-sub", "<h4>Up-to-the-minute</h4>");
 
+                //// display time
                 // const latest = getMetarDate(data.features);
                 // if (latest) {
                 //     setTitle("bottom-right", `<h4>LAST UPDATED</h4><h2>${latest.toLocaleTimeString("en-US", {
@@ -194,6 +191,8 @@
                     .filter(f =>
                         f.properties.iso_country === "CA"
                     )
+
+                shuffle(features);
 
                 const [lon, lat] = features[0].geometry.coordinates;
 
@@ -726,7 +725,7 @@ box.innerHTML = `
     <div class="period"><h1>${d.day}</h1></div>
     <div class="icon">${decodeCurrentIcon(d.icons[0])}</div>
     <div class="temp">
-        <h1>${d.high ?? "--"}°(${d.low ?? "--"}°)</h1>
+        <h1>${d.high ?? "--"}° (${d.low ?? "--"}°)</h1>
     </div>
 `;
 

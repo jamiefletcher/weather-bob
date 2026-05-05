@@ -2,7 +2,7 @@
     --color-primary: hsl(210, 80%, 45%);
     --color-secondary: hsl(210, 60%, 60%);
     --color-bg1: hsl(210, 30%, 30%);
-    --color-bg2: hsl(210, 30%, 70%);
+    --color-bg2: hsl(120, 30%, 70%);
     --color-text1: hsl(210, 29%, 28%);
 }
 
@@ -181,7 +181,7 @@ body {
     border-radius: 50vh;
     background: var(--color-bg1);
     color: hsl(0, 0%, 100%);
-    box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
+    box-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.2);
 }
 
 .top-right {
@@ -191,7 +191,7 @@ body {
     padding: 0.5rem;
     background: hsl(0, 0%, 100%);
     border: 1px solid var(--color-bg1);
-    box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
+    box-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.2);
     text-align: right;
 }
 
@@ -220,7 +220,7 @@ body {
     padding: 0.5rem;
     background: hsla(0, 0%, 100%, 0.7);
     color: hsl(210, 85%, 45%);
-    box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
+    box-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.2);
     text-align: right;
 }
 
@@ -265,9 +265,9 @@ body {
     overflow: visible;
     border: 3px solid hsl(0, 0%, 100%);
     border-radius: 0.5rem;
-    background-color: hsl(0, 0%, 100%);
+    background: hsl(0, 0%, 100%);
     color: hsl(270, 35%, 20%);
-    box-shadow: 1px 1px 2px hsla(0, 0%, 0%, 0.1);
+    box-shadow: 1px 1px 2px hsla(0, 0%, 0%, 0.2);
 }
 
 .popup-wx-badge {
@@ -285,7 +285,7 @@ body {
 }
 
 .popup-city {
-    background: hsl(210, 30%, 70%);
+    background: var(--color-bg2);
     color: hsl(0, 0%, 100%);
     border-radius: 0.5rem 0.5rem 0 0;
     padding: 0.5rem;
@@ -427,7 +427,7 @@ h1 {
 }
 
 h2 {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 500;
     line-height: 1;
 }
