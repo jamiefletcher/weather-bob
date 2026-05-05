@@ -34,7 +34,7 @@
         <div id="side-panel"></div>
 
         <div id="ticker-panel">
-            <div class="ticker-title">WORLD TEMPS</div>
+            <div class="ticker-title"><h1>WORLD TEMPS</h1></div>
             <div id="ticker-track"></div>
         </div>
 
@@ -568,8 +568,10 @@
 
                 html += `
             <div class="ticker-item">
-                <span>${p.name || p.icao_code}</span>
-                <span>${Math.round(p.temp_c)}°</span>
+                <h1>
+                    <span>${p.name || p.icao_code}</span>
+                    <span>${Math.round(p.temp_c)}°</span>
+                </h1>
             </div>
         `;
             }
@@ -656,7 +658,7 @@
             currentBox.className = "bottom-box current";
 
 currentBox.innerHTML = `
-    <div class="period"><h2>Now</h2></div>
+    <div class="period"><h1>Now</h1></div>
     <div class="icon">${decodeCurrentIcon(icon)}</div>
     <div class="temp"><h1>${temp ? Math.round(temp) + "°" : "--"}</h1></div>
 `;
@@ -721,10 +723,10 @@ currentBox.innerHTML = `
                 box.className = "bottom-box forecast";
 
 box.innerHTML = `
-    <div class="period"><h2>${d.day}</h2></div>
+    <div class="period"><h1>${d.day}</h1></div>
     <div class="icon">${decodeCurrentIcon(d.icons[0])}</div>
     <div class="temp">
-        <h2>${d.high ?? "--"}° | ${d.low ?? "--"}°</h2>
+        <h1>${d.high ?? "--"}°(${d.low ?? "--"}°)</h1>
     </div>
 `;
 
