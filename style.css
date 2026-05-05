@@ -2,7 +2,7 @@
     --color-primary: hsl(210, 80%, 45%);
     --color-secondary: hsl(210, 60%, 60%);
     --color-bg1: hsl(210, 30%, 30%);
-    --color-bg2: hsl(210, 30%, 95%);
+    --color-bg2: hsl(210, 30%, 70%);
     --color-text1: hsl(210, 29%, 28%);
 }
 
@@ -264,7 +264,7 @@ body {
 .popup-places {
     position: relative;
     overflow: visible;
-    border: 2px solid hsl(0, 0%, 100%);
+    border: 3px solid hsl(0, 0%, 100%);
     border-radius: 0.5rem;
     background-color: hsl(0, 0%, 100%);
     color: hsl(270, 35%, 20%);
@@ -286,7 +286,7 @@ body {
 }
 
 .popup-city {
-    background: hsl(31, 88%, 60%);
+    background: hsl(210, 30%, 70%);
     color: hsl(0, 0%, 100%);
     border-radius: 0.5rem 0.5rem 0 0;
     padding: 0.5rem;
