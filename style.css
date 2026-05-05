@@ -198,7 +198,7 @@ body {
 
 .top-right-sub {
     position: absolute;
-    top: 2rem;
+    top: 2.2rem;
     right: 0.7rem;
     z-index: 2;
     padding: 0.3rem 1rem;
@@ -286,13 +286,13 @@ body {
 }
 
 .popup-city {
-    background: linear-gradient(180deg,
-            hsl(190, 50%, 78%),
-            hsl(190, 45%, 68%),
-            hsl(190, 40%, 58%));
-    color: hsl(270, 35%, 100%);
+    background: hsl(31, 88%, 60%);
+    color: hsl(0, 0%, 100%);
     border-radius: 0.5rem 0.5rem 0 0;
     padding: 0.5rem;
+}
+
+.popup-city * {
     font-weight: 700;
 }
 
