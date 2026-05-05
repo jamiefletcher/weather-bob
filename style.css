@@ -1,3 +1,11 @@
+:root {
+    --color-primary: hsl(210, 80%, 45%);
+    --color-secondary: hsl(210, 60%, 60%);
+    --color-bg1: hsl(210, 30%, 30%);
+    --color-bg2: hsl(210, 30%, 95%);
+    --color-text1: hsl(210, 29%, 28%);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -17,7 +25,7 @@ html {
 body {
     line-height: 1;
     font-family: 'Lato', sans-serif;
-    color: hsl(0, 0%, 40%);
+    color: var(--color-text1);
 }
 
 .app {
@@ -32,7 +40,7 @@ body {
     grid-template-areas:
         "map side"
         "ticker side"
-        "bottom bottom";
+        "bottom side";
 }
 
 #map {
@@ -91,7 +99,7 @@ body {
     flex: 0 0 auto;
     width: 100%;
     padding: 0.5rem;
-    background: hsl(210, 70%, 60%);
+    background: var(--color-bg1);
     color: hsl(0, 0%, 100%);
     text-transform: uppercase;
 }
@@ -130,7 +138,7 @@ body {
     align-items: center;
     line-height: 1;
     padding: 1rem;
-    background: hsl(210, 70%, 60%);
+    background: var(--color-bg1);
     color: hsl(0, 0%, 100%);
     z-index: 2;
 }
@@ -162,16 +170,19 @@ body {
     line-height: 1;
 }
 
+#title-container * {
+    font-weight: 700;
+}
+
 .top-left {
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
     padding: 0.3rem 0.5rem;
     border-radius: 50vh;
-    background: hsl(210, 70%, 60%);
+    background: var(--color-bg1);
     color: hsl(0, 0%, 100%);
     box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
-    font-weight: 700;
 }
 
 .top-right {
@@ -180,10 +191,9 @@ body {
     right: 0.5rem;
     padding: 0.5rem;
     background: hsl(0, 0%, 100%);
-    color: hsl(210, 70%, 60%);
+    border: 1px solid var(--color-bg1);
     box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
     text-align: right;
-    font-weight: 700;
 }
 
 .top-right-sub {
@@ -192,10 +202,9 @@ body {
     right: 0.7rem;
     z-index: 2;
     padding: 0.3rem 1rem;
-    background: hsl(210, 70%, 60%);
+    background: var(--color-bg1);;
     color: hsl(0, 0%, 100%);
     text-align: right;
-    font-weight: 700;
 
     clip-path: polygon(
         4% 0%,
@@ -214,7 +223,6 @@ body {
     color: hsl(210, 85%, 45%);
     box-shadow: 2px 2px 2px hsla(0, 0%, 40%, 0.2);
     text-align: right;
-    font-weight: 700;
 }
 
 #hud-container {
@@ -295,10 +303,6 @@ body {
     justify-content: center;
     gap: 0;
     padding: 0.5rem 0.2rem 0.2rem 0.2rem;
-}
-
-.maplibregl-popup-tip .popup-places {
-    border-color: hsla(270, 35%, 100%, 0);
 }
 
 .maplibregl-popup,
