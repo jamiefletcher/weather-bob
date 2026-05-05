@@ -73,10 +73,18 @@ body {
     display: flex;
     flex-direction: column;
     text-align: center;
-    align-items: center;
 
     background:hsl(0, 0%, 100%);
     border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.bottom-box .period,
+.bottom-box .icon,
+.bottom-box .temp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .bottom-box .period {
@@ -90,15 +98,17 @@ body {
 
 .bottom-box .icon {
     flex: 1;
+    min-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 3rem;
+    z-index: 2;
 }
 
 .bottom-box .temp {
     flex: 0 0 auto;
-    padding-bottom: 0.5rem;
+    padding: 0.5rem;
 }
 
 #ticker-panel {
@@ -275,6 +285,7 @@ body {
     color: hsl(270, 35%, 100%);
     border-radius: 0.5rem 0.5rem 0 0;
     padding: 0.5rem;
+    font-weight: 700;
 }
 
 .popup-data {
@@ -282,8 +293,8 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 0rem;
-    padding: 0.5rem 0.5rem 0.3rem 0.5rem;
+    gap: 0;
+    padding: 0.5rem 0.2rem 0.2rem 0.2rem;
 }
 
 .maplibregl-popup-tip .popup-places {
@@ -410,14 +421,20 @@ h1 {
 
 h2 {
     font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
 }
 
 h3 {
     font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1;    
 }
 
 h4 {
     font-size: 0.7rem;
+    font-weight: 500;
+    line-height: 1;    
 }
 
 @media (max-width: 1024px) {
