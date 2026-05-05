@@ -58,7 +58,7 @@
 			"id": "background",
 			"type": "background",
 			"paint": {
-				"background-color": "hsl(205, 45%, 78%)"
+				"background-color": "hsl(210, 30%, 90%)"
 			}
 		},		
 		{
@@ -67,7 +67,7 @@
 			"source": "countries",
 			"source-layer": "countries",
 			"paint": {
-				"fill-color": "hsl(210, 15%, 92%)"
+				"fill-color": "hsl(120, 30%, 80%)"
 			}
 		},
 		{
@@ -76,7 +76,7 @@
 			"source": "rivers",
 			"source-layer": "rivers",
 			"paint": {
-				"line-color": "hsl(205, 45%, 78%)",
+				"line-color": "hsl(210, 30%, 80%)",
 				"line-width": 1
 			}
 		},
@@ -86,7 +86,7 @@
 			"source": "lakes",
 			"source-layer": "lakes",
 			"paint": {
-				"fill-color": "hsl(205, 45%, 78%)"
+				"fill-color": "hsl(210, 30%, 90%)"
 			}
 		},
 		{
@@ -100,7 +100,7 @@
 				"Ferry"
 			],
 			"paint": {
-				"line-color": "hsl(210, 15%, 100%)",
+				"line-color": "hsl(0, 0%, 100%)",
 				"line-width": 1,
 				"line-opacity": [
 					"interpolate",

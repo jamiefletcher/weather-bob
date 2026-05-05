@@ -260,7 +260,7 @@ body {
     font-family: 'Libre Baskerville';
 }
 
-.popup-places {
+.popup-place {
     position: relative;
     overflow: visible;
     border: 3px solid hsl(0, 0%, 100%);
@@ -291,8 +291,12 @@ body {
     padding: 0.5rem;
 }
 
-.popup-city * {
-    font-weight: 700;
+.popup-city h2 {
+    font-weight: 900;
+}
+
+.popup-data .temp h1 {
+    font-weight: 100;
 }
 
 .popup-long-city h2 {
