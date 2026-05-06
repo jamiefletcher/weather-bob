@@ -2,7 +2,7 @@
     --color-primary: hsl(210, 80%, 45%);
     --color-secondary: hsl(210, 60%, 60%);
     --color-bg1: hsl(210, 30%, 30%);
-    --color-bg2: hsl(180, 30%, 60%);
+    --color-bg2: hsl(120, 30%, 70%);
     --color-text1: hsl(210, 29%, 28%);
 }
 
@@ -107,9 +107,6 @@ body {
 .forecast-box .icon {
     flex: 1;
     min-height: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: 2.5rem;
     z-index: 2;
 }
@@ -461,7 +458,7 @@ h4 {
             1fr
             2rem
             20%
-            20%;
+            30%;
 
         grid-template-areas:
             "map"

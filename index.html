@@ -199,14 +199,14 @@ switch(scene) {
                 const data = await getMetars();
 
                 const d = getDateParts();
-                window.setTitle("top-left", `<h4>${d.weekdayName}, ${d.monthName} ${d.day}</h4>`);
-                window.setTitle("top-right", "<h2><b>Canada</b> <i>Coast-to-Coast</i> Weather</h2>");
-                window.setTitle("top-right-sub", "<h4>Up-to-the-minute</h4>");
+                window.setTitle("top-left", `<h3>${d.weekdayName}, ${d.monthName} ${d.day}</h3>`);
+                //window.setTitle("top-right", "<h2><b>Canada</b> <i>Coast-to-Coast</i> Weather</h2>");
+                //window.setTitle("top-right-sub", "<h4>Up-to-the-minute</h4>");
 
                 //// display time
                 // const latest = getMetarDate(data.features);
                 // if (latest) {
-                //     setTitle("forecast-right", `<h4>LAST UPDATED</h4><h2>${latest.toLocaleTimeString("en-US", {
+                //     setTitle("bottom-right", `<h4>LAST UPDATED</h4><h2>${latest.toLocaleTimeString("en-US", {
                 //         timeZone: "America/Toronto",
                 //         hour: "2-digit",
                 //         minute: "2-digit"
@@ -294,7 +294,7 @@ switch(scene) {
             },
 
             addPopups(features) {
-                const safeBounds = this.getSafeBounds(0.1);
+                const safeBounds = this.getSafeBounds(0.15);
 
                 this.clearPopups();
                 this.popups = [];
