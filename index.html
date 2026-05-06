@@ -27,15 +27,15 @@
             <div id="hud-container"></div>
         </div>
 
-        <div id="side-panel"></div>
+        <div id="info-panel"></div>
 
         <div id="ticker-panel">
             <div class="ticker-title"><h1>WORLD TEMPS</h1></div>
             <div id="ticker-track"></div>
         </div>
 
-        <div id="bottom-panel">
-            <div class="bottom-inner"></div>
+        <div id="forecast-panel">
+            <div class="forecast-inner"></div>
         </div>
     </div>
 
@@ -206,7 +206,7 @@ switch(scene) {
                 //// display time
                 // const latest = getMetarDate(data.features);
                 // if (latest) {
-                //     setTitle("bottom-right", `<h4>LAST UPDATED</h4><h2>${latest.toLocaleTimeString("en-US", {
+                //     setTitle("forecast-right", `<h4>LAST UPDATED</h4><h2>${latest.toLocaleTimeString("en-US", {
                 //         timeZone: "America/Toronto",
                 //         hour: "2-digit",
                 //         minute: "2-digit"
@@ -756,7 +756,7 @@ function enrichCitypage(xml) {
 
 function renderCityForecast(xmlText) {
     const xml = new DOMParser().parseFromString(xmlText, "text/xml");
-    const panel = document.querySelector(".bottom-inner");
+    const panel = document.querySelector(".forecast-inner");
 
     panel.innerHTML = "";
 
@@ -766,7 +766,7 @@ function renderCityForecast(xmlText) {
     const c = data.current;
 
     const currentBox = document.createElement("div");
-    currentBox.className = "bottom-box current";
+    currentBox.className = "forecast-box current";
 
     currentBox.innerHTML = `
         <div class="period"><h1>Now</h1></div>
@@ -779,7 +779,7 @@ function renderCityForecast(xmlText) {
     // ---------------- FORECAST ----------------
     for (const d of data.days) {
         const box = document.createElement("div");
-        box.className = "bottom-box forecast";
+        box.className = "forecast-box forecast";
 
         box.innerHTML = `
             <div class="period"><h1>${d.day}</h1></div>

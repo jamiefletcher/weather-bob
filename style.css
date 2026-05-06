@@ -2,7 +2,7 @@
     --color-primary: hsl(210, 80%, 45%);
     --color-secondary: hsl(210, 60%, 60%);
     --color-bg1: hsl(210, 30%, 30%);
-    --color-bg2: hsl(120, 30%, 70%);
+    --color-bg2: hsl(180, 30%, 60%);
     --color-text1: hsl(210, 29%, 28%);
 }
 
@@ -34,13 +34,13 @@ body {
     display: grid;
     grid-template-columns: 1fr 40%;
     grid-template-rows:
+        20%
         1fr
-        3rem
-        20%;
+        3rem;
     grid-template-areas:
-        "map side"
-        "ticker side"
-        "bottom side";
+    "map forecast"
+    "map info"
+    "ticker info";
 }
 
 #map {
@@ -48,16 +48,16 @@ body {
     position: relative;
 }
 
-#side-panel {
-    grid-area: side;
+#info-panel {
+    grid-area: info;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     background: hsl(0, 0%, 40%);
 }
 
-#bottom-panel {
-    grid-area: bottom;
+#forecast-panel {
+    grid-area: forecast;
     overflow: hidden;
     pointer-events: none;
     user-select: none;
@@ -65,7 +65,7 @@ body {
     background: hsl(0, 0%, 40%);
 }
 
-.bottom-inner {
+.forecast-inner {
     width: 100%;
     height: 100%;
 
@@ -74,7 +74,7 @@ body {
     padding: 0.5rem;
 }
 
-.bottom-box {
+.forecast-box {
     flex: 1 1 0;
     min-width: 0;
 
@@ -87,15 +87,15 @@ body {
     overflow: hidden;
 }
 
-.bottom-box .period,
-.bottom-box .icon,
-.bottom-box .temp {
+.forecast-box .period,
+.forecast-box .icon,
+.forecast-box .temp {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.bottom-box .period {
+.forecast-box .period {
     flex: 0 0 auto;
     width: 100%;
     padding: 0.5rem;
@@ -104,7 +104,7 @@ body {
     text-transform: uppercase;
 }
 
-.bottom-box .icon {
+.forecast-box .icon {
     flex: 1;
     min-height: 0;
     display: flex;
@@ -114,7 +114,7 @@ body {
     z-index: 2;
 }
 
-.bottom-box .temp {
+.forecast-box .temp {
     flex: 0 0 auto;
     padding: 0.5rem;
 }
@@ -460,11 +460,13 @@ h4 {
         grid-template-rows:
             1fr
             2rem
+            20%
             20%;
 
         grid-template-areas:
             "map"
             "ticker"
-            "bottom";
+            "forecast"
+            "info";
     }
 }

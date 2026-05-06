@@ -1,0 +1,25 @@
+{
+	"version": 8,
+	"name": "gdps",
+	"glyphs": "https://jamiefletcher.github.io/weather-bob/assets/fonts/{fontstack}/{range}.pbf",
+	"sprite": "https://jamiefletcher.github.io/weather-bob/assets/sprites/sprites-trees",
+	"sources": {
+		"naturalearth": {
+			"type": "raster",
+			"tiles": [
+				"data/naturalearth/raster/{z}/{x}/{y}.png"
+			],
+			"tileSize": 256
+		}
+	},
+	"layers": [
+		{
+			"id": "naturalearth",
+			"type": "raster",
+			"source": "naturalearth",
+			"paint": {
+				"raster-saturation": 0.2
+			}
+		}
+	]
+}
