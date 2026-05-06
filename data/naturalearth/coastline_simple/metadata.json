@@ -1,0 +1,12 @@
+{
+  "name":"coastline_simple",
+  "description":"",
+  "version":2,
+  "minzoom":3,
+  "maxzoom":6,
+  "center":"0.0000000,-0.6774350,3",
+  "bounds":"-180.0000000,-85.0000000,180.0000000,83.6451300",
+  "type":"overlay",
+  "format":"pbf",
+  "json":"{\n  \"vector_layers\":[\n    {\n      \"id\":\"coastline_simple\",\n      \"description\":\"\",\n      \"minzoom\":3,\n      \"maxzoom\":6,\n      \"fields\":{\n        \"scalerank\":\"Number\",\n        \"featurecla\":\"String\",\n        \"min_zoom\":\"Number\"\n      }\n    }\n  ],\n  \"tilestats\":{\n    \"layerCount\":1,\n    \"layers\":[\n      {\n        \"layer\":\"coastline_simple\",\n        \"count\":134,\n        \"geometry\":\"LineString\",\n        \"attributeCount\":3,\n        \"attributes\":[\n          {\n            \"attribute\":\"scalerank\",\n            \"count\":2,\n            \"type\":\"number\",\n            \"values\":[\n              0,\n              1\n            ],\n            \"min\":0,\n            \"max\":1\n          },\n          {\n            \"attribute\":\"featurecla\",\n            \"count\":2,\n            \"type\":\"string\",\n            \"values\":[\n              \"Country\",\n              \"Coastline\"\n            ]\n          },\n          {\n            \"attribute\":\"min_zoom\",\n            \"count\":4,\n            \"type\":\"number\",\n            \"values\":[\n              0.0,\n              0.5,\n              1.0,\n              1.5\n            ],\n            \"min\":0.0,\n            \"max\":1.5\n          }\n        ]\n      }\n    ]\n  }\n}"
+}
