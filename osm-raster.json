@@ -1,9 +1,6 @@
 {
     "version": 8,
     "name": "osm-raster",
-    "projection": {
-        "type": "globe"
-    },
     "sources": {
 		"osm": {
 			"type": "raster",

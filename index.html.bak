@@ -30,7 +30,9 @@
         <div id="side-panel"></div>
 
         <div id="ticker-panel">
-            <div class="ticker-title"><h1>WORLD TEMPS</h1></div>
+            <div class="ticker-title">
+                <h1>WORLD TEMPS</h1>
+            </div>
             <div id="ticker-track"></div>
         </div>
 
@@ -45,37 +47,14 @@
         // =========================
         let METARS = null;
 
-async function getMetars() {
-    if (METARS) return METARS;
+        async function getMetars() {
+            if (METARS) return METARS;
 
-    const res = await fetch("data/metars/metars_places_airports.geojson");
-    const data = await res.json();
+            const res = await fetch("data/metars/metars_places_airports.geojson");
+            METARS = await res.json();
 
-    data.features = enrichMetars(data.features);
-
-    METARS = data;
-    return METARS;
-}
-
-function enrichMetars(features) {
-    return features.map(f => {
-        const p = f.properties;
-
-        const temp = Number(p.temp_c);
-        const city = p.name || p.icao_code || "";
-
-        return {
-            ...f,
-            _enriched: {
-                temp: Number.isFinite(temp) ? Math.round(temp) : null,
-                skyText: decodeSkyCondition(p.sky_condition),
-                wxText: decodeWx(p.wx_string),
-                skyIcon: decodeSkyConditionIcon(p.sky_condition),
-                wxIcon: decodeWxIcon(p.wx_string)
-            }
-        };
-    });
-}
+            return METARS;
+        }
 
         // =========================
         // SCENE CONTROLLER
@@ -83,15 +62,12 @@ function enrichMetars(features) {
         const sceneController = {
             current: null,
 
-switch(scene) {
-    if (this.current) {
-        this.current.stop();
-        this.current.timer?.clearAll?.(); // 🔥 important safety net
-    }
+            switch(scene) {
+                if (this.current) this.current.stop();
 
-    this.current = scene;
-    this.current.start();
-}
+                this.current = scene;
+                this.current.start();
+            }
         };
 
         // =========================
@@ -199,9 +175,9 @@ switch(scene) {
                 const data = await getMetars();
 
                 const d = getDateParts();
-                window.setTitle("top-left", `<h4>${d.weekdayName}, ${d.monthName} ${d.day}</h4>`);
-                window.setTitle("top-right", "<h2><b>Canada</b> <i>Coast-to-Coast</i> Weather</h2>");
-                window.setTitle("top-right-sub", "<h4>Up-to-the-minute</h4>");
+                setTitle("top-left", `<h4>${d.weekdayName}, ${d.monthName} ${d.day}</h4>`);
+                setTitle("top-right", "<h2><b>Canada</b> <i>Coast-to-Coast</i> Weather</h2>");
+                setTitle("top-right-sub", "<h4>Up-to-the-minute</h4>");
 
                 //// display time
                 // const latest = getMetarDate(data.features);
@@ -216,10 +192,7 @@ switch(scene) {
                 const features = data.features
 
                 const loopFeatures = data.features
-                    .filter(f => f.properties.scalerank <= 2 )
-                    .sort((a, b) =>
-                        a.geometry.coordinates[0] - b.geometry.coordinates[0]
-                    );
+                    .filter(f => f.properties.scalerank <= 2)
 
                 shuffle(loopFeatures);
 
@@ -227,9 +200,9 @@ switch(scene) {
 
                 this.map = new maplibregl.Map({
                     container: "map",
-                    style: "naturalearth_grey.json",
+                    style: "osm-raster.json",
                     center: [lon, lat],
-                    zoom: 5,
+                    zoom: 5.5,
                     minZoom: 3,
                     maxZoom: 6.9,
                     pitch: 0,
@@ -240,15 +213,21 @@ switch(scene) {
                 //this.map.dragRotate.disable();
                 //this.map.touchZoomRotate.disableRotation();
 
-                this.map.on("load", () => {
-                    this.addLayers(features);
-                    this.addPopups(features);
-                    this.loop(loopFeatures);
-                });
+this.map.on("load", () => {
+    this.addLayers(features);
 
-                this.map.on("moveend", () => {
-                    this.addPopups(features);
-                });
+this.map.once("idle", () => {
+    this.addPopups(features);
+});
+
+    this.loop(loopFeatures);
+});
+
+this.map.on("moveend", () => {
+    requestAnimationFrame(() => {
+        this.addPopups(features);
+    });
+});
             },
 
             addLayers(features) {
@@ -293,136 +272,103 @@ switch(scene) {
                 };
             },
 
-            addPopups(features) {
-                const safeBounds = this.getSafeBounds(0.1);
+addPopups(features) {
+    this.clearPopups();
 
-                this.clearPopups();
-                this.popups = [];
+    const safeBounds = this.getSafeBounds(0.1);
 
-                const overlaps = (a, b) => {
-                    return !(
-                        a.right < b.left ||
-                        a.left > b.right ||
-                        a.bottom < b.top ||
-                        a.top > b.bottom
-                    );
-                };
+    const overlaps = (a, b) => !(
+        a.right < b.left ||
+        a.left > b.right ||
+        a.bottom < b.top ||
+        a.top > b.bottom
+    );
 
-                // priority: lowest scalerank first
-                const sorted = [...features].sort((a, b) => {
-                    return (a.properties.scalerank ?? 999) - (b.properties.scalerank ?? 999);
-                });
+    const sorted = [...features].sort(
+        (a, b) => (a.properties.scalerank ?? 999) - (b.properties.scalerank ?? 999)
+    );
 
-                const pending = [];
+    const acceptedRects = [];
 
-                // PHASE 1 — create all popups (no collision yet)
-                for (const f of sorted) {
-                    const coords = f.geometry.coordinates;
-                    const p = f.properties;
-                    const e = f._enriched;
+    for (const f of sorted) {
+        const coords = f.geometry.coordinates;
+        const p = f.properties;
 
-                    if (!safeBounds.contains(coords)) continue;
+        if (!safeBounds.contains(coords)) continue;
 
-                    const temp = e.temp;
-                    const city = p.name || p.icao_code || "";
-                    const skyIcon = e.skyIcon;
-                    const wxIcon = e.wxIcon;
+        const temp = Math.round(Number(p.temp_c));
+        const city = p.name || p.icao_code || "";
+        const skyIcon = decodeSkyConditionIcon(p.sky_condition);
+        const wxIcon = decodeWxIcon(p.wx_string);
 
-                    const isLongCity = city.split(" ").some(w => w.length > 10);
+        const isLongCity = city.split(" ").some(w => w.length > 10);
 
-                    const popup = new maplibregl.Popup({
-                        closeButton: false,
-                        closeOnClick: false,
-                        anchor: "center",
-                        className: isLongCity ? "popup-long-city" : ""
-                    })
-                        .setLngLat(coords)
-                        .setHTML(`
-                            <div class="popup-place">
-                                ${wxIcon ? `<div class="popup-wx-badge"><span class="icon">${wxIcon}</span></div>` : ""}
-                                <div class="popup-city"><h2>${city}</h2></div>
-                                <div class="popup-data">
-                                    <div class="temp"><h1>${temp}°</h1></div>
-                                    <div class="icon"><h1>${skyIcon}</h1></div>
-                                </div>
-                            </div>
-                        `)
-                        .addTo(this.map);
+        const popup = new maplibregl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            anchor: "center",
+            className: isLongCity ? "popup-long-city" : ""
+        })
+            .setLngLat(coords)
+            .setHTML(`
+                <div class="popup-place">
+                    ${wxIcon ? `<div class="popup-wx-badge"><span class="icon">${wxIcon}</span></div>` : ""}
+                    <div class="popup-city"><h2>${city}</h2></div>
+                    <div class="popup-data">
+                        <div class="temp"><h1>${temp}°</h1></div>
+                        <div class="icon"><h1>${skyIcon}</h1></div>
+                    </div>
+                </div>
+            `)
+            .addTo(this.map);
 
-                    pending.push(popup);
-                }
+        const el = popup.getElement();
+        if (!el) {
+            popup.remove();
+            continue;
+        }
 
-                // PHASE 2 — measure + resolve collisions (next frame)
-                requestAnimationFrame(() => {
-                    const acceptedRects = [];
+        const rect = el.getBoundingClientRect();
 
-                    for (const popup of pending) {
-                        const el = popup.getElement();
-                        if (!el) {
-                            popup.remove();
-                            continue;
-                        }
+        let collide = false;
+        for (const r of acceptedRects) {
+            if (overlaps(rect, r)) {
+                collide = true;
+                break;
+            }
+        }
 
-                        const rect = el.getBoundingClientRect();
+        if (collide) {
+            popup.remove();
+            continue;
+        }
 
-                        let collide = false;
-                        for (const r of acceptedRects) {
-                            if (overlaps(rect, r)) {
-                                collide = true;
-                                break;
-                            }
-                        }
+        acceptedRects.push(rect);
+        this.popups.push(popup);
 
-                        if (collide) {
-                            popup.remove();
-                            continue;
-                        }
+        el.classList.add("popup-visible");
+    }
+},
 
-                        acceptedRects.push(rect);
-                        this.popups.push(popup);
+clearPopups() {
+    if (!this.popups) return;
 
-                        el.classList.add("popup-visible");
-                    }
-                });
-            },
+    this.popups.forEach(p => p.remove());
+    this.popups = [];
 
-            clearPopups() {
-                if (!this.popups) return;
-
-                const EXIT_TIME = 280;
-
-                this.popups.forEach(p => {
-                    const el = p.getElement();
-
-                    if (el) {
-                        el.classList.remove("popup-visible");
-                        el.classList.add("popup-hidden");
-                    }
-
-                    this.timer.set(() => {
-                        p.remove();
-                    }, EXIT_TIME);
-                });
-
-                this.popups = [];
-            },
+    this.timer.clearAll();
+},
 
 loop(features) {
-    let i = 1;
+    let i = 0;
 
     const step = () => {
         if (!this.running) return;
 
         const f = features[i];
-        i++;
-
-        if (i >= features.length) {
-            i = 0; // or stop if you prefer non-looping
-        }
+        i = (i + 1) % features.length;
 
         const [lon, lat] = f.geometry.coordinates;
-
-        this.clearPopups();
 
         this.map.jumpTo({
             center: [lon, lat]
@@ -593,53 +539,27 @@ loop(features) {
             const track = document.getElementById("ticker-track");
             if (!track) return;
 
+            setTickerSpeed(Math.max(8, features.length * 3));
+
             let html = "";
 
-            for (let i = 0; i < features.length; i++) {
-                const p = features[i].properties;
+            for (const f of features) {
+                const p = f.properties;
+
+                const name = p.name || p.icao_code || "";
+                const temp = Number(p.temp_c);
 
                 html += `
-            <div class="ticker-item">
-                <h1>
-                    <span>${p.name || p.icao_code}</span>
-                    <span>${Math.round(p.temp_c)}°</span>
-                </h1>
-            </div>
-        `;
+                    <div class="ticker-item">
+                        <h1>
+                            <span>${name}</span>
+                            <span>${Number.isFinite(temp) ? Math.round(temp) + "°" : "--"}</span>
+                        </h1>
+                    </div>
+                `;
             }
 
-            track.innerHTML = html + html; // duplicate for loop
-        }
-
-        let tickerX = 0;
-        let tickerSpeed = 0.6; // px per frame (control here)
-        let tickerWidth = 0;
-
-        let tickerRunning = false;
-        let tickerRAF = null;
-
-        function startTickerAnimation() {
-            if (tickerRunning) return; // prevent duplicates
-
-            const track = document.getElementById("ticker-track");
-            if (!track) return;
-
-            tickerRunning = true;
-            tickerWidth = track.scrollWidth / 2;
-
-            function animate() {
-                tickerX -= tickerSpeed;
-
-                if (Math.abs(tickerX) >= tickerWidth) {
-                    tickerX = 0;
-                }
-
-                track.style.transform = `translate3d(${tickerX}px, 0, 0)`;
-
-                tickerRAF = requestAnimationFrame(animate);
-            }
-
-            tickerRAF = requestAnimationFrame(animate);
+            track.innerHTML = html + html;
         }
 
         async function initTicker() {
@@ -647,12 +567,13 @@ loop(features) {
             const features = data.features || [];
 
             buildTicker(features);
-            startTickerAnimation();
         }
 
-        function stopTicker() {
-            tickerRunning = false;
-            if (tickerRAF) cancelAnimationFrame(tickerRAF);
+        function setTickerSpeed(seconds) {
+            const track = document.getElementById("ticker-track");
+            if (!track) return;
+
+            track.style.setProperty("--speed", `${seconds}s`);
         }
 
         function loadingScreen() {
@@ -662,136 +583,109 @@ loop(features) {
             el.classList.add("hidden");
         }
 
-async function initCityForecast() {
-    const station = "s0000458";
-    const url = `data/citypage/citypage_${station}_latest.xml`;
+        async function initCityForecast() {
+            const station = "s0000458";
 
-    const res = await fetch(url);
-    const xmlText = await res.text();
+            const url = `data/citypage/citypage_${station}_latest.xml`;
 
-    renderCityForecast(xmlText);
-}
+            const res = await fetch(url);
+            const xmlText = await res.text();
 
-function enrichCitypage(xml) {
-    // ---------------- CURRENT ----------------
-    const currentNode = xml.querySelector("currentConditions");
-
-    const currentTemp = currentNode?.querySelector("temperature")?.textContent;
-    const currentIcon = currentNode?.querySelector("iconCode")?.textContent;
-    const currentCondition = currentNode?.querySelector("condition")?.textContent;
-
-    const current = {
-        temp: Number.isFinite(Number(currentTemp))
-            ? Math.round(Number(currentTemp))
-            : null,
-        condition: currentCondition || "",
-        iconCode: currentIcon,
-        icon: decodeEcccIcon(currentIcon)
-    };
-
-    // ---------------- FORECAST GROUPING ----------------
-    const forecasts = Array.from(xml.querySelectorAll("forecast"));
-
-    const dayMap = new Map();
-
-    for (const f of forecasts) {
-        const period = f.querySelector("period")?.textContent?.trim();
-        if (!period) continue;
-
-        const day = period.replace(/night/i, "").trim().slice(0, 3);
-
-        const high = f.querySelector("temperatures temperature[class='high']")?.textContent;
-        const low = f.querySelector("temperatures temperature[class='low']")?.textContent;
-
-        const iconCode = f.querySelector("abbreviatedForecast iconCode")?.textContent;
-
-        const condition =
-            f.querySelector("abbreviatedForecast textSummary")?.textContent ||
-            f.querySelector("cloudPrecip textSummary")?.textContent ||
-            f.querySelector("textSummary")?.textContent;
-
-        if (!dayMap.has(day)) {
-            dayMap.set(day, {
-                day,
-                high: null,
-                low: null,
-                icons: [],
-                conditions: []
-            });
+            renderCityForecast(xmlText);
         }
 
-        const d = dayMap.get(day);
+        function renderCityForecast(xmlText) {
+            const xml = new DOMParser().parseFromString(xmlText, "text/xml");
+            const panel = document.querySelector(".bottom-inner");
 
-        if (high != null) {
-            const h = Number(high);
-            d.high = d.high == null ? h : Math.max(d.high, h);
+            panel.innerHTML = "";
+
+            // ---------------- CURRENT ----------------
+            const current = xml.querySelector("currentConditions");
+
+            const temp = current?.querySelector("temperature")?.textContent;
+            const condition = current?.querySelector("condition")?.textContent;
+            const icon = current?.querySelector("iconCode")?.textContent;
+
+            const currentBox = document.createElement("div");
+            currentBox.className = "bottom-box current";
+
+            currentBox.innerHTML = `
+    <div class="period"><h1>Now</h1></div>
+    <div class="icon">${decodeCurrentIcon(icon)}</div>
+    <div class="temp"><h1>${temp ? Math.round(temp) + "°" : "--"}</h1></div>
+`;
+
+            panel.appendChild(currentBox);
+
+            // ---------------- FORECAST ----------------
+            const forecasts = Array.from(xml.querySelectorAll("forecast"));
+
+            const dayMap = new Map();
+
+            for (const f of forecasts) {
+                const period = f.querySelector("period")?.textContent?.trim();
+                if (!period) continue;
+
+                const day = period
+                    .replace(/night/i, "")
+                    .trim()
+                    .slice(0, 3);
+
+                const high = f.querySelector("temperatures temperature[class='high']")?.textContent;
+                const low = f.querySelector("temperatures temperature[class='low']")?.textContent;
+
+                const icon = f.querySelector("abbreviatedForecast iconCode")?.textContent;
+
+                const condition =
+                    f.querySelector("abbreviatedForecast textSummary")?.textContent ||
+                    f.querySelector("cloudPrecip textSummary")?.textContent ||
+                    f.querySelector("textSummary")?.textContent;
+
+                if (!dayMap.has(day)) {
+                    dayMap.set(day, {
+                        day,
+                        high: null,
+                        low: null,
+                        icons: [],
+                        conditions: []
+                    });
+                }
+
+                const d = dayMap.get(day);
+
+                if (high != null) {
+                    const h = Number(high);
+                    d.high = d.high == null ? h : Math.max(d.high, h);
+                }
+
+                if (low != null) {
+                    const l = Number(low);
+                    d.low = d.low == null ? l : Math.min(d.low, l);
+                }
+
+                if (icon) d.icons.push(icon);
+                if (condition) d.conditions.push(condition);
+            }
+
+            // ---------------- RENDER ----------------
+            const days = Array.from(dayMap.values()).slice(1, 6);
+
+            for (const d of days) {
+                const box = document.createElement("div");
+                box.className = "bottom-box forecast";
+
+                box.innerHTML = `
+    <div class="period"><h1>${d.day}</h1></div>
+    <div class="icon">${decodeCurrentIcon(d.icons[0])}</div>
+    <div class="temp">
+        <h1>${d.high ?? "--"}° (${d.low ?? "--"}°)</h1>
+    </div>
+`;
+
+                panel.appendChild(box);
+            }
         }
-
-        if (low != null) {
-            const l = Number(low);
-            d.low = d.low == null ? l : Math.min(d.low, l);
-        }
-
-        if (iconCode) d.icons.push(iconCode);
-        if (condition) d.conditions.push(condition);
-    }
-
-    // ---------------- FINAL DAYS ----------------
-    const days = Array.from(dayMap.values())
-        .slice(1, 6)
-        .map(d => ({
-            day: d.day,
-            high: d.high,
-            low: d.low,
-            iconCode: d.icons[0] || null,
-            icon: decodeEcccIcon(d.icons[0] || null),
-            conditions: d.conditions
-        }));
-
-    return {
-        current,
-        days
-    };
-}
-
-function renderCityForecast(xmlText) {
-    const xml = new DOMParser().parseFromString(xmlText, "text/xml");
-    const panel = document.querySelector(".bottom-inner");
-
-    panel.innerHTML = "";
-
-    const data = enrichCitypage(xml);
-
-    // ---------------- CURRENT ----------------
-    const c = data.current;
-
-    const currentBox = document.createElement("div");
-    currentBox.className = "bottom-box current";
-
-    currentBox.innerHTML = `
-        <div class="period"><h1>Now</h1></div>
-        <div class="icon">${c.icon}</div>
-        <div class="temp"><h1>${c.temp ?? "--"}°</h1></div>
-    `;
-
-    panel.appendChild(currentBox);
-
-    // ---------------- FORECAST ----------------
-    for (const d of data.days) {
-        const box = document.createElement("div");
-        box.className = "bottom-box forecast";
-
-        box.innerHTML = `
-            <div class="period"><h1>${d.day}</h1></div>
-            <div class="icon">${d.icon}</div>
-            <div class="temp">
-                <h1>${d.high ?? "--"}° (${d.low ?? "--"}°)</h1>
-            </div>
-        `;
-
-        panel.appendChild(box);
-    }
-}
 
         // =========================
         // START
@@ -1010,61 +904,82 @@ function renderCityForecast(xmlText) {
             return SYMBOL[top.sky_cover] || "☁️";
         }
 
-function decodeEcccIcon(code) {
-    const map = {
-        "00": "☀️",
-        "01": "🌤️",
-        "02": "⛅",
-        "03": "☁️",
-        "04": "☁️",
-        "05": "☁️",
-        "06": "🌦️",
-        "07": "🌦️",
-        "08": "🌨️",
-        "09": "🌦️",
-        "10": "☁️",
-        "11": "🌧️",
-        "12": "🌧️",
-        "13": "🌧️",
-        "14": "🧊🌧️",
-        "15": "🌧️❄️",
-        "16": "❄️",
-        "17": "🌨️",
-        "18": "❄️",
-        "19": "⛈️",
-        "20": "⛈️",
-        "21": "⛈️",
-        "22": "⛈️",
-        "23": "🌫️",
-        "24": "🌫️",
-        "25": "🌨️💨",
-        "26": "❄️",
-        "27": "🧊",
-        "28": "🌧️",
-        "29": "🌧️",
-        "30": "🌙",
-        "31": "🌙",
-        "32": "☁️",
-        "33": "☁️",
-        "34": "☁️",
-        "35": "☁️",
-        "36": "🌧️",
-        "37": "🌨️",
-        "38": "🌨️",
-        "39": "⛈️",
-        "40": "🌨️",
-        "41": "🌪️",
-        "42": "🌪️",
-        "43": "💨",
-        "44": "🌫️",
-        "45": "🌪️",
-        "46": "⛈️🌨️",
-        "47": "⛈️💨",
-        "48": "🌊🌪️"
-    };
+        function decodeCurrentIcon(code) {
+            const map = {
+                "00": "☀️",
+                "01": "🌤️",
+                "02": "⛅",
+                "03": "☁️",
+                "04": "☁️",
+                "05": "☁️",
 
-    return map[code] || "—";
-}
+                "06": "🌦️",
+                "07": "🌦️",
+                "08": "🌨️",
+                "09": "🌦️",
+
+                "10": "☁️",
+
+                "11": "🌧️",
+
+                "12": "🌧️",
+                "13": "🌧️",
+
+                "14": "🧊🌧️",
+
+                "15": "🌧️❄️",
+
+                "16": "❄️",
+
+                "17": "🌨️",
+
+                "18": "❄️",
+
+                "19": "⛈️",
+
+                "20": "⛈️",
+                "21": "⛈️",
+                "22": "⛈️",
+
+                "23": "🌫️",
+
+                "24": "🌫️",
+
+                "25": "🌨️💨",
+
+                "26": "❄️",
+
+                "27": "🧊",
+                "28": "🌧️",
+                "29": "🌧️",
+
+                "30": "🌙",
+                "31": "🌙",
+                "32": "☁️",
+                "33": "☁️",
+                "34": "☁️",
+                "35": "☁️",
+
+                "36": "🌧️",
+                "37": "🌨️",
+                "38": "🌨️",
+
+                "39": "⛈️",
+
+                "40": "🌨️",
+                "41": "🌪️",
+                "42": "🌪️",
+                "43": "💨",
+                "44": "🌫️",
+
+                "45": "🌪️",
+                "46": "⛈️🌨️",
+                "47": "⛈️💨",
+                "48": "🌊🌪️"
+            };
+
+            return map[code] || "—";
+        }
 
     </script>
 </body>
