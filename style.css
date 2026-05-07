@@ -54,7 +54,7 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    background: hsl(0, 0%, 40%);
+    background: hsl(0, 0%, 100%);
 }
 
 #forecast-panel {
@@ -84,7 +84,6 @@ body {
     text-align: center;
 
     background:hsl(0, 0%, 100%);
-    border-radius: 0rem;
     overflow: hidden;
 }
 
@@ -115,6 +114,21 @@ body {
 .forecast-box .temp {
     flex: 0 0 auto;
     padding: 0.5rem;
+}
+
+.info-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.event-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    background: rgba(255,255,255,0.05);
 }
 
 #ticker-panel {

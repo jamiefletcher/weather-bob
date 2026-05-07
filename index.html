@@ -227,7 +227,7 @@ switch(scene) {
 
                 this.map = new maplibregl.Map({
                     container: "map",
-                    style: "osm_raster.json",
+                    style: "bluemarble_raster.json",
                     center: [lon, lat],
                     zoom: 6,
                     minZoom: 3,
@@ -793,6 +793,99 @@ function renderCityForecast(xmlText) {
     }
 }
 
+async function initCityEvents() {
+    const res = await fetch("data/toronto/toronto_events.json");
+    const json = await res.json();
+
+    renderCityEvents(json);
+}
+
+function enrichCityEvents(data) {
+    const events = data.value || [];
+
+    return events.map(e => {
+        const loc = e.event_locations?.[0];
+
+        // ---------------- GPS PARSE + VALIDATION ----------------
+        let lat = null;
+        let lng = null;
+
+        if (loc?.location_gps) {
+            try {
+                const parsed = JSON.parse(loc.location_gps)?.[0];
+
+                const rawLat = parsed?.gps_lat;
+                const rawLng = parsed?.gps_lng;
+
+                const nLat = Number(rawLat);
+                const nLng = Number(rawLng);
+
+                if (Number.isFinite(nLat) && Number.isFinite(nLng)) {
+                    lat = nLat;
+                    lng = nLng;
+                }
+            } catch {
+                // ignore bad JSON
+            }
+        }
+
+        return {
+            id: e.id,
+            name: e.short_name,
+            description: e.short_description,
+            start: e.event_startdate,
+            end: e.event_enddate,
+
+            location: {
+                name: loc?.location_name || "",
+                address: loc?.location_address || "",
+                lat,
+                lng
+            },
+
+            image: e.event_image?.[0] || null,
+            featured: e.featured_event === "Yes",
+            free: e.free_event === "Yes"
+        };
+    });
+}
+
+function createEventCard(e) {
+    const card = document.createElement("div");
+    card.className = "event-card";
+
+    const left = document.createElement("div");
+    left.className = "event-left";
+
+    left.innerHTML = `
+        <strong>${e.name}</strong><br>
+        ${e.location.name}<br>
+        ${e.location.address}
+    `;
+
+    const right = document.createElement("div");
+    right.className = "event-right";
+
+    right.textContent = e.free ? "🆓 Free" : "🎟️ Paid";
+
+    card.appendChild(left);
+    card.appendChild(right);
+
+    return card;
+}
+
+function renderCityEvents(json) {
+    const panel = document.querySelector("#info-panel");
+    panel.innerHTML = "";
+
+    const events = enrichCityEvents(json);
+
+    for (const e of events) {
+        panel.appendChild(createEventCard(e));
+    }
+}
+
+
         // =========================
         // START
         // =========================
@@ -800,6 +893,7 @@ function renderCityForecast(xmlText) {
             sceneController.switch(scenePlaces);
             initTicker();
             initCityForecast();
+            initCityEvents();
 
             setTimeout(() => {
                 loadingScreen();
