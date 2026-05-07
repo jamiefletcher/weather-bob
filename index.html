@@ -199,7 +199,7 @@ switch(scene) {
                 const data = await getMetars();
 
                 const d = getDateParts();
-                window.setTitle("top-left", `<h3>${d.weekdayName}, ${d.monthName} ${d.day}</h3>`);
+                window.setTitle("top-left", `<h1>${d.weekdayName}, ${d.monthName} ${d.day}</h1>`);
                 //window.setTitle("top-right", "<h2><b>Canada</b> <i>Coast-to-Coast</i> Weather</h2>");
                 //window.setTitle("top-right-sub", "<h4>Up-to-the-minute</h4>");
 
@@ -227,7 +227,7 @@ switch(scene) {
 
                 this.map = new maplibregl.Map({
                     container: "map",
-                    style: "naturalearth_white.json",
+                    style: "osm_raster.json",
                     center: [lon, lat],
                     zoom: 6,
                     minZoom: 3,

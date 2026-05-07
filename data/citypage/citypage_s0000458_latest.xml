@@ -4,20 +4,20 @@
    <dateTime name="xmlCreation" zone="UTC" UTCOffset="0">
       <year>2026</year>
       <month name="May">05</month>
-      <day name="Wednesday">06</day>
-      <hour>21</hour>
-      <minute>01</minute>
-      <timeStamp>20260506210140</timeStamp>
-      <textSummary>Wednesday May 06, 2026 at 21:01 UTC</textSummary>
+      <day name="Thursday">07</day>
+      <hour>02</hour>
+      <minute>00</minute>
+      <timeStamp>20260507020058</timeStamp>
+      <textSummary>Thursday May 07, 2026 at 02:00 UTC</textSummary>
    </dateTime>
    <dateTime name="xmlCreation" zone="EDT" UTCOffset="-4">
       <year>2026</year>
       <month name="May">05</month>
       <day name="Wednesday">06</day>
-      <hour>17</hour>
-      <minute>01</minute>
-      <timeStamp>20260506170140</timeStamp>
-      <textSummary>Wednesday May 06, 2026 at 17:01 EDT</textSummary>
+      <hour>22</hour>
+      <minute>00</minute>
+      <timeStamp>20260506220058</timeStamp>
+      <textSummary>Wednesday May 06, 2026 at 22:00 EDT</textSummary>
    </dateTime>
    <location>
       <continent>North America</continent>
@@ -32,33 +32,33 @@
       <dateTime name="observation" zone="UTC" UTCOffset="0">
          <year>2026</year>
          <month name="May">05</month>
-         <day name="Wednesday">06</day>
-         <hour>21</hour>
+         <day name="Thursday">07</day>
+         <hour>02</hour>
          <minute>00</minute>
-         <timeStamp>20260506210000</timeStamp>
-         <textSummary>Wednesday May 06, 2026 at 21:00 UTC</textSummary>
+         <timeStamp>20260507020000</timeStamp>
+         <textSummary>Thursday May 07, 2026 at 02:00 UTC</textSummary>
       </dateTime>
       <dateTime name="observation" zone="EDT" UTCOffset="-4">
          <year>2026</year>
          <month name="May">05</month>
          <day name="Wednesday">06</day>
-         <hour>17</hour>
+         <hour>22</hour>
          <minute>00</minute>
-         <timeStamp>20260506170000</timeStamp>
-         <textSummary>Wednesday May 06, 2026 at 17:00 EDT</textSummary>
+         <timeStamp>20260506220000</timeStamp>
+         <textSummary>Wednesday May 06, 2026 at 22:00 EDT</textSummary>
       </dateTime>
-      <condition>Mostly Cloudy</condition>
-      <iconCode format="gif">03</iconCode>
-      <temperature unitType="metric" units="C" qaValue="100">8.0</temperature>
-      <dewpoint unitType="metric" units="C" qaValue="100">0.8</dewpoint>
-      <pressure unitType="metric" units="kPa" change="0.01" tendency="falling" qaValue="100">101.1</pressure>
+      <condition>Mainly Clear</condition>
+      <iconCode format="gif">31</iconCode>
+      <temperature unitType="metric" units="C" qaValue="100">5.0</temperature>
+      <dewpoint unitType="metric" units="C" qaValue="100">-2.2</dewpoint>
+      <pressure unitType="metric" units="kPa" change="0.15" tendency="rising" qaValue="100">101.3</pressure>
       <visibility unitType="metric" units="km" qaValue="100">24.1</visibility>
       <relativeHumidity units="%" qaValue="100">60</relativeHumidity>
       <wind>
-         <speed unitType="metric" units="km/h" qaValue="100">12</speed>
+         <speed unitType="metric" units="km/h" qaValue="100">9</speed>
          <gust unitType="metric" units="km/h"></gust>
-         <direction qaValue="100">N</direction>
-         <bearing units="degrees" qaValue="100">6.0</bearing>
+         <direction qaValue="100">NNE</direction>
+         <bearing units="degrees" qaValue="100">13.0</bearing>
       </wind>
    </currentConditions>
    <forecastGroup>
@@ -421,71 +421,6 @@
          <timeStamp>20260506161800</timeStamp>
          <textSummary>Wednesday May 06, 2026 at 16:18 EDT</textSummary>
       </dateTime>
-      <hourlyForecast dateTimeUTC="202605062200">
-         <condition>Mainly cloudy</condition>
-         <iconCode format="png">03</iconCode>
-         <temperature unitType="metric" units="C">7</temperature>
-         <lop category="Low" units="%">20</lop>
-         <windChill unitType="metric"/>
-         <humidex unitType="metric"/>
-         <wind>
-            <speed unitType="metric" units="km/h">5</speed>
-            <direction windDirFull="Variable direction">VR</direction>
-            <gust unitType="metric" units="km/h"/>
-         </wind>
-      </hourlyForecast>
-      <hourlyForecast dateTimeUTC="202605062300">
-         <condition>Mainly cloudy</condition>
-         <iconCode format="png">03</iconCode>
-         <temperature unitType="metric" units="C">7</temperature>
-         <lop category="Low" units="%">20</lop>
-         <windChill unitType="metric"/>
-         <humidex unitType="metric"/>
-         <wind>
-            <speed unitType="metric" units="km/h">5</speed>
-            <direction windDirFull="Variable direction">VR</direction>
-            <gust unitType="metric" units="km/h"/>
-         </wind>
-      </hourlyForecast>
-      <hourlyForecast dateTimeUTC="202605070000">
-         <condition>Partly cloudy</condition>
-         <iconCode format="png">32</iconCode>
-         <temperature unitType="metric" units="C">6</temperature>
-         <lop category="Low" units="%">20</lop>
-         <windChill unitType="metric"/>
-         <humidex unitType="metric"/>
-         <wind>
-            <speed unitType="metric" units="km/h">5</speed>
-            <direction windDirFull="Variable direction">VR</direction>
-            <gust unitType="metric" units="km/h"/>
-         </wind>
-      </hourlyForecast>
-      <hourlyForecast dateTimeUTC="202605070100">
-         <condition>A few clouds</condition>
-         <iconCode format="png">31</iconCode>
-         <temperature unitType="metric" units="C">5</temperature>
-         <lop category="Low" units="%">20</lop>
-         <windChill unitType="metric"/>
-         <humidex unitType="metric"/>
-         <wind>
-            <speed unitType="metric" units="km/h">5</speed>
-            <direction windDirFull="Variable direction">VR</direction>
-            <gust unitType="metric" units="km/h"/>
-         </wind>
-      </hourlyForecast>
-      <hourlyForecast dateTimeUTC="202605070200">
-         <condition>A few clouds</condition>
-         <iconCode format="png">31</iconCode>
-         <temperature unitType="metric" units="C">5</temperature>
-         <lop category="Low" units="%">20</lop>
-         <windChill unitType="metric"/>
-         <humidex unitType="metric"/>
-         <wind>
-            <speed unitType="metric" units="km/h">5</speed>
-            <direction windDirFull="Variable direction">VR</direction>
-            <gust unitType="metric" units="km/h"/>
-         </wind>
-      </hourlyForecast>
       <hourlyForecast dateTimeUTC="202605070300">
          <condition>A few clouds</condition>
          <iconCode format="png">31</iconCode>
@@ -763,17 +698,82 @@
             <index>1</index>
          </uv>
       </hourlyForecast>
+      <hourlyForecast dateTimeUTC="202605072200">
+         <condition>Chance of showers</condition>
+         <iconCode format="png">06</iconCode>
+         <temperature unitType="metric" units="C">11</temperature>
+         <lop category="Low" units="%">30</lop>
+         <windChill unitType="metric"/>
+         <humidex unitType="metric"/>
+         <wind>
+            <speed unitType="metric" units="km/h">5</speed>
+            <direction windDirFull="Variable direction">VR</direction>
+            <gust unitType="metric" units="km/h"/>
+         </wind>
+      </hourlyForecast>
+      <hourlyForecast dateTimeUTC="202605072300">
+         <condition>Chance of showers</condition>
+         <iconCode format="png">12</iconCode>
+         <temperature unitType="metric" units="C">9</temperature>
+         <lop category="Low" units="%">30</lop>
+         <windChill unitType="metric"/>
+         <humidex unitType="metric"/>
+         <wind>
+            <speed unitType="metric" units="km/h">5</speed>
+            <direction windDirFull="Variable direction">VR</direction>
+            <gust unitType="metric" units="km/h"/>
+         </wind>
+      </hourlyForecast>
+      <hourlyForecast dateTimeUTC="202605080000">
+         <condition>Chance of showers</condition>
+         <iconCode format="png">12</iconCode>
+         <temperature unitType="metric" units="C">8</temperature>
+         <lop category="Low" units="%">30</lop>
+         <windChill unitType="metric"/>
+         <humidex unitType="metric"/>
+         <wind>
+            <speed unitType="metric" units="km/h">5</speed>
+            <direction windDirFull="Variable direction">VR</direction>
+            <gust unitType="metric" units="km/h"/>
+         </wind>
+      </hourlyForecast>
+      <hourlyForecast dateTimeUTC="202605080100">
+         <condition>Chance of showers</condition>
+         <iconCode format="png">12</iconCode>
+         <temperature unitType="metric" units="C">8</temperature>
+         <lop category="Low" units="%">30</lop>
+         <windChill unitType="metric"/>
+         <humidex unitType="metric"/>
+         <wind>
+            <speed unitType="metric" units="km/h">5</speed>
+            <direction windDirFull="Variable direction">VR</direction>
+            <gust unitType="metric" units="km/h"/>
+         </wind>
+      </hourlyForecast>
+      <hourlyForecast dateTimeUTC="202605080200">
+         <condition>Mainly cloudy</condition>
+         <iconCode format="png">33</iconCode>
+         <temperature unitType="metric" units="C">7</temperature>
+         <lop category="Low" units="%">20</lop>
+         <windChill unitType="metric"/>
+         <humidex unitType="metric"/>
+         <wind>
+            <speed unitType="metric" units="km/h">5</speed>
+            <direction windDirFull="Variable direction">VR</direction>
+            <gust unitType="metric" units="km/h"/>
+         </wind>
+      </hourlyForecast>
    </hourlyForecastGroup>
    <riseSet>
       <disclaimer>The information provided here, for the times of the rise and set of the sun, is an estimate included as a convenience to our clients. Values shown here may differ from the official sunrise/sunset data available from (http://hia-iha.nrc-cnrc.gc.ca/sunrise_e.html)</disclaimer>
       <dateTime name="sunrise" zone="UTC" UTCOffset="0">
          <year>2026</year>
          <month name="May">05</month>
-         <day name="Wednesday">06</day>
+         <day name="Thursday">07</day>
          <hour>10</hour>
-         <minute>03</minute>
-         <timeStamp>20260506100300</timeStamp>
-         <textSummary>Wednesday May 06, 2026 at 10:03 UTC</textSummary>
+         <minute>02</minute>
+         <timeStamp>20260507100200</timeStamp>
+         <textSummary>Thursday May 07, 2026 at 10:02 UTC</textSummary>
       </dateTime>
       <dateTime name="sunrise" zone="EDT" UTCOffset="-4">
          <year>2026</year>
@@ -787,11 +787,11 @@
       <dateTime name="sunset" zone="UTC" UTCOffset="0">
          <year>2026</year>
          <month name="May">05</month>
-         <day name="Thursday">07</day>
+         <day name="Friday">08</day>
          <hour>00</hour>
-         <minute>26</minute>
-         <timeStamp>20260507002600</timeStamp>
-         <textSummary>Thursday May 07, 2026 at 00:26 UTC</textSummary>
+         <minute>27</minute>
+         <timeStamp>20260508002700</timeStamp>
+         <textSummary>Friday May 08, 2026 at 00:27 UTC</textSummary>
       </dateTime>
       <dateTime name="sunset" zone="EDT" UTCOffset="-4">
          <year>2026</year>

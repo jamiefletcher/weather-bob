@@ -3,6 +3,7 @@
     --color-secondary: hsl(210, 60%, 60%);
     --color-bg1: hsl(210, 30%, 30%);
     --color-bg2: hsl(120, 30%, 70%);
+    --color-bg3: hsl(340, 35%, 72%);
     --color-text1: hsl(210, 29%, 28%);
 }
 
@@ -70,8 +71,8 @@ body {
     height: 100%;
 
     display: flex;
-    gap: 0.5rem;
-    padding: 0.5rem;
+    gap: 0rem;
+    padding: 0rem;
 }
 
 .forecast-box {
@@ -83,7 +84,7 @@ body {
     text-align: center;
 
     background:hsl(0, 0%, 100%);
-    border-radius: 0.5rem;
+    border-radius: 0rem;
     overflow: hidden;
 }
 
@@ -99,7 +100,7 @@ body {
     flex: 0 0 auto;
     width: 100%;
     padding: 0.5rem;
-    background: var(--color-bg1);
+    background: var(--color-bg2);
     color: hsl(0, 0%, 100%);
     text-transform: uppercase;
 }
@@ -166,19 +167,13 @@ body {
     line-height: 1;
 }
 
-#title-container * {
-    font-weight: 700;
-}
-
 .top-left {
     position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
-    padding: 0.3rem 0.5rem;
-    border-radius: 50vh;
-    background: var(--color-bg1);
-    color: hsl(0, 0%, 100%);
-    box-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.2);
+    top: 0rem;
+    left: 0rem;
+    padding: 0.5rem;
+    background: hsla(0, 0%, 100%, 0.5);
+    color: var(--color-text1);
 }
 
 .top-right {
@@ -286,14 +281,6 @@ body {
     color: hsl(0, 0%, 100%);
     border-radius: 0.5rem 0.5rem 0 0;
     padding: 0.5rem;
-}
-
-.popup-city h2 {
-    font-weight: 700;
-}
-
-.popup-data .temp h1 {
-    font-weight: 300;
 }
 
 .popup-long-city h2 {

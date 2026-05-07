@@ -9,6 +9,12 @@
 			"tiles": [
 				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/coastline_simple/{z}/{x}/{y}.pbf"
 			]
+		},
+		"countries_simple": {
+			"type": "vector",
+			"tiles": [
+				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/countries_simple/{z}/{x}/{y}.pbf"
+			]
 		}
 	},
 	"layers": [
@@ -20,13 +26,12 @@
 			}
 		},		
 		{
-			"id": "coastline_simple",
-			"type": "line",
-			"source": "coastline_simple",
-			"source-layer": "coastline_simple",
+			"id": "countries_simple",
+			"type": "fill",
+			"source": "countries_simple",
+			"source-layer": "countries_simple",
 			"paint": {
-				"line-color": "hsl(210, 15%, 0%)",
-				"line-width": 2
+				"fill-color": "hsl(210, 15%, 90%)"
 			}
 		}
 	]
