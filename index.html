@@ -227,7 +227,7 @@ switch(scene) {
 
                 this.map = new maplibregl.Map({
                     container: "map",
-                    style: "osm-raster.json",
+                    style: "naturalearth_white.json",
                     center: [lon, lat],
                     zoom: 6,
                     minZoom: 3,
@@ -243,7 +243,7 @@ switch(scene) {
                 this.map.on("load", () => {
                     this.addLayers(features);
                     this.addPopups(features);
-                    this.loop(loopFeatures);
+                    //this.loop(loopFeatures);
                 });
 
                 this.map.on("moveend", () => {
