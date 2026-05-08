@@ -10,7 +10,25 @@
 				"data/naturalearth/raster/{z}/{x}/{y}.png"
 			],
 			"tileSize": 256
-		}
+		},
+		"provinces_lines": {
+			"type": "vector",
+			"tiles": [
+				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/provinces_lines/{z}/{x}/{y}.pbf"
+			]
+		},
+		"boundaries": {
+			"type": "vector",
+			"tiles": [
+				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/boundaries/{z}/{x}/{y}.pbf"
+			]
+		},
+		"coastline": {
+			"type": "vector",
+			"tiles": [
+				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/coastline/{z}/{x}/{y}.pbf"
+			]
+		}			
 	},
 	"layers": [
 		{
@@ -20,6 +38,39 @@
 			"paint": {
 				"raster-saturation": 0.2
 			}
-		}
+		},
+		{
+			"id": "provinces-lines",
+			"type": "line",
+			"source": "provinces_lines",
+			"source-layer": "provinces_lines",
+			"paint": {
+				"line-color": "hsl(210, 15%, 100%)",
+				"line-width": 1,
+				"line-opacity": 0.5
+			}
+		},
+		{
+			"id": "boundaries",
+			"type": "line",
+			"source": "boundaries",
+			"source-layer": "boundaries",
+			"paint": {
+				"line-color": "hsl(210, 15%, 100%)",
+				"line-width": 1,
+				"line-opacity": 0.5
+			}
+		},
+		{
+			"id": "coastline",
+			"type": "line",
+			"source": "coastline",
+			"source-layer": "coastline",
+			"paint": {
+				"line-color": "hsl(210, 15%, 100%)",
+				"line-width": 1,
+				"line-opacity": 0.5
+			}
+		}		
 	]
 }

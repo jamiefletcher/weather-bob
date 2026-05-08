@@ -199,7 +199,7 @@ switch(scene) {
                 const data = await getMetars();
 
                 const d = getDateParts();
-                window.setTitle("top-left", `<h1>${d.weekdayName}, ${d.monthName} ${d.day}</h1>`);
+                window.setTitle("top-right", `<h1>${d.weekdayName}, ${d.monthName} ${d.day}</h1>`);
                 //window.setTitle("top-right", "<h2><b>Canada</b> <i>Coast-to-Coast</i> Weather</h2>");
                 //window.setTitle("top-right-sub", "<h4>Up-to-the-minute</h4>");
 
@@ -611,6 +611,10 @@ loop(features) {
             track.innerHTML = html + html; // duplicate for loop
         }
 
+        // =========================
+        // TICKER
+        // =========================
+
         let tickerX = 0;
         let tickerSpeed = 0.6; // px per frame (control here)
         let tickerWidth = 0;
@@ -661,6 +665,10 @@ loop(features) {
 
             el.classList.add("hidden");
         }
+
+        // =========================
+        // CITY FORECAST
+        // =========================
 
 async function initCityForecast() {
     const station = "s0000458";
@@ -792,6 +800,10 @@ function renderCityForecast(xmlText) {
         panel.appendChild(box);
     }
 }
+
+        // =========================
+        // LOCAL EVENTS
+        // =========================
 
 async function initCityEvents() {
     const res = await fetch("data/toronto/toronto_events.json");

@@ -4,13 +4,20 @@
 	"glyphs": "https://jamiefletcher.github.io/weather-bob/assets/fonts/{fontstack}/{range}.pbf",
 	"sprite": "https://jamiefletcher.github.io/weather-bob/assets/sprites/sprites-trees",
 	"sources": {
-		"naturalearth": {
+		"bluemarble": {
 			"type": "raster",
 			"tiles": [
 				"data/bluemarble/{z}/{x}/{y}.png"
 			],
 			"tileSize": 256
 		},
+		"gdps": {
+			"type": "raster",
+			"tiles": [
+				"data/gdps/tiles/{z}/{x}/{y}.png"
+			],
+			"tileSize": 256
+		},		
 		"provinces_lines": {
 			"type": "vector",
 			"tiles": [
@@ -22,17 +29,26 @@
 			"tiles": [
 				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/boundaries/{z}/{x}/{y}.pbf"
 			]
+		},
+		"coastline": {
+			"type": "vector",
+			"tiles": [
+				"https://jamiefletcher.github.io/weather-bob/data/naturalearth/coastline/{z}/{x}/{y}.pbf"
+			]
 		}		
 	},
 	"layers": [
 		{
-			"id": "naturalearth",
+			"id": "bluemarble",
 			"type": "raster",
-			"source": "naturalearth",
+			"source": "bluemarble",
 			"paint": {
-				"raster-saturation": 0.2
+				"raster-saturation": 0.2,
+				"raster-contrast": 0.2,
+				"raster-brightness-min": 0.2,
+		        "raster-brightness-max": 1
 			}
-		},
+		},	
 		{
 			"id": "provinces-lines",
 			"type": "line",
@@ -54,6 +70,17 @@
 				"line-width": 1,
 				"line-opacity": 0.5
 			}
-		}				
+		},
+		{
+			"id": "coastline",
+			"type": "line",
+			"source": "coastline",
+			"source-layer": "coastline",
+			"paint": {
+				"line-color": "hsl(210, 15%, 100%)",
+				"line-width": 1,
+				"line-opacity": 0.5
+			}
+		}							
 	]
 }

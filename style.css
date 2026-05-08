@@ -186,18 +186,17 @@ body {
     top: 0rem;
     left: 0rem;
     padding: 0.5rem;
-    background: hsla(0, 0%, 100%, 0.5);
+    background: var(--color-bg1);
     color: var(--color-text1);
 }
 
 .top-right {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: 0rem;
+    right: 0rem;
     padding: 0.5rem;
-    background: hsl(0, 0%, 100%);
-    border: 1px solid var(--color-bg1);
-    box-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.2);
+    background: var(--color-bg1);
+    color: hsl(0, 0%, 100%);
     text-align: right;
 }
 

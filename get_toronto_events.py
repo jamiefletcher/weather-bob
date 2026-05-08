@@ -134,8 +134,6 @@ url = f"{BASE_URL}?{query_string}"
 # =========================================================
 
 print("Downloading events...")
-print(url)
-print()
 
 req = urllib.request.Request(
     url,
@@ -163,13 +161,4 @@ Path(OUTPUT_FILE).write_text(
 
 events = data.get("value", [])
 
-print(f"Downloaded {len(events)} events")
 print(f"Saved to: {OUTPUT_FILE}")
-
-if events:
-    first = events[0]
-
-    print()
-    print("First event:")
-    print(first.get("short_name"))
-    print(first.get("calendar_date"))
